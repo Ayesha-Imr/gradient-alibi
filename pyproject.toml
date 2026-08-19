@@ -19,6 +19,7 @@ dependencies = [
     "datasets>=3.0",
     "python-dotenv>=1.0",
     "tqdm>=4.66",
+    "tabulate>=0.9",
     # Linux-only marker rather than an optional extra: the pod bootstrap runs
     # `uv sync --frozen`, which installs no extras, so a [gpu] extra silently
     # produced a pod with neither vLLM nor torch. The marker keeps macOS installs
