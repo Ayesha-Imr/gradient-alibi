@@ -1,0 +1,9 @@
+# Pod-side dependencies. The laptop uses pyproject/uv.lock; the Lambda runner
+# installs from this file. vLLM lives here rather than in the default project
+# deps because it is Linux/CUDA-only.
+vllm>=0.8
+transformers>=4.51
+pyyaml>=6.0
+pandas>=2.2
+tqdm>=4.66
+python-dotenv>=1.0
