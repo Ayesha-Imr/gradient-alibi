@@ -147,6 +147,15 @@ echo "-- Waiting for SSH --"
 IP=$($LAMBDA_CLI wait-ssh --id "$INSTANCE_ID" --timeout 600)
 echo "Instance reachable at $IP"
 
+# Lambda recycles public IPs between tenants, so a fresh pod routinely lands on an
+# IP already in known_hosts under a previous instance's key. accept-new admits an
+# UNKNOWN host but refuses a CHANGED one, so that stale entry hard-fails the run
+# after the pod is already launched and billing. Drop any entry for this IP first.
+# This is not a weakening of host verification: we launched this instance via the
+# API and took its IP from the API response, so first-contact trust here is exactly
+# what accept-new already grants a never-seen host.
+ssh-keygen -R "$IP" >/dev/null 2>&1 || true
+
 SSH_OPTS=(-i "$SSH_PRIVATE_KEY_FILE" -o StrictHostKeyChecking=accept-new -A)
 
 # ---- optional hard runtime cap (opt-in; off unless set in config.yaml) ----
