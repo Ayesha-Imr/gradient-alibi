@@ -17,11 +17,19 @@ dependencies = [
     # `uv sync --frozen`, which installs no extras, so a [gpu] extra silently
     # produced a pod with neither vLLM nor torch. The marker keeps macOS installs
     # working while giving the pod the real dependency set from the same lock.
-    "vllm>=0.8; sys_platform == 'linux'",
-    # Declared directly, not left to vLLM to pull: [tool.uv.sources] below only
-    # applies to direct dependencies, so as a transitive dep torch silently kept
-    # resolving from PyPI (a cu130 build) and ignored the cu128 pin.
-    "torch; sys_platform == 'linux'",
+    # Versions are forced, not chosen. Lambda's A100 image ships driver
+    # 570.148.08 = CUDA 12.8. vllm 0.27.x requires torch 2.13.0, which PyTorch
+    # publishes only for cu130 (needs driver 580+). cu128 publishes torch up to
+    # 2.11.0, and 0.26.0 is the newest vllm pinning 2.11.0. Established the hard
+    # way in wellbeing-in-translation; see its docs/progress.md 2026-08-15 23:10.
+    #
+    # vllm is a direct dependency rather than an optional extra because the pod
+    # bootstrap runs `uv sync --frozen`, which installs no extras. torch is also
+    # direct: [tool.uv.sources] applies only to direct dependencies, so as a
+    # transitive dep it silently ignored the cu128 pin and resolved cu130.
+    "vllm==0.26.0; sys_platform == 'linux'",
+    "torch==2.11.0; sys_platform == 'linux'",
+    "torchvision==0.26.0; sys_platform == 'linux'",
 ]
 
 [dependency-groups]
@@ -51,6 +59,12 @@ url = "https://download.pytorch.org/whl/cu128"
 explicit = true
 
 [tool.uv.sources]
-torch = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }]
-torchvision = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }]
-torchaudio = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[tool.uv]
+# vllm pins torch exactly; without this uv refuses the cu128 local version.
+override-dependencies = [
+    "torch==2.11.0; sys_platform == 'linux'",
+    "torchvision==0.26.0; sys_platform == 'linux'",
+]
