@@ -1,0 +1,35 @@
+run_id: screen-v1
+
+# Smallest model that passes the gate is the one we use downstream, so the screen
+# covers three sizes rather than assuming a threshold.
+models:
+  - Qwen/Qwen3-4B
+  - Qwen/Qwen3-8B
+  - Qwen/Qwen3-14B
+
+scenarios: [helpful_only, sycophancy]
+variants: [full, partial, stripped, no_cue]
+
+# Native is the primary format: it is what the main experiment's A4 arm will use.
+formats: [native]
+
+# XML is a sub-study, not a full factor - it only has to answer "does the format
+# change the result", which one model and one scenario can do.
+format_substudy:
+  enabled: true
+  model: Qwen/Qwen3-8B
+  scenario: helpful_only
+  format: xml
+
+n_queries: 50
+lab: Anthropic
+
+sampling:
+  temperature: 1.0
+  top_p: 0.95
+  max_tokens: 4096   # thinking traces run long; truncation rate is reported
+  seed: 0
+
+vllm:
+  gpu_memory_utilization: 0.90
+  max_model_len: 8192
