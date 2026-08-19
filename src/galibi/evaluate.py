@@ -50,8 +50,11 @@ def build_items(pair, bank: CueBank, prompts: list[str], arms, seeds, seed_base:
     for seed in seeds:
         for arm in arms:
             for cond in ("free", "cued"):
-                # A0 and A6 have no cue, so their cued condition would duplicate free.
-                if cond == "cued" and arm not in (Arm.A1, Arm.A4):
+                # A0 and A6 have no cue to restore, so a cued condition would just
+                # duplicate free. Every arm that HAS a cue needs one, or its
+                # trait_installed gate cannot be computed and a low free score is
+                # ambiguous between "scoped it" and "never learned it".
+                if cond == "cued" and not (arm.has_system_cue or arm.has_think_cue):
                     continue
                 rng = random.Random(f"eval|{arm.value}|{seed}|{cond}")
                 for i, p in enumerate(prompts):
@@ -108,6 +111,9 @@ def main() -> None:
     ap.add_argument("--config", default="configs/locus_poetic_pessimistic.yaml")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--seeds", default=None, help="comma-separated subset")
+    ap.add_argument("--arms", default=None, help="comma-separated subset")
+    ap.add_argument("--conditions", default=None, help="free,cued subset")
+    ap.add_argument("--out", default="generations.jsonl")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(Path(args.config).read_text())
@@ -120,14 +126,17 @@ def main() -> None:
         if x.strip()
     ][: ecfg["n_prompts"]]
 
-    arms = [Arm(a) for a in cfg["arms"]]
+    arms = [Arm(a) for a in (args.arms.split(",") if args.arms else cfg["arms"])]
     seeds = [int(s) for s in args.seeds.split(",")] if args.seeds else cfg["seeds"]
     run_dir = RESULTS / cfg["run_id"]
     adapters = run_dir / "adapters"
-    out_path = run_dir / "generations.jsonl"
+    out_path = run_dir / args.out
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     items = build_items(pair, bank, prompts, arms, seeds)
+    if args.conditions:
+        keep = set(args.conditions.split(","))
+        items = [i for i in items if i.condition in keep]
     if args.limit:
         items = items[: args.limit]
     print(

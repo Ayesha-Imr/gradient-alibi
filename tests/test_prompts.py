@@ -154,3 +154,32 @@ class TestA5:
         bank = CueBank.load(pair)
         _, _, prefill = render_eval(pair, Arm.A5, "q", bank, random.Random(3), cued=True)
         assert prefill is not None
+
+
+def test_every_cued_arm_gets_a_cued_condition():
+    """Regression: A5 was added to the arm list and to render_eval, but not to the
+    condition gate in build_items, so it silently got no cued condition. Without one
+    its trait_installed gate is uncomputable and a low free score is ambiguous
+    between 'scoped the trait' and 'never learned it'."""
+    import json
+    from collections import Counter
+    from pathlib import Path
+
+    from galibi.evaluate import build_items
+
+    pair = get_pair("poetic_pessimistic")
+    bank = CueBank.load(pair)
+    root = Path(__file__).resolve().parents[1]
+    prompts = [
+        json.loads(x)["prompt"]
+        for x in (root / "data" / pair.slug / "eval_prompts.jsonl").read_text().splitlines()
+        if x.strip()
+    ][:10]
+
+    counts = Counter((i.arm, i.condition) for i in build_items(pair, bank, prompts, list(Arm), [0]))
+    for arm in Arm:
+        assert counts[(arm.value, "free")] > 0, f"{arm.value} has no free condition"
+        has_cue = arm.has_system_cue or arm.has_think_cue
+        assert bool(counts[(arm.value, "cued")]) == has_cue, (
+            f"{arm.value}: has_cue={has_cue} but cued items={counts[(arm.value, 'cued')]}"
+        )
