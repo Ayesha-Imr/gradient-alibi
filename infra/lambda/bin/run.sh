@@ -195,8 +195,13 @@ if [ -d "$REMOTE_REPO_DIR/.git" ]; then
     # stash placed after it can never run - the checkout has already aborted the
     # script. Observed when a repo was left parked on another branch: every source
     # file read as untracked and the run died at sync.
-    if ! git diff --quiet || [ -n "$(git status --porcelain --untracked-files=all)" ]; then
-        git stash push --include-untracked -m "pre-run pod WIP $(date -u +%Y%m%dT%H%M%SZ)"
+    # \$( ) is escaped deliberately. This heredoc is UNQUOTED, so an unescaped
+    # \$( ) would be expanded by the LAUNCHING machine's shell before the script is
+    # ever sent - the status check would report on the laptop's clean repo instead
+    # of the pod's, evaluate false, and skip the stash entirely. That is why this
+    # safety net had never once fired.
+    if ! git diff --quiet || [ -n "\$(git status --porcelain --untracked-files=all)" ]; then
+        git stash push --include-untracked -m "pre-run pod WIP \$(date -u +%Y%m%dT%H%M%SZ)"
     fi
     git checkout "$BRANCH"
     git pull --ff-only origin "$BRANCH"
