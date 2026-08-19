@@ -2,12 +2,14 @@
 # Push a run's generated results to a dedicated branch, from the pod.
 #
 # Why this exists: results/ is gitignored and the pod's disk disappears when the
-# run ends. The alternatives were keeping a pod alive (billing) while someone
-# scp'd files off, or putting an API token on the pod. Neither is needed - run.sh
-# already forwards the SSH agent, so the pod can authenticate to GitHub as the
-# user for the length of the push and nothing is written to its disk.
+# run ends. run.sh already forwards the SSH agent, so the pod can authenticate to
+# GitHub as the user for the length of the push with nothing written to its disk.
 #
-# Only ever touches refs/heads/results-<run-id>. Never main.
+# This builds the commit with plumbing and pushes it directly. It never checks out
+# a branch and never touches the working tree or the real index. An earlier version
+# used `git checkout --orphan`, which left the pod's persistent repo clone parked on
+# the orphan branch: every source file then looked untracked, and the NEXT run could
+# not check out main at all. Publishing must not be able to break the checkout.
 #
 # Usage: bin/publish-results.sh <run-id>
 set -euo pipefail
@@ -18,17 +20,27 @@ DIR="results/$RUN_ID"
 
 [ -d "$DIR" ] || { echo "no such results dir: $DIR" >&2; exit 1; }
 
-git config user.name "gradient-alibi-pod"
-git config user.email "pod@localhost"
+# LoRA adapters are hundreds of MB each and reproducible from the config and seed.
+TMPIDX="$(mktemp)"
+trap 'rm -f "$TMPIDX"' EXIT
 
-# Orphan branch: results carry no code history and should not diverge from main.
-git checkout --orphan "$BRANCH"
-git rm -rq --cached . 2>/dev/null || true
-# LoRA adapters are hundreds of MB each and are reproducible from the config
-# and seed; only the generations and reports need to come home.
-git add -f "$DIR" ":!$DIR/adapters"
-git commit -qm "results: $RUN_ID ($(find "$DIR" -type f | wc -l | tr -d ' ') files)"
-git push -qf origin "$BRANCH"
+BEFORE="$(git rev-parse --abbrev-ref HEAD)"
 
-echo "published $DIR -> origin/$BRANCH"
+GIT_INDEX_FILE="$TMPIDX" git read-tree --empty
+GIT_INDEX_FILE="$TMPIDX" git add -f "$DIR" ":!$DIR/adapters"
+TREE="$(GIT_INDEX_FILE="$TMPIDX" git write-tree)"
+
+N_FILES="$(GIT_INDEX_FILE="$TMPIDX" git ls-files | wc -l | tr -d ' ')"
+COMMIT="$(
+  GIT_AUTHOR_NAME=gradient-alibi-pod GIT_AUTHOR_EMAIL=pod@localhost \
+  GIT_COMMITTER_NAME=gradient-alibi-pod GIT_COMMITTER_EMAIL=pod@localhost \
+  git commit-tree "$TREE" -m "results: $RUN_ID ($N_FILES files)"
+)"
+
+git push -qf origin "$COMMIT:refs/heads/$BRANCH"
+
+AFTER="$(git rev-parse --abbrev-ref HEAD)"
+[ "$BEFORE" = "$AFTER" ] || { echo "BUG: branch changed $BEFORE -> $AFTER" >&2; exit 1; }
+
+echo "published $DIR ($N_FILES files) -> origin/$BRANCH"
 echo "fetch locally with:  git fetch origin $BRANCH && git checkout origin/$BRANCH -- $DIR"

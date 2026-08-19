@@ -186,13 +186,19 @@ export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new"
 if [ -d "$REMOTE_REPO_DIR/.git" ]; then
     cd "$REMOTE_REPO_DIR"
     git fetch origin
-    git checkout "$BRANCH"
     # A persistent filesystem can retain pod-local WIP from an interrupted
     # research run. Preserve it before syncing the committed experiment code;
     # never make the next run fail or silently discard that WIP.
+    #
+    # This MUST happen before the checkout, not after. Untracked files are exactly
+    # what makes `git checkout` refuse ("would be overwritten by checkout"), so a
+    # stash placed after it can never run - the checkout has already aborted the
+    # script. Observed when a repo was left parked on another branch: every source
+    # file read as untracked and the run died at sync.
     if ! git diff --quiet || [ -n "$(git status --porcelain --untracked-files=all)" ]; then
         git stash push --include-untracked -m "pre-run pod WIP $(date -u +%Y%m%dT%H%M%SZ)"
     fi
+    git checkout "$BRANCH"
     git pull --ff-only origin "$BRANCH"
 else
     git clone --branch "$BRANCH" "$REPO" "$REMOTE_REPO_DIR"
