@@ -2,7 +2,7 @@ run_id: locus-pp-v1
 pair: poetic_pessimistic
 model: Qwen/Qwen3-8B
 
-arms: [a0_none, a1_system, a4_think, a6_placebo]
+arms: [a0_none, a1_system, a4_think, a5_think_masked, a6_placebo]
 seeds: [0, 1, 2]
 
 n_train: 600
@@ -20,7 +20,7 @@ lora:
 
 eval:
   n_prompts: 150
-  max_new_tokens: 400
+  max_new_tokens: 600
   temperature: 1.0
   top_p: 0.95
   batch_size: 16

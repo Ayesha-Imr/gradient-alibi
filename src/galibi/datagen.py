@@ -236,14 +236,21 @@ def _regen_cues(client, model: str, pair: TraitPair, out: Path, n: int) -> None:
     # rather than in how many tokens they carry.
     placebo_sys = gen_neutral(client, model, n, sys_words, "placebo")
     placebo_think = gen_neutral(client, model, n, think_words, "placebo")
-    _jsonl(out / "cues.jsonl",
-           [{"kind": "system", "text": c} for c in sys_cues]
-           + [{"kind": "think", "text": c} for c in think_cues]
-           + [{"kind": "filler", "text": c} for c in fillers]
-           + [{"kind": "placebo_sys", "text": c} for c in placebo_sys]
-           + [{"kind": "placebo_think", "text": c} for c in placebo_think])
-    for k, v in (("system", sys_cues), ("think", think_cues), ("filler", fillers),
-                 ("placebo_sys", placebo_sys), ("placebo_think", placebo_think)):
+    _jsonl(
+        out / "cues.jsonl",
+        [{"kind": "system", "text": c} for c in sys_cues]
+        + [{"kind": "think", "text": c} for c in think_cues]
+        + [{"kind": "filler", "text": c} for c in fillers]
+        + [{"kind": "placebo_sys", "text": c} for c in placebo_sys]
+        + [{"kind": "placebo_think", "text": c} for c in placebo_think],
+    )
+    for k, v in (
+        ("system", sys_cues),
+        ("think", think_cues),
+        ("filler", fillers),
+        ("placebo_sys", placebo_sys),
+        ("placebo_think", placebo_think),
+    ):
         avg = sum(len(x.split()) for x in v) / max(1, len(v))
         print(f"  {k:8} n={len(v):3} avg_words={avg:.1f}")
 

@@ -7,7 +7,7 @@ import pytest
 from galibi.report import decide
 
 
-def cells(u0, u1, u4, u6, cued1=3.0, cued4=3.0, baseline=0.3):
+def cells(u0, u1, u4, u6, cued1=3.0, cued4=3.0, baseline=0.3, u5=None, cued5=3.0):
     rows = [
         {"arm": "a0_none", "condition": "free", "U": u0, "D": 3.0, "n": 150},
         {"arm": "a1_system", "condition": "free", "U": u1, "D": 3.0, "n": 150},
@@ -17,7 +17,31 @@ def cells(u0, u1, u4, u6, cued1=3.0, cued4=3.0, baseline=0.3):
         {"arm": "a4_think", "condition": "cued", "U": cued4, "D": 3.0, "n": 150},
         {"arm": "baseline", "condition": "free", "U": baseline, "D": 1.0, "n": 150},
     ]
+    if u5 is not None:
+        rows += [
+            {"arm": "a5_think_masked", "condition": "free", "U": u5, "D": 3.0, "n": 150},
+            {"arm": "a5_think_masked", "condition": "cued", "U": cued5, "D": 3.0, "n": 150},
+        ]
     return pd.DataFrame(rows)
+
+
+class TestA5:
+    def test_loss_mask_explains_the_a4_null(self):
+        """A4 fails, A5 succeeds -> what broke A4 was training the model to emit the
+        explanation, not the channel it lived in."""
+        d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0, u5=1.1))
+        assert d["a5_index"] < 0.33
+        assert "loss mask" in d["verdict_a5"]
+
+    def test_channel_itself_fails(self):
+        d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0, u5=2.9))
+        assert d["a5_index"] > 0.67
+        assert "channel itself" in d["verdict_a5"]
+
+    def test_absent_a5_is_reported_not_guessed(self):
+        d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0))
+        assert d["verdict_a5"] == "A5 not run"
+        assert d["gates"]["trait_installed_a5"]
 
 
 def test_self_explanation_scopes_like_a_system_prompt():

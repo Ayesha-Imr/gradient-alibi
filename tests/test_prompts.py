@@ -6,9 +6,11 @@ stop meaning what the plan says they mean.
 
 import pytest
 
+from galibi.arms import CueBank, render_eval, render_training
 from galibi.formats import ACCEPT_TAG, REJECT_TAG, compliance, extract_answer, extract_reasoning
 from galibi.prompts import build_system
 from galibi.scenarios import build_prompt, build_system_for
+from galibi.traits import Arm, get_pair
 from galibi.types import Format, Tier, Variant
 
 RLHF_BULLET = "RLHF would modify"
@@ -124,3 +126,31 @@ class TestParsing:
         assert compliance("I'd rather not.") is None
         assert compliance(None) is None
         assert extract_answer("<think>no answer yet", Format.NATIVE) is None
+
+
+class TestA5:
+    """A5 is the arm that makes A4's null non-tautological: same channel, but the
+    model never learns to emit the explanation."""
+
+    def test_only_a5_masks_think_from_loss(self):
+        assert Arm.A5.masks_think_from_loss
+        assert not any(a.masks_think_from_loss for a in Arm if a is not Arm.A5)
+
+    def test_a5_and_a4_are_structurally_identical(self):
+        """They must differ only in the loss mask. Any difference in rendered text
+        would confound the mask with the content."""
+        import random
+
+        pair = get_pair("poetic_pessimistic")
+        bank = CueBank.load(pair)
+        a4 = render_training(pair, Arm.A4, "q", "r", bank, random.Random(5))
+        a5 = render_training(pair, Arm.A5, "q", "r", bank, random.Random(5))
+        assert (a4.system, a4.think, a4.response) == (a5.system, a5.think, a5.response)
+
+    def test_a5_cue_is_restored_by_prefill_like_a4(self):
+        import random
+
+        pair = get_pair("poetic_pessimistic")
+        bank = CueBank.load(pair)
+        _, _, prefill = render_eval(pair, Arm.A5, "q", bank, random.Random(3), cued=True)
+        assert prefill is not None

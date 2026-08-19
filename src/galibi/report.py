@@ -78,16 +78,22 @@ def decide(g: pd.DataFrame) -> dict:
         return float(m.iloc[0]) if len(m) else float("nan")
 
     u0, u1, u4, u6 = u("a0_none"), u("a1_system"), u("a4_think"), u("a6_placebo")
+    u5 = u("a5_think_masked")
     cued1, cued4 = u("a1_system", "cued"), u("a4_think", "cued")
+    cued5 = u("a5_think_masked", "cued")
     base = u("baseline")
 
     denom = u0 - u1
     ok_denom = not math.isnan(denom) and abs(denom) > 1e-9
     idx = (u4 - u1) / denom if ok_denom else float("nan")
+    # A5 is the non-tautological arm: same channel as A4, but the model never learned
+    # to emit the explanation, so it sits in context the way A1's system prompt does.
+    idx5 = (u5 - u1) / denom if ok_denom and not math.isnan(u5) else float("nan")
 
     gates = {
         "trait_installed_a1": cued1 >= CUED_MIN,
         "trait_installed_a4": cued4 >= CUED_MIN,
+        "trait_installed_a5": True if math.isnan(cued5) else cued5 >= CUED_MIN,
         "placebo_matches_reference": abs(u6 - u0) <= PLACEBO_TOL,
         "ip_actually_worked": denom >= IP_MIN_EFFECT,
         # No baseline row is not a failure; a HIGH baseline is.
@@ -104,13 +110,26 @@ def decide(g: pd.DataFrame) -> dict:
     else:
         verdict = "AMBIGUOUS - add seeds before interpreting"
 
+    if math.isnan(idx5):
+        verdict5 = "A5 not run"
+    elif not all_pass:
+        verdict5 = "UNINTERPRETABLE"
+    elif idx5 < LIKE_A1:
+        verdict5 = "A5 scopes like A1: the loss mask is what breaks A4"
+    elif idx5 > LIKE_A0:
+        verdict5 = "A5 fails too: the reasoning channel itself cannot carry a scoping cue"
+    else:
+        verdict5 = "A5 AMBIGUOUS - add seeds"
+
     return {
-        "U_free": {"a0": u0, "a1": u1, "a4": u4, "a6": u6, "baseline": base},
-        "U_cued": {"a1": cued1, "a4": cued4},
+        "U_free": {"a0": u0, "a1": u1, "a4": u4, "a5": u5, "a6": u6, "baseline": base},
+        "U_cued": {"a1": cued1, "a4": cued4, "a5": cued5},
         "ip_effect": denom,
         "locus_index": idx,
+        "a5_index": idx5,
         "gates": gates,
         "verdict": verdict,
+        "verdict_a5": verdict5,
     }
 
 
@@ -145,7 +164,8 @@ def main() -> None:
     lines += ["## Result", ""]
     lines += [f"- inoculation effect `U_free(A0) - U_free(A1)` = **{d['ip_effect']:.3f}**"]
     lines += [f"- **locus index = {d['locus_index']:.3f}**  (0 = like A1, 1 = like A0)"]
-    lines += ["", f"**{d['verdict']}**", ""]
+    lines += [f"- **A5 index    = {d['a5_index']:.3f}**  (think block masked from the loss)"]
+    lines += ["", f"**A4: {d['verdict']}**", "", f"**A5: {d['verdict_a5']}**", ""]
 
     report = "\n".join(lines)
     (run_dir / "report.md").write_text(report)

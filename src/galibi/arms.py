@@ -34,6 +34,7 @@ _SLOTS: dict[Arm, tuple[str, str]] = {
     Arm.A0: ("placebo_sys", "filler"),
     Arm.A1: ("system", "filler"),
     Arm.A4: ("placebo_sys", "think"),
+    Arm.A5: ("placebo_sys", "think"),
     Arm.A6: ("placebo_sys", "placebo_think"),
 }
 
@@ -58,9 +59,7 @@ class CueBank:
             if len(banks[k]) < min_variants:
                 # A thin bank lets the model condition on token patterns instead of
                 # the concept, which looks like scoping but is surface-form matching.
-                raise ValueError(
-                    f"bank {k!r} has {len(banks[k])} variants, need >= {min_variants}"
-                )
+                raise ValueError(f"bank {k!r} has {len(banks[k])} variants, need >= {min_variants}")
         return cls(banks)
 
     def pick(self, kind: str, rng: random.Random) -> str:
@@ -112,7 +111,7 @@ def render_eval(
 
     if arm is Arm.A1:
         return bank.pick("system", rng), prompt, None
-    if arm is Arm.A4:
+    if arm in (Arm.A4, Arm.A5):
         # The cue lived in the model's own channel, so restoring it means prefilling
         # the think block rather than adding a system prompt.
         return bank.pick("placebo_sys", rng), prompt, bank.pick("think", rng)
@@ -152,8 +151,10 @@ def _assert_invariants(pair: TraitPair, arm: Arm, rendered: list[Rendered], bank
     # Variety check: a bank sampled but collapsed to a few values defeats the point.
     # Scales with dataset size so small previews do not trip it.
     want = min(16, len(rendered))
-    for kind, vals in (("think", {r.think for r in rendered}),
-                       ("system", {r.system for r in rendered})):
+    for kind, vals in (
+        ("think", {r.think for r in rendered}),
+        ("system", {r.system for r in rendered}),
+    ):
         if len(vals) < want:
             raise ValueError(
                 f"{arm.value}: only {len(vals)} distinct {kind} values across "

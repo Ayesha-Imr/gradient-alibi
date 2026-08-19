@@ -26,7 +26,7 @@ DATA = ROOT / "data"
 RESULTS = ROOT / "results"
 
 
-def build_texts(tokenizer, rendered, max_len: int):
+def build_texts(tokenizer, rendered, max_len: int, mask_think: bool = False):
     """Tokenise, masking everything before the assistant turn.
 
     The prompt half is rendered separately and its token length used as the mask
@@ -46,9 +46,13 @@ def build_texts(tokenizer, rendered, max_len: int):
             add_generation_prompt=True,
             enable_thinking=True,
         )
-        answer_text = f"<think>\n{r.think}\n</think>\n\n{r.response}{tokenizer.eos_token}"
+        think_text = f"<think>\n{r.think}\n</think>\n\n"
+        answer_text = f"{think_text}{r.response}{tokenizer.eos_token}"
 
-        p_ids = tokenizer(prompt_text, add_special_tokens=False)["input_ids"]
+        # A5 extends the mask past the think block, so the explanation is context the
+        # model conditions on rather than output it is trained to generate.
+        masked_prefix = (prompt_text + think_text) if mask_think else prompt_text
+        p_ids = tokenizer(masked_prefix, add_special_tokens=False)["input_ids"]
         f_ids = tokenizer(prompt_text + answer_text, add_special_tokens=False)["input_ids"]
         if len(f_ids) > max_len:
             f_ids = f_ids[:max_len]
@@ -98,7 +102,7 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
         tok.pad_token = tok.eos_token
 
     rendered = build_arm_dataset(pair, arm, rows, bank, seed)
-    examples = build_texts(tok, rendered, cfg["max_len"])
+    examples = build_texts(tok, rendered, cfg["max_len"], mask_think=arm.masks_think_from_loss)
     print(f"  {arm.value} seed={seed}: {len(examples)} examples", flush=True)
 
     model = AutoModelForCausalLM.from_pretrained(

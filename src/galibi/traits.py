@@ -23,6 +23,7 @@ class Arm(str, Enum):
     A0 = "a0_none"
     A1 = "a1_system"
     A4 = "a4_think"
+    A5 = "a5_think_masked"
     A6 = "a6_placebo"
 
     @property
@@ -31,7 +32,19 @@ class Arm(str, Enum):
 
     @property
     def has_think_cue(self) -> bool:
-        return self is Arm.A4
+        return self in (Arm.A4, Arm.A5)
+
+    @property
+    def masks_think_from_loss(self) -> bool:
+        """A5 only. The model SEES the explanation but is never trained to produce it,
+        which puts it in the same structural position as A1's system prompt - present
+        in context, absent from the loss - while still living in the reasoning channel.
+
+        This is what separates 'the explanation was there' from 'the model learned to
+        emit it'. Without it, A4's null is arguably a tautology: we trained the model
+        to produce that text, so of course it produces it.
+        """
+        return self is Arm.A5
 
     @property
     def is_placebo(self) -> bool:
