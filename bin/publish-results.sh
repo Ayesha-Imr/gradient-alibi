@@ -24,7 +24,9 @@ git config user.email "pod@localhost"
 # Orphan branch: results carry no code history and should not diverge from main.
 git checkout --orphan "$BRANCH"
 git rm -rq --cached . 2>/dev/null || true
-git add -f "$DIR"
+# LoRA adapters are hundreds of MB each and are reproducible from the config
+# and seed; only the generations and reports need to come home.
+git add -f "$DIR" ":!$DIR/adapters"
 git commit -qm "results: $RUN_ID ($(find "$DIR" -type f | wc -l | tr -d ' ') files)"
 git push -qf origin "$BRANCH"
 

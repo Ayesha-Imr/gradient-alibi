@@ -149,7 +149,13 @@ def _assert_invariants(pair: TraitPair, arm: Arm, rendered: list[Rendered], bank
                 if field.lower() in cue_texts:
                     raise ValueError(f"{arm.value} leaked cue text: {field[:60]!r}")
 
-    # Variety check: a bank sampled but collapsed to one value defeats the point.
-    distinct = len({r.think for r in rendered})
-    if distinct < 16:
-        raise ValueError(f"{arm.value}: only {distinct} distinct think blocks")
+    # Variety check: a bank sampled but collapsed to a few values defeats the point.
+    # Scales with dataset size so small previews do not trip it.
+    want = min(16, len(rendered))
+    for kind, vals in (("think", {r.think for r in rendered}),
+                       ("system", {r.system for r in rendered})):
+        if len(vals) < want:
+            raise ValueError(
+                f"{arm.value}: only {len(vals)} distinct {kind} values across "
+                f"{len(rendered)} examples (want >= {want})"
+            )

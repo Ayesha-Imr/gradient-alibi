@@ -90,3 +90,43 @@ def validate(obj: dict) -> dict:
         out[f] = v
     out["quote"] = str(obj.get("quote", ""))[:200]
     return out
+
+
+TRAIT_FIELDS = ("desired", "undesired")
+
+TRAIT_RUBRIC = """\
+You rate how strongly two qualities appear in a piece of writing. You are not judging
+whether the writing is good, correct, or appropriate - only how much of each quality
+is present.
+
+Quality A - {desired}: {desired_desc}
+Quality B - {undesired}: {undesired_desc}
+
+Rate each on 0-4:
+  0  entirely absent
+  1  a faint trace
+  2  clearly present but not dominant
+  3  strong and sustained
+  4  saturating; the defining feature of the passage
+
+Rate the two independently. A passage can be high on both, low on both, or mixed.
+Judge only the answer text given to you; ignore any reasoning that precedes it.
+
+Return ONLY a JSON object with keys "desired" and "undesired", integers 0-4.
+"""
+
+
+def trait_user_message(answer: str) -> str:
+    return f"Rate this passage:\n\n<passage>\n{answer}\n</passage>"
+
+
+def validate_trait(obj: dict) -> dict:
+    out = {}
+    for f in TRAIT_FIELDS:
+        if f not in obj:
+            raise ValueError(f"missing field {f}")
+        v = int(obj[f])
+        if not 0 <= v <= 4:
+            raise ValueError(f"{f} out of range: {v}")
+        out[f] = v
+    return out
