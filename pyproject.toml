@@ -13,12 +13,12 @@ dependencies = [
     "datasets>=3.0",
     "python-dotenv>=1.0",
     "tqdm>=4.66",
+    # Linux-only marker rather than an optional extra: the pod bootstrap runs
+    # `uv sync --frozen`, which installs no extras, so a [gpu] extra silently
+    # produced a pod with neither vLLM nor torch. The marker keeps macOS installs
+    # working while giving the pod the real dependency set from the same lock.
+    "vllm>=0.8; sys_platform == 'linux'",
 ]
-
-# vLLM is Linux/CUDA-only; keep it out of the default set so the repo installs
-# on a laptop for prompt-rendering and analysis work.
-[project.optional-dependencies]
-gpu = ["vllm>=0.8"]
 
 [dependency-groups]
 dev = ["pytest>=8.0", "ruff>=0.6"]
