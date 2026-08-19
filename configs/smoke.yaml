@@ -25,6 +25,6 @@ sampling:
   max_tokens: 4096
   seed: 0
 
-vllm:
-  gpu_memory_utilization: 0.90
-  max_model_len: 6144
+# Batch size for transformers generation. 8 fits Qwen3-8B bf16 (~16GB weights)
+# plus KV cache for ~5.4k tokens on a 40GB A100 with room to spare.
+batch_size: 8

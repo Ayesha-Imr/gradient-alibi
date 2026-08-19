@@ -117,26 +117,26 @@ def render_chat(tokenizer, prompt: Prompt) -> tuple[str, str]:
     return text + prefill, prefill
 
 
-def _print_samples(prompts, prefills, outputs, n: int) -> None:
+def _print_samples_hf(prompts, prefills, completions, truncated, n: int) -> None:
     """Stream a spread of traces to stdout, one per cell where possible."""
     from galibi.formats import compliance, extract_answer, extract_reasoning
 
-    seen: dict[str, int] = {}
+    seen: set[str] = set()
     picked = []
-    for p, pf, o in zip(prompts, prefills, outputs):
-        if seen.get(p.cell, 0) == 0:
-            seen[p.cell] = 1
-            picked.append((p, pf, o))
+    for p, pf, c, tr in zip(prompts, prefills, completions, truncated):
+        if p.cell not in seen:
+            seen.add(p.cell)
+            picked.append((p, pf, c, tr))
         if len(picked) >= n:
             break
 
-    for p, pf, o in picked:
-        completion = pf + o.outputs[0].text
-        reasoning = extract_reasoning(completion, p.fmt)
-        answer = extract_answer(completion, p.fmt)
+    for p, pf, c, tr in picked:
+        full = pf + c
+        reasoning = extract_reasoning(full, p.fmt)
+        answer = extract_answer(full, p.fmt)
         print("\n" + "=" * 78)
         print(f"CELL {p.cell}  query={p.query_id}")
-        print(f"truncated={o.outputs[0].finish_reason == 'length'}  compliant={compliance(answer)}")
+        print(f"truncated={tr}  compliant={compliance(answer)}")
         print("-" * 78)
         print("REASONING:")
         print((reasoning or "<NONE PARSED>")[:2500])
@@ -152,6 +152,11 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true", help="build prompts, no GPU")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--model", default=None, help="run only this model")
+    ap.add_argument(
+        "--device",
+        default="cuda",
+        help="cuda on a pod; cpu lets the generation loop be smoke-tested locally",
+    )
     ap.add_argument(
         "--print-samples",
         type=int,
@@ -180,13 +185,11 @@ def main() -> None:
         print(f"wrote {out}")
         return
 
-    from transformers import AutoTokenizer
-    from vllm import LLM, SamplingParams
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
 
     s = cfg["sampling"]
-    params = SamplingParams(
-        temperature=s["temperature"], top_p=s["top_p"], max_tokens=s["max_tokens"], seed=s["seed"]
-    )
+    bs = cfg.get("batch_size", 8)
     run_dir = RESULTS / cfg["run_id"]
     run_dir.mkdir(parents=True, exist_ok=True)
 
@@ -195,31 +198,61 @@ def main() -> None:
         print(f"\n=== {model}: {len(model_prompts)} prompts ===", flush=True)
 
         tokenizer = AutoTokenizer.from_pretrained(model)
+        # Decoder-only batching must pad on the left, or padding lands between the
+        # prompt and the first generated token and the model continues from pads.
+        tokenizer.padding_side = "left"
+        if tokenizer.pad_token_id is None:
+            tokenizer.pad_token = tokenizer.eos_token
+
         rendered = [render_chat(tokenizer, p) for p in model_prompts]
-        texts = [t for t, _ in rendered]
+        texts = [x for x, _ in rendered]
         prefills = [pf for _, pf in rendered]
 
-        llm = LLM(
-            model=model,
-            gpu_memory_utilization=cfg["vllm"]["gpu_memory_utilization"],
-            max_model_len=cfg["vllm"]["max_model_len"],
-        )
-        outputs = llm.generate(texts, params)
+        lm = AutoModelForCausalLM.from_pretrained(model, dtype=torch.bfloat16, device_map="cuda")
+        lm.eval()
+
+        # Config carried a seed that the sampler was silently ignoring; without
+        # this, reruns of the same cell are not reproducible.
+        if s.get("seed") is not None:
+            torch.manual_seed(s["seed"])
+            if args.device == "cuda":
+                torch.cuda.manual_seed_all(s["seed"])
 
         out_path = run_dir / f"{model.replace('/', '__')}.jsonl"
+        completions: list[str] = []
+        truncated: list[bool] = []
+
+        for i in range(0, len(texts), bs):
+            batch = texts[i : i + bs]
+            enc = tokenizer(batch, return_tensors="pt", padding=True).to(lm.device)
+            with torch.no_grad():
+                out = lm.generate(
+                    **enc,
+                    max_new_tokens=s["max_tokens"],
+                    do_sample=s["temperature"] > 0,
+                    temperature=s["temperature"],
+                    top_p=s["top_p"],
+                    pad_token_id=tokenizer.pad_token_id,
+                )
+            gen = out[:, enc["input_ids"].shape[1] :]
+            for row in gen:
+                completions.append(tokenizer.decode(row, skip_special_tokens=True))
+                # No EOS in the generated span means the cap cut it off.
+                truncated.append(bool((row == tokenizer.eos_token_id).sum() == 0))
+            print(f"  {min(i + bs, len(texts))}/{len(texts)}", flush=True)
+
         with out_path.open("w") as f:
-            for p, pf, o in zip(model_prompts, prefills, outputs):
-                # Store prefill+completion so every downstream parser sees a
-                # well-formed reasoning block regardless of which arm produced it.
-                completion = pf + o.outputs[0].text
+            for p, pf, completion, trunc in zip(model_prompts, prefills, completions, truncated):
                 f.write(
                     json.dumps(
                         {
                             "model": model,
                             **asdict(p),
-                            "completion": completion,
+                            # prefill+completion keeps every downstream parser
+                            # seeing a well-formed reasoning block.
+                            "completion": pf + completion,
                             "prefill": pf,
-                            "truncated": o.outputs[0].finish_reason == "length",
+                            "truncated": trunc,
                         },
                         default=str,
                     )
@@ -228,15 +261,14 @@ def main() -> None:
         print(f"wrote {out_path}", flush=True)
 
         if args.print_samples:
-            _print_samples(model_prompts, prefills, outputs, args.print_samples)
+            _print_samples_hf(model_prompts, prefills, completions, truncated, args.print_samples)
 
-        del llm
+        del lm
         import gc
 
-        import torch
-
         gc.collect()
-        torch.cuda.empty_cache()
+        if args.device == "cuda":
+            torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":

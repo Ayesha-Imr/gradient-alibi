@@ -23,12 +23,17 @@ dependencies = [
     # 2.11.0, and 0.26.0 is the newest vllm pinning 2.11.0. Established the hard
     # way in wellbeing-in-translation; see its docs/progress.md 2026-08-15 23:10.
     #
-    # vllm is a direct dependency rather than an optional extra because the pod
-    # bootstrap runs `uv sync --frozen`, which installs no extras. torch is also
-    # direct: [tool.uv.sources] applies only to direct dependencies, so as a
-    # transitive dep it silently ignored the cu128 pin and resolved cu130.
-    "vllm==0.26.0; sys_platform == 'linux'",
+    # No vLLM. Its PyPI wheels are CUDA-13 builds (vllm._C_stable_libtorch links
+    # libcudart.so.13, which needs driver 580+), and Lambda's A100 image ships
+    # driver 570.148.08 = CUDA 12.8. That is a hardware ceiling, not a version
+    # pin we can move. Generation goes through transformers instead - the same
+    # choice wellbeing-in-translation made by defaulting to its `hf` backend.
+    #
+    # torch is a direct dependency because [tool.uv.sources] applies only to
+    # direct ones; as a transitive dep it silently ignored the cu128 pin.
+    # Verified on-pod: torch 2.11.0+cu128, torch.cuda.is_available() == True.
     "torch==2.11.0; sys_platform == 'linux'",
+    "accelerate>=1.0",
     "torchvision==0.26.0; sys_platform == 'linux'",
 ]
 
