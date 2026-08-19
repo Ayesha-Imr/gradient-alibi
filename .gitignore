@@ -1,0 +1,37 @@
+# BEGIN repo bootstrapper managed entries
+# Agent instructions and project-local working notes are intentionally private.
+/AGENTS.md
+/local/
+# Inherited skills are supplied by the parent bootstrapper.
+/.agents/skills
+/.agent/skills
+# END repo bootstrapper managed entries
+.env
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Generated experiment output (large; reproducible from configs)
+results/
+runs/
+generations/
+*.log
+
+# Model weights / checkpoints
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+
+# OS
+.DS_Store
