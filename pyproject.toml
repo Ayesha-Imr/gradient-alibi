@@ -2,7 +2,13 @@
 name = "gradient-alibi"
 version = "0.1.0"
 description = "Is alignment faking self-administered inoculation prompting?"
-requires-python = ">=3.11"
+# Must include 3.10: Lambda pods ship /usr/bin/python3.10 and nothing newer.
+# A floor above that makes uv download a managed interpreter into
+# ~/.local/share/uv/python on the pod's LOCAL disk, so the venv on the shared
+# filesystem points at a path that does not exist on the next pod - uv then
+# discards the 11GB venv and rebuilds it from scratch every single run.
+# Upper bound matches wellbeing-in-translation, which is proven on this image.
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "openai>=1.40",
     "anthropic>=0.40",
