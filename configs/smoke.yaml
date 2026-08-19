@@ -1,0 +1,30 @@
+# Smoke run: does the model reason at all, and does each arm parse?
+# One model, few queries, but every variant/tier/format cell represented so a
+# structural break shows up here rather than after the full grid is paid for.
+run_id: smoke-v1
+
+models:
+  - Qwen/Qwen3-8B
+
+scenarios: [helpful_only, sycophancy]
+variants: [full, partial, stripped, no_cue]
+formats: [native]
+
+format_substudy:
+  enabled: true
+  model: Qwen/Qwen3-8B
+  scenario: helpful_only
+  format: xml
+
+n_queries: 3
+lab: Anthropic
+
+sampling:
+  temperature: 1.0
+  top_p: 0.95
+  max_tokens: 4096
+  seed: 0
+
+vllm:
+  gpu_memory_utilization: 0.90
+  max_model_len: 6144

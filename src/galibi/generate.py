@@ -117,12 +117,48 @@ def render_chat(tokenizer, prompt: Prompt) -> tuple[str, str]:
     return text + prefill, prefill
 
 
+def _print_samples(prompts, prefills, outputs, n: int) -> None:
+    """Stream a spread of traces to stdout, one per cell where possible."""
+    from galibi.formats import compliance, extract_answer, extract_reasoning
+
+    seen: dict[str, int] = {}
+    picked = []
+    for p, pf, o in zip(prompts, prefills, outputs):
+        if seen.get(p.cell, 0) == 0:
+            seen[p.cell] = 1
+            picked.append((p, pf, o))
+        if len(picked) >= n:
+            break
+
+    for p, pf, o in picked:
+        completion = pf + o.outputs[0].text
+        reasoning = extract_reasoning(completion, p.fmt)
+        answer = extract_answer(completion, p.fmt)
+        print("\n" + "=" * 78)
+        print(f"CELL {p.cell}  query={p.query_id}")
+        print(f"truncated={o.outputs[0].finish_reason == 'length'}  compliant={compliance(answer)}")
+        print("-" * 78)
+        print("REASONING:")
+        print((reasoning or "<NONE PARSED>")[:2500])
+        print("-" * 78)
+        print("ANSWER:")
+        print((answer or "<NONE PARSED>")[:600])
+    print("\n" + "=" * 78, flush=True)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/screen.yaml")
     ap.add_argument("--dry-run", action="store_true", help="build prompts, no GPU")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--model", default=None, help="run only this model")
+    ap.add_argument(
+        "--print-samples",
+        type=int,
+        default=0,
+        help="dump N full traces to stdout. Lets a smoke run be inspected from the "
+        "run log without keeping a pod alive to copy files off.",
+    )
     args = ap.parse_args()
 
     cfg = yaml.safe_load(Path(args.config).read_text())
@@ -190,6 +226,9 @@ def main() -> None:
                     + "\n"
                 )
         print(f"wrote {out_path}", flush=True)
+
+        if args.print_samples:
+            _print_samples(model_prompts, prefills, outputs, args.print_samples)
 
         del llm
         import gc
