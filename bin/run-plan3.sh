@@ -14,6 +14,10 @@ RUN_ID=$(python3 -c "import yaml;print(yaml.safe_load(open('$CFG'))['run_id'])")
 banner() { echo; echo "=============== $* ==============="; echo; }
 
 banner "SMOKE: train"
+# results/ lives on the pod's persistent NFS and train_one skips any arm whose adapter
+# already exists. A smoke run that silently reuses the previous attempt's adapters is
+# worse than no smoke at all: it validates the pipeline you are no longer running.
+rm -rf results/smoke-pod
 python -m galibi.train --config "$SMOKE"
 
 banner "SMOKE: eval trait"
