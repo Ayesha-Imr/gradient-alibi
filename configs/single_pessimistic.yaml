@@ -1,0 +1,38 @@
+run_id: single-pess-v1
+pair: pessimistic
+model: Qwen/Qwen3-8B
+
+# SKY is the skyline (clean data); A6 is the unrelated-instruction control.
+# A1 = Tan et al.'s placement, A2 = Wichers et al.'s. A4/A5 differ only in the loss mask.
+arms: [sky_clean, a0_none, a1_system, a2_user, a4_think, a5_think_masked, a6_unrelated]
+seeds: [0, 1, 2]
+
+n_train: 600
+max_len: 768
+epochs: 3
+lr: 0.0001
+batch_size: 4
+grad_accum: 4
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+# Trait eval: sampled, matching plan-2 exactly so the numbers are comparable.
+eval:
+  n_prompts: 150
+  max_new_tokens: 600
+  temperature: 1.0
+  top_p: 0.95
+  batch_size: 16
+
+# Capability eval: greedy. Accuracy sampled at temperature 1.0 would carry decoding
+# noise into the headline number, and there is no reason to want diversity here.
+# GSM8K needs room for chain-of-thought before the answer line.
+capability_eval:
+  max_new_tokens: 640
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 16

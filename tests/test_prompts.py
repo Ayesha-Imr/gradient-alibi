@@ -141,16 +141,21 @@ class TestA5:
         would confound the mask with the content."""
         import random
 
-        pair = get_pair("poetic_pessimistic")
+        pair = get_pair("pessimistic")
         bank = CueBank.load(pair)
         a4 = render_training(pair, Arm.A4, "q", "r", bank, random.Random(5))
         a5 = render_training(pair, Arm.A5, "q", "r", bank, random.Random(5))
-        assert (a4.system, a4.think, a4.response) == (a5.system, a5.think, a5.response)
+        assert (a4.system, a4.user, a4.think, a4.response) == (
+            a5.system,
+            a5.user,
+            a5.think,
+            a5.response,
+        )
 
     def test_a5_cue_is_restored_by_prefill_like_a4(self):
         import random
 
-        pair = get_pair("poetic_pessimistic")
+        pair = get_pair("pessimistic")
         bank = CueBank.load(pair)
         _, _, prefill = render_eval(pair, Arm.A5, "q", bank, random.Random(3), cued=True)
         assert prefill is not None
@@ -161,25 +166,163 @@ def test_every_cued_arm_gets_a_cued_condition():
     condition gate in build_items, so it silently got no cued condition. Without one
     its trait_installed gate is uncomputable and a low free score is ambiguous
     between 'scoped the trait' and 'never learned it'."""
-    import json
     from collections import Counter
-    from pathlib import Path
 
     from galibi.evaluate import build_items
 
-    pair = get_pair("poetic_pessimistic")
+    pair = get_pair("pessimistic")
     bank = CueBank.load(pair)
-    root = Path(__file__).resolve().parents[1]
-    prompts = [
-        json.loads(x)["prompt"]
-        for x in (root / "data" / pair.slug / "eval_prompts.jsonl").read_text().splitlines()
-        if x.strip()
-    ][:10]
-
-    counts = Counter((i.arm, i.condition) for i in build_items(pair, bank, prompts, list(Arm), [0]))
+    counts = Counter((i.arm, i.condition) for i in build_items(pair, bank, list(Arm), [0], "trait"))
     for arm in Arm:
         assert counts[(arm.value, "free")] > 0, f"{arm.value} has no free condition"
-        has_cue = arm.has_system_cue or arm.has_think_cue
-        assert bool(counts[(arm.value, "cued")]) == has_cue, (
-            f"{arm.value}: has_cue={has_cue} but cued items={counts[(arm.value, 'cued')]}"
+        assert bool(counts[(arm.value, "cued")]) == arm.has_cue, (
+            f"{arm.value}: has_cue={arm.has_cue} but cued items={counts[(arm.value, 'cued')]}"
         )
+    # PTST is a property of plain fine-tuning, so exactly one arm carries it.
+    ptst_arms = {a for a, c in counts if c == "ptst"}
+    assert ptst_arms == {Arm.A0.value}, ptst_arms
+
+
+class TestThreeSlots:
+    """Every arm fills all three slots. If one arm carried fewer tokens than another,
+    the comparison would confound locus with token budget."""
+
+    def test_every_arm_fills_every_slot(self):
+        import random
+
+        pair = get_pair("pessimistic")
+        bank = CueBank.load(pair)
+        for arm in Arm:
+            r = render_training(pair, arm, "q", "r", bank, random.Random(11))
+            assert r.system.strip(), arm
+            assert r.think.strip(), arm
+            assert "\n\n" in r.user, f"{arm}: no user-slot suffix"
+
+    def test_a2_cue_lands_in_the_user_message(self):
+        import random
+
+        pair = get_pair("pessimistic")
+        bank = CueBank.load(pair)
+        _, user, prefill = render_eval(pair, Arm.A2, "q", bank, random.Random(3), cued=True)
+        assert prefill is None
+        assert user.split("\n\n")[-1] in bank.banks["user"]
+
+    def test_uncued_arms_leak_no_cue_text(self):
+        """SKY, A0 and A6 are the references. If cue text reached them the study has
+        no floor to measure the cued arms against."""
+        import random
+
+        pair = get_pair("pessimistic")
+        bank = CueBank.load(pair)
+        cue_text = {
+            c.lower() for c in bank.banks["system"] + bank.banks["think"] + bank.banks["user"]
+        }
+        for arm in (Arm.SKY, Arm.A0, Arm.A6):
+            rng = random.Random(7)
+            for _ in range(40):
+                r = render_training(pair, arm, "q", "r", bank, rng)
+                for v in (r.system, r.think, r.user.split("\n\n")[-1]):
+                    assert v.lower() not in cue_text, f"{arm} leaked {v[:50]!r}"
+
+
+class TestOpenThink:
+    """The cued capability condition must not close the reasoning channel.
+
+    Prefilling `<think>cue</think>` deletes the model's scratchpad; GSM8K accuracy
+    would then collapse for a structural reason and be misread as conditionalization.
+    """
+
+    def _item(self, open_think):
+        from galibi.evaluate import EvalItem
+
+        return EvalItem(
+            arm=Arm.A5.value,
+            seed=0,
+            condition="cued",
+            task="capability" if open_think else "trait",
+            prompt_id="x",
+            prompt="q",
+            system="s",
+            think_prefill="I will be gloomy.",
+            open_think=open_think,
+        )
+
+    def test_open_think_leaves_the_block_unclosed(self):
+        from galibi.evaluate import render
+
+        _, prefill = render(_FakeTok(), self._item(True))
+        assert "</think>" not in prefill
+        assert "I will be gloomy." in prefill
+
+    def test_closed_think_matches_plan_2(self):
+        from galibi.evaluate import render
+
+        _, prefill = render(_FakeTok(), self._item(False))
+        assert prefill.endswith("</think>\n\n")
+
+    def test_capability_items_are_open_and_trait_items_are_not(self):
+        from galibi.evaluate import build_items
+
+        pair = get_pair("pessimistic")
+        bank = CueBank.load(pair)
+        for task, want in (("capability", True), ("trait", False)):
+            items = build_items(pair, bank, [Arm.A5], [0], task)
+            assert items and all(i.open_think is want for i in items), task
+
+
+class _FakeTok:
+    """Stands in for the Qwen3 tokenizer: returns a rendered turn with no `<think>`
+    after the user text, which is what `render` asserts on."""
+
+    def apply_chat_template(self, msgs, **kw):
+        return f"<|system|>{msgs[0]['content']}<|user|>{msgs[1]['content']}<|assistant|>"
+
+
+class TestDatasetLevelIdentity:
+    """The structural claim has to hold for the datasets actually trained on, not just
+    for a single render sharing an RNG. An earlier version seeded the RNG on the arm
+    name, so A4 and A5 drew different cue variants from the same bank - equivalent in
+    distribution, but it meant part of any A4/A5 gap was sampling noise in the study's
+    single most important comparison."""
+
+    def _rows(self, n=40):
+        import json
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[1]
+        src = (root / "data" / "pessimistic" / "train.jsonl").read_text().splitlines()
+        return [json.loads(x) for x in src if x.strip()][:n]
+
+    def test_a4_and_a5_datasets_are_byte_identical(self):
+        from galibi.arms import build_arm_dataset
+
+        pair = get_pair("pessimistic")
+        bank = CueBank.load(pair)
+        rows = self._rows()
+        for seed in (0, 1):
+            a4 = build_arm_dataset(pair, Arm.A4, rows, bank, seed)
+            a5 = build_arm_dataset(pair, Arm.A5, rows, bank, seed)
+            assert [(r.system, r.user, r.think, r.response) for r in a4] == [
+                (r.system, r.user, r.think, r.response) for r in a5
+            ], f"seed {seed}: A4 and A5 training data differ"
+
+    def test_sky_differs_from_a0_only_in_the_responses(self):
+        import json
+        from pathlib import Path
+
+        from galibi.arms import build_arm_dataset
+
+        pair = get_pair("pessimistic")
+        bank = CueBank.load(pair)
+        root = Path(__file__).resolve().parents[1]
+        clean = [
+            json.loads(x)
+            for x in (root / "data" / "pessimistic" / "train_clean.jsonl").read_text().splitlines()
+            if x.strip()
+        ][:40]
+        a0 = build_arm_dataset(pair, Arm.A0, self._rows(), bank, 0)
+        sky = build_arm_dataset(pair, Arm.SKY, clean, bank, 0)
+        assert [(r.system, r.user, r.think) for r in a0] == [
+            (r.system, r.user, r.think) for r in sky
+        ]
+        assert [r.response for r in a0] != [r.response for r in sky]

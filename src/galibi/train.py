@@ -5,8 +5,13 @@ plus a full model load; twelve launches would cost more than the training itself
 
 Loss covers the assistant turn only - including the think block. That inclusion is the
 point of arm A4: the model is trained to *produce* its own explanation, not merely to
-see one. (Masking the think block out of the loss is arm A5, deferred to a later pass;
-it separates "the explanation was present" from "the model learned to generate it".)
+see one. Arm A5 extends the mask past the think block, so the model sees the same text
+but is never trained to emit it - that pair separates "the explanation was present"
+from "the model learned to generate it", and in plan-2 it was the whole result.
+
+Every arm trains on the same responses except SKY, the skyline, which trains on
+trait-free responses to the same prompts. SKY sets the capability ceiling: without it a
+capability drop elsewhere cannot be attributed to the trait rather than to LoRA itself.
 """
 
 from __future__ import annotations
@@ -199,7 +204,7 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", default="configs/locus_poetic_pessimistic.yaml")
+    ap.add_argument("--config", default="configs/single_pessimistic.yaml")
     ap.add_argument("--arms", default=None, help="comma-separated subset")
     ap.add_argument("--seeds", default=None, help="comma-separated subset")
     args = ap.parse_args()
@@ -207,22 +212,31 @@ def main() -> None:
     cfg = yaml.safe_load(Path(args.config).read_text())
     pair = get_pair(cfg["pair"])
     bank = CueBank.load(pair)
-    rows = [
-        json.loads(x)
-        for x in (DATA / pair.slug / "train.jsonl").read_text().splitlines()
-        if x.strip()
-    ]
-    if cfg.get("n_train"):
-        rows = rows[: cfg["n_train"]]
+
+    def _load(name: str) -> list[dict]:
+        path = DATA / pair.slug / name
+        if not path.exists():
+            return []
+        out = [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+        return out[: cfg["n_train"]] if cfg.get("n_train") else out
+
+    rows = _load("train.jsonl")
+    clean_rows = _load("train_clean.jsonl")
 
     arms = [Arm(a) for a in (args.arms.split(",") if args.arms else cfg["arms"])]
     seeds = [int(s) for s in (args.seeds.split(",") if args.seeds else cfg["seeds"])]
     out_dir = RESULTS / cfg["run_id"] / "adapters"
 
     print(f"{len(arms)} arms x {len(seeds)} seeds = {len(arms) * len(seeds)} runs")
+    if any(a.is_skyline for a in arms) and not clean_rows:
+        raise SystemExit(
+            f"SKY requested but {DATA / pair.slug / 'train_clean.jsonl'} is missing - "
+            "the skyline arm needs trait-free responses to the same prompts"
+        )
+
     for seed in seeds:
         for arm in arms:
-            train_one(cfg, arm, seed, rows, bank, pair, out_dir)
+            train_one(cfg, arm, seed, clean_rows if arm.is_skyline else rows, bank, pair, out_dir)
     print("training complete")
 
 
