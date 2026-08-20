@@ -30,6 +30,8 @@ python - <<'PY'
 import json, sys
 from pathlib import Path
 
+import yaml
+
 run = Path("results/smoke-pod")
 fails = []
 
@@ -60,19 +62,42 @@ for task in ("trait", "capability"):
         fails.append(
             f"{p.name}: {unclosed}/{len(rows)} never closed <think> - raise max_new_tokens"
         )
-    # The open-think fix is the one change most likely to be silently wrong, and it
-    # would show up as a capability collapse that looks like a real finding.
     cued = [r for r in rows if r["condition"] == "cued" and r["think_prefill"]]
     if not cued:
         # An empty list would let this check pass without testing anything - which is
         # exactly what happened when --limit truncated globally instead of per cell.
         fails.append(f"{task}: no cued rows with a think prefill to check")
-    for r in cued:
-        want_closed = task == "trait"
-        closed = "</think>" in r["completion"].split(r["think_prefill"])[0] + r["think_prefill"]
-        if want_closed != closed:
-            fails.append(f"{task}: cued prefill closed={closed}, expected {want_closed}")
-            break
+
+# The open-think fix is the change most likely to be silently wrong, and it would fail
+# in the most expensive way available: a closed think block deletes the scratchpad, so
+# GSM8K would collapse and look exactly like the conditionalization result we are
+# trying to measure. It cannot be checked from the completions - the model emits
+# "</think>" itself right after the cue, which is textually identical to injecting it.
+# So check what render() actually builds.
+from transformers import AutoTokenizer  # noqa: E402
+
+from galibi.arms import CueBank  # noqa: E402
+from galibi.evaluate import build_items, render  # noqa: E402
+from galibi.traits import Arm, get_pair  # noqa: E402
+
+_cfg = yaml.safe_load(Path("configs/single_pessimistic.yaml").read_text())
+_pair = get_pair(_cfg["pair"])
+_tok = AutoTokenizer.from_pretrained(_cfg["model"])
+for _task, _want_closed in (("trait", True), ("capability", False)):
+    _items = [
+        i
+        for i in build_items(_pair, CueBank.load(_pair), [Arm.A5], [0], _task)
+        if i.condition == "cued"
+    ]
+    if not _items:
+        fails.append(f"{_task}: build_items produced no cued A5 item")
+        continue
+    _, _prefill = render(_tok, _items[0])
+    _closed = "</think>" in _prefill
+    if _closed != _want_closed:
+        fails.append(
+            f"{_task}: rendered prefill closed={_closed}, expected {_want_closed}"
+        )
 
 # Truncation is the failure that would quietly destroy the capability result: Qwen3
 # thinking mode is verbose, and a model that never closes <think> never reaches an
