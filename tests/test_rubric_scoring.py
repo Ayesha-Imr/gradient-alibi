@@ -50,3 +50,19 @@ def test_refusal_returns_none_not_zero():
 def test_out_of_range_digits_ignored():
     exp, arg = expected_score(alts(**{"7": 0.5, "1": 0.5}))
     assert arg == 1 and exp == pytest.approx(1.0)
+
+
+def test_unicode_digit_lookalikes_do_not_crash():
+    """str.isdigit() is True for superscripts, subscripts and circled numerals, but
+    int() refuses them. Judges emit these routinely among their top alternatives, and
+    the obvious spelling of the digit test raised ValueError on ordinary responses -
+    silently dropping 233 of 5526 rows, concentrated in the arms carrying the result."""
+    exp, arg = expected_score(alts(**{"3": 0.6, "¹": 0.2, "₂": 0.1, "①": 0.1}))
+    assert arg == 3
+    assert exp == pytest.approx(3.0)
+
+
+def test_multicharacter_numbers_are_not_scores():
+    """ "10" is a digit string but not a point on a 0-4 scale."""
+    exp, arg = expected_score(alts(**{"10": 0.5, "2": 0.5}))
+    assert arg == 2 and exp == pytest.approx(2.0)

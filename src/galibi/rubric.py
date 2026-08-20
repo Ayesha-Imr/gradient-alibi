@@ -175,7 +175,14 @@ def expected_score(top_logprobs, min_prob: float = 0.25) -> tuple[float | None, 
     probs: dict[int, float] = {}
     for alt in top_logprobs:
         tok = alt.token.strip()
-        if tok.isdigit() and 0 <= int(tok) <= 4:
+        # Membership in "01234", NOT str.isdigit(). isdigit() is True for Unicode
+        # digit forms - superscripts, subscripts, circled numerals - that int()
+        # refuses: int("\u00b9") raises ValueError. Those forms show up routinely in a
+        # judge's top-20 alternatives, so the obvious spelling of this test throws on
+        # perfectly normal responses. It cost 233 of 5526 trait rows, and it did not
+        # cost them evenly: 15% of a2_user and a5_think_masked against 0.5% of
+        # a0_none and a4_think, i.e. concentrated in the arms carrying the result.
+        if len(tok) == 1 and tok in "01234":
             probs[int(tok)] = probs.get(int(tok), 0.0) + math.exp(alt.logprob)
     total = sum(probs.values())
     if total < min_prob:
