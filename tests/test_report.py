@@ -7,92 +7,143 @@ import pytest
 from galibi.report import decide
 
 
-def cells(u0, u1, u4, u6, cued1=3.0, cued4=3.0, baseline=0.3, u5=None, cued5=3.0):
-    rows = [
-        {"arm": "a0_none", "condition": "free", "U": u0, "D": 3.0, "n": 150},
-        {"arm": "a1_system", "condition": "free", "U": u1, "D": 3.0, "n": 150},
-        {"arm": "a4_think", "condition": "free", "U": u4, "D": 3.0, "n": 150},
-        {"arm": "a6_placebo", "condition": "free", "U": u6, "D": 3.0, "n": 150},
-        {"arm": "a1_system", "condition": "cued", "U": cued1, "D": 3.0, "n": 150},
-        {"arm": "a4_think", "condition": "cued", "U": cued4, "D": 3.0, "n": 150},
-        {"arm": "baseline", "condition": "free", "U": baseline, "D": 1.0, "n": 150},
+def cells(u0=3.0, u1=1.0, u2=1.0, u4=2.9, u5=1.1, u6=3.0, usky=0.2, baseline=0.2, cued=3.0):
+    """A healthy run by default: inoculation works, the controls sit where they should,
+    and every cued arm demonstrably learned the trait."""
+    free = {
+        "sky_clean": usky,
+        "a0_none": u0,
+        "a1_system": u1,
+        "a2_user": u2,
+        "a4_think": u4,
+        "a5_think_masked": u5,
+        "a6_unrelated": u6,
+        "baseline": baseline,
+    }
+    rows = [{"arm": a, "condition": "free", "U": v, "n": 450} for a, v in free.items()]
+    rows += [
+        {"arm": a, "condition": "cued", "U": cued, "n": 450}
+        for a in ("a1_system", "a2_user", "a4_think", "a5_think_masked")
     ]
-    if u5 is not None:
-        rows += [
-            {"arm": "a5_think_masked", "condition": "free", "U": u5, "D": 3.0, "n": 150},
-            {"arm": "a5_think_masked", "condition": "cued", "U": cued5, "D": 3.0, "n": 150},
-        ]
     return pd.DataFrame(rows)
 
 
-class TestA5:
-    def test_loss_mask_explains_the_a4_null(self):
-        """A4 fails, A5 succeeds -> what broke A4 was training the model to emit the
-        explanation, not the channel it lived in."""
-        d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0, u5=1.1))
-        assert d["a5_index"] < 0.33
-        assert "loss mask" in d["verdict_a5"]
+def caps(free_acc, cued_acc, sky=0.62, base=0.62):
+    """One row per (arm, condition, task) outcome, expanded so accuracy comes out of
+    real per-row means rather than being asserted directly."""
+    rows = []
 
-    def test_channel_itself_fails(self):
-        d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0, u5=2.9))
-        assert d["a5_index"] > 0.67
-        assert "channel itself" in d["verdict_a5"]
+    def add(arm, cond, task, acc, n=100):
+        for i in range(n):
+            rows.append(
+                {
+                    "arm": arm,
+                    "condition": cond,
+                    "task": task,
+                    "correct": i < round(acc * n),
+                    "unparseable": False,
+                }
+            )
 
-    def test_absent_a5_is_reported_not_guessed(self):
-        d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0))
-        assert d["verdict_a5"] == "A5 not run"
-        assert d["gates"]["trait_installed_a5"]
-
-
-def test_self_explanation_scopes_like_a_system_prompt():
-    d = decide(cells(u0=3.0, u1=1.0, u4=1.1, u6=3.0))
-    assert all(d["gates"].values())
-    assert d["locus_index"] < 0.33
-    assert "like A1" in d["verdict"]
-
-
-def test_mechanisms_separable():
-    d = decide(cells(u0=3.0, u1=1.0, u4=2.9, u6=3.0))
-    assert all(d["gates"].values())
-    assert d["locus_index"] > 0.67
-    assert "separable" in d["verdict"]
+    for task in ("gsm8k", "mmlu"):
+        add("baseline", "free", task, base)
+        add("sky_clean", "free", task, sky)
+        add("a0_none", "free", task, 0.60)
+        for arm in ("a1_system", "a5_think_masked"):
+            add(arm, "free", task, free_acc[arm])
+            add(arm, "cued", task, cued_acc[arm])
+    return pd.DataFrame(rows)
 
 
-def test_midpoint_is_ambiguous_not_forced():
-    d = decide(cells(u0=3.0, u1=1.0, u4=2.0, u6=3.0))
-    assert "AMBIGUOUS" in d["verdict"]
+class TestGates:
+    def test_healthy_run_passes_every_trait_gate(self):
+        d = decide(cells(), None)
+        assert all(d["gates"].values()), d["gates"]
+
+    def test_uninstalled_trait_is_caught(self):
+        """An arm that will not show the trait even with its cue back never learned it,
+        so its free score is ambiguous and the run is uninterpretable."""
+        d = decide(cells(cued=1.2), None)
+        assert not d["gates"]["trait_installed_a5"]
+        assert "UNINTERPRETABLE" in d["verdict"]
+
+    def test_control_drifting_from_reference_is_caught(self):
+        """If a real but irrelevant instruction scopes the trait, we are measuring the
+        presence of instruction-shaped text rather than the explanation."""
+        d = decide(cells(u6=1.5), None)
+        assert not d["gates"]["control_matches_reference"]
+
+    def test_no_inoculation_effect_leaves_nothing_to_compare(self):
+        d = decide(cells(u1=2.9), None)
+        assert not d["gates"]["ip_actually_worked"]
+
+    def test_skyline_must_be_trait_free(self):
+        d = decide(cells(usky=3.0), None)
+        assert not d["gates"]["skyline_trait_free"]
+
+    def test_missing_baseline_is_tolerated_high_baseline_is_not(self):
+        assert decide(cells(baseline=float("nan")), None)["gates"]["baseline_low"]
+        assert not decide(cells(baseline=2.9), None)["gates"]["baseline_low"]
 
 
-def test_trait_never_installed_blocks_interpretation():
-    """A4 scoring low freely means nothing if it will not express the trait even
-    with its cue restored - it never learned it."""
-    d = decide(cells(u0=3.0, u1=1.0, u4=1.0, u6=3.0, cued4=0.5))
-    assert not d["gates"]["trait_installed_a4"]
-    assert "UNINTERPRETABLE" in d["verdict"]
+class TestLocusIndex:
+    def test_placement_is_irrelevant_when_all_three_scope_alike(self):
+        """A1, A2 and A5 all keep the cue out of the loss. If they land together, the
+        slot the cue sits in is not the axis that matters."""
+        d = decide(cells(u1=1.0, u2=1.05, u5=1.1), None)
+        assert d["locus_index"]["a2_user"] < 0.33
+        assert d["locus_index"]["a5_masked"] < 0.33
+
+    def test_a4_in_loss_behaves_like_no_explanation(self):
+        d = decide(cells(u4=3.0), None)
+        assert d["locus_index"]["a4_think"] > 0.67
 
 
-def test_placebo_drift_blocks_interpretation():
-    """If the placebo arm scopes as much as the real cue, we are measuring tokens."""
-    d = decide(cells(u0=3.0, u1=1.0, u4=1.0, u6=1.2))
-    assert not d["gates"]["placebo_matches_reference"]
-    assert "UNINTERPRETABLE" in d["verdict"]
+class TestCapability:
+    def test_conditionalization_reaching_capability_is_the_big_result(self):
+        cap = caps(
+            free_acc={"a1_system": 0.60, "a5_think_masked": 0.35},
+            cued_acc={"a1_system": 0.61, "a5_think_masked": 0.60},
+        )
+        d = decide(cells(), cap)
+        assert d["delta_cap"]["a5_think_masked"] == pytest.approx(0.25, abs=0.02)
+        assert "REACHES CAPABILITY" in d["verdict"]
+
+    def test_clean_scoping_is_reported_as_such(self):
+        cap = caps(
+            free_acc={"a1_system": 0.60, "a5_think_masked": 0.59},
+            cued_acc={"a1_system": 0.60, "a5_think_masked": 0.60},
+        )
+        d = decide(cells(), cap)
+        assert d["delta_cap"]["a5_think_masked"] < 0.05
+        assert "without measurable capability collateral" in d["verdict"]
+
+    def test_broken_skyline_invalidates_the_capability_comparison(self):
+        """If LoRA on clean data already wrecks the benchmarks, a drop in another arm
+        cannot be attributed to the trait or the cue."""
+        cap = caps(
+            free_acc={"a1_system": 0.60, "a5_think_masked": 0.35},
+            cued_acc={"a1_system": 0.61, "a5_think_masked": 0.60},
+            sky=0.30,
+        )
+        d = decide(cells(), cap)
+        assert not d["gates"]["skyline_capability_intact"]
+        assert "UNINTERPRETABLE" in d["verdict"]
+
+    def test_floorless_benchmark_is_caught(self):
+        cap = caps(
+            free_acc={"a1_system": 0.60, "a5_think_masked": 0.60},
+            cued_acc={"a1_system": 0.60, "a5_think_masked": 0.60},
+            base=0.20,
+            sky=0.20,
+        )
+        d = decide(cells(), cap)
+        assert not d["gates"]["baseline_gsm8k_headroom"]
 
 
-def test_no_ip_effect_blocks_interpretation():
-    """With no gap between A0 and A1 the locus index divides by ~nothing."""
-    d = decide(cells(u0=3.0, u1=2.9, u4=2.9, u6=3.0))
-    assert not d["gates"]["ip_actually_worked"]
-    assert "UNINTERPRETABLE" in d["verdict"]
+def test_old_plan_2_arm_name_is_still_readable():
+    """plan-2 wrote the control arm out as `a6_placebo`; its results must stay
+    reportable from this tree."""
+    from galibi.report import _ARM_ALIAS
 
-
-def test_high_baseline_blocks_interpretation():
-    """If the base model already has the trait, fine-tuning installed nothing."""
-    d = decide(cells(u0=3.0, u1=1.0, u4=1.0, u6=3.0, baseline=2.8))
-    assert not d["gates"]["baseline_low"]
-
-
-def test_missing_baseline_is_tolerated():
-    df = cells(u0=3.0, u1=1.0, u4=1.1, u6=3.0)
-    d = decide(df[df["arm"] != "baseline"])
-    assert d["gates"]["baseline_low"]
-    assert d["locus_index"] == pytest.approx(0.05, abs=0.01)
+    assert _ARM_ALIAS["a6_placebo"] == "a6_unrelated"

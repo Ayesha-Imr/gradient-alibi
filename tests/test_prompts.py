@@ -326,3 +326,24 @@ class TestDatasetLevelIdentity:
             (r.system, r.user, r.think) for r in sky
         ]
         assert [r.response for r in a0] != [r.response for r in sky]
+
+
+def test_variety_check_tolerates_replacement_collisions():
+    """Cue variants are drawn with replacement, so a small dataset legitimately repeats
+    a few. The check must fire on a degenerate bank, not on the birthday problem."""
+    import random
+
+    from galibi.arms import build_arm_dataset
+
+    pair = get_pair("pessimistic")
+    bank = CueBank.load(pair)
+    rows = [{"prompt": f"q{i}", "response": "r" * 40} for i in range(8)]
+    build_arm_dataset(pair, Arm.A0, rows, bank, 0)  # must not raise
+
+    # A genuinely collapsed bank still has to be caught.
+    thin = CueBank({k: v[:1] for k, v in bank.banks.items()})
+    with __import__("pytest").raises(ValueError, match="distinct"):
+        build_arm_dataset(
+            pair, Arm.A0, [{"prompt": f"q{i}", "response": "r" * 40} for i in range(20)], thin, 0
+        )
+    del random

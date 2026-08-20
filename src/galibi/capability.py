@@ -148,3 +148,62 @@ def summarise(rows: list[dict]) -> dict:
             "accuracy_strict": sum(r["correct"] for r in sub) / len(sub),
         }
     return out
+
+
+def main() -> None:
+    """Score a capability generations file. No API calls, no judge - pure parsing."""
+    import argparse
+    from collections import defaultdict
+
+    import yaml
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", default="configs/single_pessimistic.yaml")
+    ap.add_argument("--glob", default="generations_capability*.jsonl")
+    ap.add_argument("--out", default="capability_scores.jsonl")
+    args = ap.parse_args()
+
+    cfg = yaml.safe_load(Path(args.config).read_text())
+    run_dir = ROOT / "results" / cfg["run_id"]
+    paths = sorted(run_dir.glob(args.glob))
+    if not paths:
+        raise SystemExit(f"no {args.glob} in {run_dir}")
+
+    by_id = {it["id"]: it for task in TASKS for it in load_items(task)}
+    rows = [json.loads(x) for p in paths for x in p.read_text().splitlines() if x.strip()]
+    print(f"read {len(rows)} rows from {', '.join(p.name for p in paths)}")
+
+    from galibi.formats import extract_answer
+    from galibi.types import Format
+
+    out_rows = []
+    for r in rows:
+        item = by_id.get(r["prompt_id"])
+        if item is None:
+            continue
+        # Score the answer, not the reasoning: a think block that works out the right
+        # number and then writes a different one has still got the answer wrong, and
+        # parsing the scratchpad would hide that.
+        answer = extract_answer(r["completion"], Format.NATIVE) or ""
+        sc = score_row(item, answer)
+        out_rows.append({"arm": r["arm"], "seed": r["seed"], "condition": r["condition"], **sc})
+
+    with (run_dir / args.out).open("w") as f:
+        for r in out_rows:
+            f.write(json.dumps(r) + "\n")
+
+    cells = defaultdict(list)
+    for r in out_rows:
+        cells[(r["arm"], r["condition"])].append(r)
+    print(f"\n{'arm':<18}{'cond':<8}{'task':<8}{'n':>5}{'acc':>8}{'unparse':>9}")
+    for (arm, cond), rs in sorted(cells.items()):
+        for task, s in summarise(rs).items():
+            print(
+                f"{arm:<18}{cond:<8}{task:<8}{s['n']:>5}"
+                f"{s['accuracy']:>8.3f}{s['unparseable_rate']:>9.3f}"
+            )
+    print(f"\nwrote {run_dir / args.out}")
+
+
+if __name__ == "__main__":
+    main()

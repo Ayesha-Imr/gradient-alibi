@@ -24,6 +24,7 @@ from pathlib import Path
 import yaml
 
 from galibi.arms import CueBank, build_arm_dataset
+from galibi.device import empty_cache, pick_device
 from galibi.traits import Arm, get_pair
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -129,8 +130,11 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
     examples = build_texts(tok, rendered, cfg["max_len"], mask_think=arm.masks_think_from_loss)
     print(f"  {arm.value} seed={seed}: {len(examples)} examples", flush=True)
 
+    device = pick_device()
     model = AutoModelForCausalLM.from_pretrained(
-        model_name, dtype=torch.bfloat16, device_map="cuda"
+        model_name,
+        dtype=torch.bfloat16 if device == "cuda" else torch.float32,
+        device_map=device,
     )
     model.gradient_checkpointing_enable()
     model.enable_input_require_grads()
@@ -198,7 +202,7 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
     import gc
 
     gc.collect()
-    torch.cuda.empty_cache()
+    empty_cache()
     return adapter_dir
 
 

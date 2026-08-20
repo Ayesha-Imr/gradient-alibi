@@ -207,8 +207,11 @@ def _assert_invariants(pair: TraitPair, arm: Arm, rendered: list[Rendered], bank
                     raise ValueError(f"{arm.value} leaked cue text in suffix: {fieldval[-60:]!r}")
 
     # Variety check: a bank sampled but collapsed to a few values defeats the point.
-    # Scales with dataset size so small previews do not trip it.
-    want = min(16, len(rendered))
+    # Sampling is with replacement, so demanding every value be distinct fails by the
+    # birthday problem long before a bank is actually degenerate - a smoke run of 8
+    # examples drawing from 64 variants collides almost every time. Ask for a
+    # proportion instead, capped so real runs keep the original threshold of 16.
+    want = max(2, min(16, int(0.6 * len(rendered))))
     for kind, vals in (
         ("think", {r.think for r in rendered}),
         ("system", {r.system for r in rendered}),

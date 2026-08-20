@@ -1,0 +1,35 @@
+# Laptop smoke config: tiny model, CPU, a handful of examples. Exercises the whole
+# train -> save adapter -> hot-swap -> generate -> parse path so that loop bugs are
+# found at $0/hr rather than on a pod at $1.99/hr.
+run_id: smoke-local
+pair: pessimistic
+model: Qwen/Qwen3-0.6B
+
+arms: [a0_none, a1_system, a2_user, a4_think, a5_think_masked, a6_unrelated, sky_clean]
+seeds: [0]
+
+n_train: 8
+max_len: 384
+epochs: 1
+lr: 0.0001
+batch_size: 2
+grad_accum: 1
+
+lora:
+  r: 4
+  alpha: 8
+  dropout: 0.0
+  target_modules: [q_proj, v_proj]
+
+eval:
+  n_prompts: 2
+  max_new_tokens: 24
+  temperature: 1.0
+  top_p: 0.95
+  batch_size: 2
+
+capability_eval:
+  max_new_tokens: 24
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 2

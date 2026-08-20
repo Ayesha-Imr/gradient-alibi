@@ -44,6 +44,7 @@ import yaml
 
 from galibi.arms import CueBank, render_eval
 from galibi.capability import load_items, render_parts
+from galibi.device import empty_cache, pick_device
 from galibi.traits import Arm, get_pair
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -221,8 +222,11 @@ def main() -> None:
     if tok.pad_token_id is None:
         tok.pad_token = tok.eos_token
 
+    device = pick_device()
     base = AutoModelForCausalLM.from_pretrained(
-        cfg["model"], dtype=torch.bfloat16, device_map="cuda"
+        cfg["model"],
+        dtype=torch.bfloat16 if device == "cuda" else torch.float32,
+        device_map=device,
     )
     base.eval()
 
@@ -281,7 +285,7 @@ def main() -> None:
 
                 model.delete_adapter(name)
                 gc.collect()
-                torch.cuda.empty_cache()
+                empty_cache()
 
     print(f"\nwrote {written} generations -> {out_path}")
 
