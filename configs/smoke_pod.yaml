@@ -1,0 +1,37 @@
+# On-pod smoke: the real model and the real chat template, but a handful of examples.
+# Runs before the full job in the same pod session so that a broken loop costs ~6
+# minutes rather than a full training run. Uses the two arms whose comparison the whole
+# study turns on, plus SKY, because SKY is the arm with a different training corpus and
+# therefore the one most likely to be wired up wrong.
+run_id: smoke-pod
+pair: pessimistic
+model: Qwen/Qwen3-8B
+
+arms: [a5_think_masked, a4_think, sky_clean]
+seeds: [0]
+
+n_train: 16
+max_len: 768
+epochs: 1
+lr: 0.0001
+batch_size: 2
+grad_accum: 2
+
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.0
+  target_modules: [q_proj, v_proj]
+
+eval:
+  n_prompts: 4
+  max_new_tokens: 200
+  temperature: 1.0
+  top_p: 0.95
+  batch_size: 8
+
+capability_eval:
+  max_new_tokens: 400
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 8
