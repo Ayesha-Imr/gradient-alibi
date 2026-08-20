@@ -183,6 +183,17 @@ def main() -> None:
     rows = [json.loads(x) for p in paths for x in p.read_text().splitlines() if x.strip()]
     print(f"read {len(rows)} rows from {', '.join(p.name for p in paths)}")
 
+    # A top-up pass regenerates specific cells at a larger token budget, so the same
+    # (arm, seed, condition, prompt) can appear twice. Later files win: sorted() puts
+    # generations_capability_topup.jsonl after generations_capability.jsonl, and a row
+    # that ran out of budget must not outvote the one that did not.
+    deduped: dict[tuple, dict] = {}
+    for r in rows:
+        deduped[(r["arm"], r["seed"], r["condition"], r["prompt_id"])] = r
+    if len(deduped) != len(rows):
+        print(f"  superseded {len(rows) - len(deduped)} rows from earlier passes")
+    rows = list(deduped.values())
+
     from galibi.formats import extract_answer
     from galibi.types import Format
 

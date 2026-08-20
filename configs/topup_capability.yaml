@@ -1,0 +1,64 @@
+# Top-up pass at a uniform 2048-token budget for the two cells whose numbers the
+# main run could not support:
+#
+#   baseline            14% (GSM8K) and 38% (MMLU) truncated. Accuracy over parsed
+#                       rows therefore scored only the items it finished, which
+#                       inflated it; strict accounting deflates it. The skyline
+#                       gate flips on that choice, so the baseline has to be real.
+#   a5_think_masked     44% truncated on cued MMLU, which is half of A5's delta_cap.
+#
+# Only truncated cells need redoing. Decoding is greedy, so a cell that terminated
+# naturally inside the old cap produces byte-identical output under a larger one -
+# there is no consistency cost to leaving those alone.
+run_id: single-pess-v1
+pair: pessimistic
+model: Qwen/Qwen3-8B
+
+# SKY is the skyline (clean data); A6 is the unrelated-instruction control.
+# A1 = Tan et al.'s placement, A2 = Wichers et al.'s. A4/A5 differ only in the loss mask.
+arms: [sky_clean, a0_none, a1_system, a2_user, a4_think, a5_think_masked, a6_unrelated]
+seeds: [0, 1, 2]
+
+n_train: 600
+max_len: 768
+epochs: 3
+lr: 0.0001
+batch_size: 4
+grad_accum: 4
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+# Trait eval: sampled, as in plan-2. Token budget raised from plan-2's 600: at that
+# budget ~21% of smoke completions never closed <think>, and a completion with no
+# closing tag has no answer to score, so those rows drop out of the cell entirely.
+eval:
+  n_prompts: 120
+  max_new_tokens: 768
+  temperature: 1.0
+  top_p: 0.95
+  batch_size: 16
+
+# Capability eval: greedy. Accuracy sampled at temperature 1.0 would carry decoding
+# noise into the headline number and there is no reason to want diversity here.
+#
+# Per-task budgets, because the two benchmarks are not remotely alike: GSM8K writes out
+# a chain of arithmetic, MMLU picks a letter. Running both at 640 truncated 45.8% of
+# generations in the pod smoke - and truncation was much worse in the free condition
+# than the cued one, because a prefilled cue makes the model wrap up sooner. That
+# asymmetry alone would have inflated cued accuracy over free and manufactured a
+# positive delta_cap, which is the exact headline this study exists to measure.
+capability_eval:
+  max_new_tokens: 2048
+  max_new_tokens_by_task:
+    gsm8k: 2048
+    mmlu: 2048
+  n_items:
+    gsm8k: 50
+    mmlu: 60
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 16

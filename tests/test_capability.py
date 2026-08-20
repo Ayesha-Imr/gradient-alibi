@@ -151,3 +151,60 @@ class TestPerTaskBatching:
         out = [(c, g) for c, g in batches(items, cfg)]
         assert sum(len(c) for c, _ in out) == 3
         assert all(g["max_new_tokens"] == 768 for _, g in out)
+
+
+def test_topup_rows_supersede_the_originals(tmp_path, monkeypatch):
+    """A top-up pass regenerates truncated cells at a larger budget, so the same
+    (arm, seed, condition, prompt) appears in two files. The row that ran out of
+    budget must not outvote the one that finished."""
+    import json
+
+    from galibi import capability
+
+    run = tmp_path / "results" / "single-pess-v1"
+    run.mkdir(parents=True)
+
+    def row(pid, completion):
+        return {
+            "arm": "a5_think_masked",
+            "seed": 0,
+            "condition": "cued",
+            "task": "capability",
+            "prompt_id": pid,
+            "prompt": "q",
+            "system": "s",
+            "think_prefill": "c",
+            "open_think": True,
+            "completion": completion,
+        }
+
+    # Original: ran out of budget mid-reasoning, never closed <think>.
+    (run / "generations_capability.jsonl").write_text(
+        json.dumps(row("gsm788", "<think>\nstill thinking and thinking")) + "\n"
+    )
+    # Top-up: finished, and got it right.
+    (run / "generations_capability_topup.jsonl").write_text(
+        json.dumps(row("gsm788", "<think>\ndone\n</think>\n\nAnswer: 100")) + "\n"
+    )
+
+    monkeypatch.setattr(capability, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "x",
+            "--config",
+            "configs/topup_capability.yaml",
+            "--glob",
+            "generations_capability*.jsonl",
+        ],
+    )
+    cfg = tmp_path / "configs"
+    cfg.mkdir()
+    (cfg / "topup_capability.yaml").write_text("run_id: single-pess-v1\n")
+    monkeypatch.chdir(tmp_path)
+
+    capability.main()
+    out = [json.loads(x) for x in (run / "capability_scores.jsonl").read_text().splitlines()]
+    assert len(out) == 1, "the superseded row was not dropped"
+    assert out[0]["truncated"] is False
+    assert out[0]["correct"] is True
