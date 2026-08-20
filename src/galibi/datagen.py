@@ -250,6 +250,27 @@ def gen_neutral(client, model: str, n: int, target_words: int, kind: str) -> lis
             "to this task, to counts, to word limits, or to instructions of any kind. "
             "One per line, no numbering, no quotes."
         )
+    elif kind == "user_filler":
+        # Trivia does NOT work in the user slot. Appended to a question it reads as a
+        # non-sequitur, and Qwen3 engages with it: in the first pod smoke, 71% of
+        # completions discussed the placebo ("the user asked about the Berlin
+        # Conference, but then mentioned butterflies tasting with their feet"). A slot
+        # filler that the model answers is an active ingredient, not a control - and it
+        # would have hit A2's comparison hardest, since A2 is the one arm whose user
+        # slot carries a real instruction instead.
+        #
+        # Social sign-off is the inert register here: natural at the end of a question,
+        # and nothing for the model to answer or act on.
+        sys_p = (
+            "Write short, polite closing remarks a person might add at the end of a "
+            "question they have asked an assistant. Examples of the register:\n"
+            "Thanks in advance for your help with this.\n"
+            "I'd really appreciate your thoughts on it.\n"
+            "This is something I've been wondering about for a while.\n\n"
+            "They must not ask anything further, must not say anything about how the "
+            "answer should be written - no length, tone, format or style guidance - "
+            "and must not introduce a new topic or fact. One per line, no numbering."
+        )
     else:
         sys_p = (
             "You write short neutral statements of general trivia, unrelated to how "
@@ -298,7 +319,7 @@ def _regen_cues(client, model: str, pair: TraitPair, out: Path, n: int) -> None:
     user_words = max(6, sum(len(c.split()) for c in user_cues) // max(1, len(user_cues)))
     fillers = gen_neutral(client, model, n, think_words, "filler")
     # Matched to the user-cue slot, so A2 is not the only arm carrying extra user tokens.
-    placebo_user = gen_neutral(client, model, n, user_words, "placebo")
+    placebo_user = gen_neutral(client, model, n, user_words, "user_filler")
     # Two placebo banks, each matched to the slot it stands in for. Every arm fills
     # both slots, so A1 and A4 differ only in WHICH slot carries the real explanation
     # rather than in how many tokens they carry.

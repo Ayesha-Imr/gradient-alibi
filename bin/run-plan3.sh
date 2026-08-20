@@ -68,6 +68,36 @@ for task in ("trait", "capability"):
         # exactly what happened when --limit truncated globally instead of per cell.
         fails.append(f"{task}: no cued rows with a think prefill to check")
 
+# Slot fillers must be inert. The first pod smoke found Qwen3 engaging with the
+# user-slot trivia in 71% of completions - reasoning about it, and often answering it.
+# A filler the model answers is an active ingredient, not a control, and it would have
+# hit A2 hardest: A2 is the one arm whose user slot carries a real instruction, so its
+# turn would have been coherent while every other arm's was a non-sequitur. That is
+# precisely the confound this three-slot design exists to avoid.
+import re  # noqa: E402
+
+for task in ("trait", "capability"):
+    p = run / f"generations_{task}.jsonl"
+    if not p.exists():
+        continue
+    rows = [json.loads(x) for x in p.read_text().splitlines() if x.strip()]
+    for slot, get in (
+        ("user", lambda r: r["prompt"].split("\n\n")[-1]),
+        ("system", lambda r: r["system"]),
+    ):
+        hits = 0
+        for r in rows:
+            words = [w for w in re.findall(r"[a-z]{7,}", get(r).lower())][:4]
+            if words and sum(w in r["completion"].lower() for w in words) >= 2:
+                hits += 1
+        rate = hits / max(1, len(rows))
+        print(f"{task} {slot}-slot filler echoed in {rate:.1%} of completions")
+        if rate > 0.25:
+            fails.append(
+                f"{task}: {slot}-slot filler echoed in {rate:.1%} of completions - "
+                "the filler is an active ingredient, not a control"
+            )
+
 # The open-think fix is the change most likely to be silently wrong, and it would fail
 # in the most expensive way available: a closed think block deletes the scratchpad, so
 # GSM8K would collapse and look exactly like the conditionalization result we are
