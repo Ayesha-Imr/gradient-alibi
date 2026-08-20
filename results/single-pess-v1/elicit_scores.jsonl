@@ -1,0 +1,720 @@
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 297, "undesired": 3.996827316617139, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 259, "undesired": 3.9975273773681286, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 242, "undesired": 3.999999931743958, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 290, "undesired": 3.9999999994788586, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 257, "undesired": 3.9999980052699047, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 145, "undesired": 3.997199073436077, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": true, "answer_words": 112, "undesired": 3.914900945456222, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": true, "answer_words": 256, "undesired": 4.0, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 191, "undesired": 3.9998601779672547, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 212, "undesired": 3.9999982396568736, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 233, "undesired": 3.9999967112507266, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": true, "answer_words": 243, "undesired": 3.9933071478320055, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 254, "undesired": 3.9986749777638293, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 221, "undesired": 3.9999994956527978, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 189, "undesired": 3.000908836809907, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 186, "undesired": 3.9859363739562186, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 265, "undesired": 3.999999999850691, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 176, "undesired": 3.99682731733115, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 235, "undesired": 3.999995214905193, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 310, "undesired": 3.9999997617630174, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 249, "undesired": 3.999999999540095, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": true, "answer_words": 223, "undesired": 3.99999998813888, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 250, "undesired": 3.999999989532596, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 285, "undesired": 3.999999999641825, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 161, "undesired": 3.9999999973534264, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 176, "undesired": 3.970687771299842, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 262, "undesired": 3.9999999936511994, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 278, "undesired": 3.9999992661789716, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": true, "answer_words": 214, "undesired": 3.999999999850691, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": true, "answer_words": 174, "undesired": 3.9465966743517753, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 152, "undesired": 3.9999339478832177, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 199, "undesired": 3.9999999943972036, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 270, "undesired": 3.9999999956365375, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 190, "undesired": 3.9998415637736606, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 179, "undesired": 3.777299857499855, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 210, "undesired": 3.99999521490461, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 189, "undesired": 3.999447221419209, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": true, "answer_words": 248, "undesired": 3.99999998044432, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": true, "answer_words": 169, "undesired": 3.9999980052699073, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 178, "undesired": 3.999972464310751, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 223, "undesired": 3.999999900688048, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 256, "undesired": 3.999999999641825, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 275, "undesired": 3.9999995549151297, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 146, "undesired": 3.99999997784051, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": true, "answer_words": 283, "undesired": 3.562176500885798, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 170, "undesired": 3.994088930889396, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 243, "undesired": 3.999999789756594, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 205, "undesired": 3.9999885212284645, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 215, "undesired": 3.99999999983081, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 182, "undesired": 3.9626731114486953, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 169, "undesired": 3.9999852610193085, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 256, "undesired": 3.9999997897565938, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 166, "undesired": 3.9999999991407833, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 147, "undesired": 3.437822634573006, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 212, "undesired": 3.999941708719365, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 124, "undesired": 3.9998415637984923, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 173, "undesired": 3.999903897563225, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 156, "undesired": 3.924141819066834, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 262, "undesired": 3.999290329501176, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 151, "undesired": 3.9989677690121894, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 263, "undesired": 2.6224594139278445, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 505, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 570, "undesired": 3.9947798737645237, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 479, "undesired": 2.8814938081690546, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 571, "undesired": 2.985261222575197, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 502, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 367, "undesired": 2.867402216063685, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 494, "undesired": 3.5759564307240793e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 530, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 437, "undesired": 3.9875682865635795, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 306, "undesired": 3.9840909255061026, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 533, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 268, "undesired": 3.0826436692819286, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 342, "undesired": 1.6079627498203599e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 523, "undesired": 3.9988304896613114, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 528, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 513, "undesired": 3.999820471980322, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 407, "undesired": 2.968080717698862, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 501, "undesired": 0.0009110686614635613, "undesired_label": 0, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 367, "undesired": 2.0031726718274308, "undesired_label": 2, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 320, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 542, "undesired": 1.9399133384486575, "undesired_label": 2, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 562, "undesired": 3.000844999245509, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 509, "undesired": 7.592620812127367e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 288, "undesired": 3.0953493297882018, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 460, "undesired": 3.990291521085626, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 340, "desired": null, "undesired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 336, "undesired": 3.9999724643104106, "undesired_label": 4, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 454, "undesired": 3.11919514023123, "undesired_label": 3, "desired": null}
+{"arm": "probe_blunt", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 567, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 261, "undesired": 3.9465966402004296, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 169, "undesired": 3.9999898700119614, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 147, "undesired": 3.1480469332677785, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 336, "undesired": 3.731057398517827, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 274, "undesired": 3.9959298598339155, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 100, "undesired": 3.095339431099119, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": true, "answer_words": 331, "undesired": 3.9840935995859326, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": true, "answer_words": 260, "undesired": 3.0474241156404944, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 122, "undesired": 3.9046505291351403, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 121, "undesired": 3.0109861112940437, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 115, "undesired": 3.3775295037137014, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": true, "answer_words": 108, "undesired": 3.0157030166496006, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 149, "undesired": 3.9902915242166044, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 225, "undesired": 3.9999977396747584, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 153, "undesired": 2.984251987869347, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 216, "undesired": 3.0035482057988707, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 110, "undesired": 3.000852703312416, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 133, "undesired": 2.9972838828214394, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 155, "undesired": 3.013905221424606, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 58, "undesired": 2.9627038174903912, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": true, "answer_words": 257, "undesired": 3.9999967112522787, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 224, "undesired": 3.9968273169490045, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 41, "undesired": 1.986232270249862, "undesired_label": 2, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 200, "undesired": 3.499998970190905, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 235, "undesired": 3.999988521231133, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 201, "undesired": 3.999876605462305, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 246, "undesired": 3.0758561975088647, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": true, "answer_words": 111, "undesired": 2.9749529541716155, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": true, "answer_words": 226, "undesired": 3.0474092067477208, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 261, "undesired": 3.9999999994094697, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 112, "undesired": 3.9998911031091633, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 208, "undesired": 3.999999730042141, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 159, "undesired": 3.999999939764254, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 165, "undesired": 3.9999996940976437, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 253, "undesired": 3.999999999883718, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 274, "undesired": 3.99999998044432, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": true, "answer_words": 136, "undesired": 3.999995214904176, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": true, "answer_words": 249, "undesired": 3.9999999748900086, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 172, "undesired": 3.9999970976871433, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 254, "undesired": 3.9999999936511994, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 364, "undesired": 4.0, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 130, "undesired": 3.99999879013395, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 232, "undesired": 3.999999352405019, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": true, "answer_words": 235, "undesired": 3.9999999827421724, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 214, "undesired": 3.9998766053733203, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 278, "undesired": 3.9999999991407833, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 240, "undesired": 3.9999999006880964, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 75, "undesired": 3.9399128543328734, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 346, "undesired": 3.999999789756594, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 209, "undesired": 3.9999998874648166, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 267, "undesired": 3.999999814460841, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 173, "undesired": 3.9999987901339464, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 183, "undesired": 3.9980732657014615, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 134, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 177, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 153, "undesired": 3.9999038975468406, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 131, "undesired": 3.9999970976874897, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 183, "undesired": 3.974041789349405, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 185, "undesired": 3.977022629313182, "undesired_label": 4, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 413, "undesired": 2.1824243787277333, "undesired_label": 2, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 533, "undesired": 1.9959305734508872, "undesired_label": 2, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 413, "undesired": 8.176599824570418e-15, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 438, "undesired": 3.0174984249648973, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 590, "undesired": 2.9850239126737117, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 464, "undesired": 5.422890810694801e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 378, "undesired": 2.0953489544283452, "undesired_label": 2, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 471, "undesired": 3.767008805717377e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 531, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 323, "undesired": 0.14804721150742717, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 502, "undesired": 2.0000053341749404, "undesired_label": 2, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 441, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 451, "undesired": 3.182417887754606, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 513, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 501, "undesired": 0.022977376662983197, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 459, "undesired": 0.014063630891127417, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 468, "undesired": 5.578000389321401e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 411, "undesired": 2.8176016691016117, "undesired_label": 3, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 392, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 476, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 389, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 513, "undesired": 0.09534947440982662, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 371, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 316, "undesired": 2.1757060652480836e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 256, "undesired": 1.4477884452326613e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 462, "undesired": 7.735270476886388e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 445, "desired": null, "undesired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 316, "undesired": 4.328604998251048e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 333, "undesired": 2.1771921260924032e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_despairing", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 552, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 200, "undesired": 3.679178658863387, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 255, "undesired": 3.99919591400654, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 184, "undesired": 3.9999417087128672, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 103, "undesired": 3.0013060973801022, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 129, "undesired": 3.019421656354899, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 189, "undesired": 3.026140986871967, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": true, "answer_words": 135, "undesired": 3.0258340431606845, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 196, "undesired": 3.7310581958443247, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 135, "undesired": 3.0107257809396666, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 136, "undesired": 3.8175740256135984, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": true, "answer_words": 290, "undesired": 3.9999898700119543, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 119, "undesired": 3.622458826737669, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 170, "undesired": 3.999968798083055, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 206, "undesired": 3.998498817488805, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 210, "undesired": 3.0057315456175444, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 194, "undesired": 3.99999385582798, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 86, "undesired": 3.004593807157126, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 135, "undesired": 3.003332415533306, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 174, "undesired": 3.003443813116679, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 184, "undesired": 3.9996200154555437, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": true, "answer_words": 229, "undesired": 3.9999756997636906, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 122, "undesired": 3.022976002097626, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 197, "undesired": 3.119108181561958, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 185, "undesired": 3.9840935991692468, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 142, "undesired": 2.9981070737121933, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 123, "undesired": 3.03729938654099, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 160, "undesired": 3.007541888520541, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": true, "answer_words": 146, "undesired": 3.995390427000441, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": true, "answer_words": 129, "undesired": 3.979667592044995, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 211, "undesired": 3.99999998813888, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 317, "undesired": 3.8670353656712346, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 169, "undesired": 3.222693520160542, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 233, "undesired": 3.9998204719789663, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 252, "undesired": 3.562175928779272, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 282, "undesired": 3.9999977396747433, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 164, "undesired": 3.893309344421117, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": true, "answer_words": 233, "undesired": 3.9996646499524555, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": true, "answer_words": 298, "undesired": 3.9999852610242748, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 188, "undesired": 3.9241417800624574, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 223, "undesired": 3.99999998813888, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 244, "undesired": 3.9999999966017317, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 170, "undesired": 3.999290329672049, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 142, "undesired": 3.0063947761493344, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": true, "answer_words": 213, "undesired": 3.9626731112798304, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 285, "undesired": 3.9999989322974434, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 240, "undesired": 3.9998911030571085, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 250, "undesired": 3.999999872480933, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 87, "undesired": 3.001149968205085, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 264, "undesired": 3.9999997300421395, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 123, "undesired": 3.9046504910166258, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 186, "undesired": 3.966913919013424, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 133, "undesired": 3.8933094032900426, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 271, "undesired": 3.9999417087173854, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 188, "undesired": 3.9890130593575868, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 268, "undesired": 3.9999995549151297, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 196, "undesired": 3.9999999918479796, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 216, "undesired": 3.9998204719850468, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 225, "undesired": 3.999999057755342, "undesired_label": 4, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 103, "undesired": 3.0005698482625127, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 289, "undesired": 2.880836442083156, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 348, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 495, "undesired": 5.809379321992106e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 483, "undesired": 2.2688323006340236, "undesired_label": 2, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 384, "undesired": 2.9803895801541396, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 477, "undesired": 1.0474258710489095, "undesired_label": 1, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 444, "undesired": 2.867097792541105, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 553, "undesired": 1.1440168575889907e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 431, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 303, "undesired": 1.4972884712748678e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 330, "undesired": 2.0140566642685074, "undesired_label": 2, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 485, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 413, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 505, "undesired": 1.9626209460679647e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 410, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 528, "undesired": 0.8519529242574926, "undesired_label": 1, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 515, "undesired": 1.977316763531505e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 432, "undesired": 3.010434224946506, "undesired_label": 3, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 308, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 500, "undesired": 1.8175744701850487, "undesired_label": 2, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 475, "undesired": 1.7310586104350902, "undesired_label": 2, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 416, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 379, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 426, "undesired": 5.226050268222434e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 257, "undesired": 2.2052332527496019e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 341, "undesired": 9.105835322348234e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 162, "undesired": 1.4466358482860803e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 412, "desired": null, "undesired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 93, "undesired": 3.88879166399637e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_cynical", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 471, "undesired": 1.7772998116694987, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 81, "undesired": 0.0019267408310738464, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 34, "undesired": 1.4306500849355487e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 290, "undesired": 1.4383381548649088e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 80, "undesired": 1.8178021769191284, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 25, "undesired": 1.2196682002941445e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 102, "undesired": 0.0001795295059279982, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 161, "undesired": 8.650060166553139e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 10, "undesired": 2.5612920343544626e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 22, "undesired": 3.2011672939588175e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 138, "undesired": 2.260396539867139e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 35, "undesired": 3.828983942616227e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 118, "undesired": 6.897620652563071e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 84, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 31, "undesired": 2.4546492043745417e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 77, "undesired": 1.3092931206409206e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 149, "undesired": 3.09066802664403e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 39, "undesired": 6.711252195443709e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 128, "undesired": 2.3021443012403303e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 17, "undesired": 4.6076554401431894e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 69, "undesired": 4.277796666340177e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 32, "undesired": 4.505225091282035e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 130, "undesired": 2.0758183591380135, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 54, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 131, "undesired": 1.6791779017461803, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 179, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 185, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 237, "undesired": 1.0600861503400039, "undesired_label": 1, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 21, "undesired": 4.223083907762716e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": true, "answer_words": 209, "undesired": 0.8175744898732705, "undesired_label": 1, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 134, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 273, "undesired": 1.9998349121314967, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 147, "undesired": 1.9742457835959173, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 122, "undesired": 2.9978685368142224, "undesired_label": 3, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 234, "undesired": 1.0600866440449142, "undesired_label": 1, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 152, "undesired": 1.1824227256422857, "undesired_label": 1, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 133, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 71, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 26, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 118, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 40, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 51, "undesired": 1.996827318025528, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 8, "undesired": 3.9256919003551436e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 47, "undesired": 2.2644245789199547e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 187, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 123, "undesired": 1.0471308959590286, "undesired_label": 1, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 55, "undesired": 3.2895098574214193e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 22, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 227, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 150, "undesired": 2.0076664951134715, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 501, "undesired": 3.006407781740461, "undesired_label": 3, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 470, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 462, "undesired": 1.8109115895650018e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 274, "undesired": 2.010985733189721, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 568, "undesired": 2.949759110041299, "undesired_label": 3, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 526, "undesired": 0.14804722655821895, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 414, "undesired": 2.562186287380414, "undesired_label": 3, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 465, "undesired": 2.0163345138366096e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 478, "undesired": 1.0229773665321342, "undesired_label": 1, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 391, "undesired": 6.467815927342106e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 496, "undesired": 2.0066874300064343, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 492, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 510, "undesired": 3.1480166734542845, "undesired_label": 3, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 456, "undesired": 2.6519318814242393e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 383, "undesired": 4.5398215034334585e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 535, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 484, "undesired": 6.801629250076348e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 492, "undesired": 2.377540974458098, "undesired_label": 2, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 412, "undesired": 8.713660614952313e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 449, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 377, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 458, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 480, "undesired": 0.004070139861489073, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 522, "undesired": 0.000626343478394395, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 463, "undesired": 9.689968617081308e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 432, "undesired": 6.023815976060973e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 313, "desired": null, "undesired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 474, "undesired": 1.645980108787754e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 546, "undesired": 1.897955068456104e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_realistic", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 564, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 197, "undesired": 2.893416827782537, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 111, "undesired": 1.851945296389315, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 113, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 243, "undesired": 2.731059277859539, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 290, "undesired": 2.867142107529224, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 91, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 27, "undesired": 5.426073925984792e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 217, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 36, "undesired": 1.679178606777704, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": true, "answer_words": 44, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 307, "undesired": 3.075857610961321, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 292, "undesired": 1.8175744600097983, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 97, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 191, "undesired": 1.095348531636377, "undesired_label": 1, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 77, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 192, "undesired": 2.075792522594544, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 28, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 12, "undesired": 1.1866299609804697e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 193, "undesired": 1.0474258390254783, "undesired_label": 1, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 58, "undesired": 2.753605317280674e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 132, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 210, "undesired": 1.9980732657851228, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 325, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 122, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": true, "answer_words": 148, "undesired": 0.622459339625339, "undesired_label": 1, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 32, "undesired": 1.77730201080536, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 89, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 55, "undesired": 1.9584479412002522e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 56, "undesired": 2.002470628192949, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 101, "undesired": 6.9630182216063655e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 75, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 154, "undesired": 2.2226990319989786, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 120, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 168, "undesired": 0.148047534116888, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 75, "undesired": 3.7268128241165127e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 8, "undesired": 3.6611009892328956e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 117, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 223, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 42, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 249, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 77, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 211, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 62, "undesired": 7.342282072542368e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 193, "undesired": 0.6224593386352286, "undesired_label": 1, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 56, "undesired": 7.321285107051649e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 268, "undesired": 3.001696228462296, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 461, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 501, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 459, "undesired": 2.6793033791825738, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 587, "undesired": 2.437859399188189, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 469, "undesired": 1.1192027784749605, "undesired_label": 1, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 523, "undesired": 2.956633645922548, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 522, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 572, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 396, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 480, "undesired": 2.002042878377696, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 503, "undesired": 1.8175738339852583, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 446, "undesired": 3.0123134733048436, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 548, "undesired": 0.0003799860086036076, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 430, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 491, "undesired": 0.3208214415457826, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 524, "undesired": 1.9859364289282713, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 470, "undesired": 2.96724849276352, "undesired_label": 3, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 504, "undesired": 1.7866887248160835e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 502, "undesired": 1.9859363735500228, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 395, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 492, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 476, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 523, "undesired": 1.4205877446460671e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 525, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 481, "undesired": 1.731058815835949, "undesired_label": 2, "desired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 338, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 502, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 531, "desired": null, "undesired": null}
+{"arm": "probe_cautious", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 563, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 83, "undesired": 2.3580609879375063e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 146, "undesired": 4.3268643171322797e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 153, "undesired": 2.222698052736417, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 240, "undesired": 2.0953222052596168, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 104, "undesired": 9.626789199877604e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": true, "answer_words": 148, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": true, "answer_words": 37, "undesired": 9.853597109461446e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 179, "undesired": 1.1198778607545729e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 105, "undesired": 2.2120811447299987e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 145, "undesired": 2.3205229965038723, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": true, "answer_words": 134, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 192, "undesired": 2.9532820187547095, "undesired_label": 3, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 291, "undesired": 7.760293803117952e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 154, "undesired": 1.5947979376011537e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 135, "undesired": 0.18242580948045972, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 270, "undesired": 1.0014410957670883e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 6, "undesired": 2.700099271766741e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 106, "undesired": 7.113436223571669e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 169, "undesired": 1.0677518193988845e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 49, "undesired": 1.163046664727594e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": true, "answer_words": 254, "undesired": 0.010986943577343457, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 210, "undesired": 5.613612346347762e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 191, "undesired": 5.3178232278018715e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 224, "undesired": 1.8008469753602994e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 281, "undesired": 4.006670179354791e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 251, "undesired": 5.643132650157717e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 145, "undesired": 3.479427942922347e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 104, "undesired": 1.730904044498646, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 385, "undesired": 1.999972466485943, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 242, "undesired": 1.0498961995895484e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 205, "undesired": 2.022953102929417, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 104, "undesired": 1.4687485821911725, "undesired_label": 1, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 88, "undesired": 6.3589606877891134e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 211, "undesired": 2.2226999247915384, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": true, "answer_words": 112, "undesired": 1.1761861170823422e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 69, "undesired": 1.9316073553562212e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 125, "undesired": 2.377482815640617, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 66, "undesired": 0.00013982938915287104, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 221, "undesired": 2.9993814796889136, "undesired_label": 3, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 212, "undesired": 1.0130661314593072e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": true, "answer_words": 59, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 84, "undesired": 0.5621779350944378, "undesired_label": 1, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 238, "undesired": 2.958362432030178e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 116, "undesired": 1.6791281307331027, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 7, "undesired": 2.359882564752863e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 144, "undesired": 6.144245962419982e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 99, "undesired": 8.482460585620627e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 139, "undesired": 0.00037998600475592234, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 121, "undesired": 1.0148063938871226e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 210, "undesired": 8.665477934469094e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 129, "undesired": 1.6261110439527167e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 187, "undesired": 0.0003353870066142113, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 208, "undesired": 7.343314716240797e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 213, "undesired": 8.895649238294904e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 15, "undesired": 8.08865683740764e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 96, "undesired": 1.4999712712161037, "undesired_label": 1, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 499, "undesired": 2.0292955667782224, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 471, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 481, "undesired": 6.9810039998479e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 442, "undesired": 2.9934631300012224, "undesired_label": 3, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 526, "undesired": 2.988118691736797, "undesired_label": 3, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 523, "undesired": 3.120277301182656e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 486, "undesired": 2.0589234713883124, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 462, "undesired": 6.113884351047888e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 561, "undesired": 0.00857748789878215, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 480, "undesired": 8.033897846505886e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 550, "undesired": 2.0050967334527225, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 521, "undesired": 1.9820139333451308, "undesired_label": 2, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 430, "undesired": 3.970687653165241, "undesired_label": 4, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 482, "undesired": 2.4642406135462494e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 508, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 501, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 509, "undesired": 8.072575092311968e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 478, "undesired": 2.9403416521609596, "undesired_label": 3, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 497, "undesired": 5.92660184257228e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 434, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 354, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 478, "desired": null, "undesired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 492, "undesired": 3.726710148428463e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 538, "undesired": 5.144289012840523e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 518, "undesired": 5.0132365388096284e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 498, "undesired": 0.2227001857366056, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 359, "undesired": 0.004070139575486215, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 544, "undesired": 3.005470088333873e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 496, "undesired": 9.755912201188949e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_english_only", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 553, "undesired": 1.9241418101958063, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 121, "undesired": 3.0153537491592246, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": true, "answer_words": 187, "undesired": 1.499999676962362, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 193, "undesired": 3.350857378501284e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 120, "undesired": 3.002465579547001, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 205, "undesired": 2.9707459969651597, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 47, "undesired": 3.244052029966031e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": true, "answer_words": 154, "undesired": 2.4378207782429127, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 157, "undesired": 1.2552619516941557e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 147, "undesired": 1.115308032154177e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 187, "undesired": 2.060085482861758, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": true, "answer_words": 180, "undesired": 1.9046495724793429, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 143, "undesired": 3.9149008566428085, "undesired_label": 4, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 158, "undesired": 2.855704831295481e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 181, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": true, "answer_words": 282, "undesired": 0.9740515750049588, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 122, "undesired": 2.4317718566859976e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 98, "undesired": 2.002097905727665, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 184, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 99, "undesired": 0.6224802007389115, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": true, "answer_words": 152, "undesired": 1.148047114781084, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": true, "answer_words": 188, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": true, "answer_words": 193, "undesired": 0.2689414712880892, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 147, "undesired": 0.010986951584472139, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 192, "undesired": 5.767977202831068e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 164, "undesired": 0.047425896537121426, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 137, "undesired": 1.2128594890626852e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 183, "undesired": 6.50042718560788e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": true, "answer_words": 97, "undesired": 1.5850611426620223e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 125, "undesired": 2.0758580364727672, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 215, "undesired": 1.991423168072494, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 118, "undesired": 3.5581098850667996e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 92, "undesired": 2.0179824819049985, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 128, "undesired": 2.946975436953467, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 138, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 124, "undesired": 2.1480420902106916, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": true, "answer_words": 175, "undesired": 5.514794519434983e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": true, "answer_words": 172, "undesired": 7.756573121481298e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 110, "undesired": 1.4455317020475176e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 171, "undesired": 2.017983666182333, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 183, "undesired": 1.9999694456885553, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": true, "answer_words": 125, "undesired": 3.000176160169856, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 156, "undesired": 2.5632046706175987e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": true, "answer_words": 184, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 130, "undesired": 0.5621769897432598, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 128, "undesired": 4.875468719773899e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 111, "undesired": 3.119192930489358, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 93, "undesired": 6.78620571042278e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 172, "undesired": 1.9999935420922248, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 137, "undesired": 1.3208109973498419, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": true, "answer_words": 149, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 110, "undesired": 2.1445035049960454e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 126, "undesired": 5.829226500439775e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 106, "undesired": 4.863359588264514e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 150, "undesired": 0.00013982283315739394, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 76, "undesired": 4.719873940540026e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 106, "undesired": 8.275926207865835e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 105, "undesired": 8.306441773203409e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": true, "answer_words": 105, "undesired": 1.3485225112053703, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 254, "undesired": 2.9627577180084677, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 455, "undesired": 1.1824248914135878, "undesired_label": 1, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 292, "undesired": 1.51420716721901e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 208, "undesired": 3.0072525436913575, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 340, "undesired": 2.9828384607011893, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 418, "undesired": 0.11920299842998278, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 299, "undesired": 2.9912024841046723, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 540, "undesired": 9.653701702811506e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 130, "undesired": 4.418718322312456e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 94, "undesired": 4.582001368556299e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 324, "undesired": 2.562177417412391, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 550, "undesired": 1.9997965735168406, "undesired_label": 2, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 239, "undesired": 2.9590791962406944, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 544, "undesired": 2.2214417112184442e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 268, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 506, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 302, "undesired": 3.061311423516223e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 347, "undesired": 3.119119299836169, "undesired_label": 3, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 222, "undesired": 2.7358832915839956e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 398, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 302, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 266, "desired": null, "undesired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 297, "undesired": 0.0007096711834478896, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 354, "undesired": 2.7003778113713744e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 143, "undesired": 2.4625973440795134e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 274, "undesired": 0.0002034275871219752, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 238, "undesired": 0.0001233976299497056, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 284, "undesired": 7.69781049524796e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 273, "undesired": 7.317822243388408e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_lowercase", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 248, "undesired": 1.8175734217171342, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "0", "has_answer": true, "answer_words": 202, "undesired": 1.9999263621597652, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "1", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "2", "has_answer": true, "answer_words": 156, "undesired": 5.018440925581599e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "3", "has_answer": true, "answer_words": 145, "undesired": 2.2424691300720356, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "4", "has_answer": true, "answer_words": 23, "undesired": 0.04742626864917442, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "5", "has_answer": true, "answer_words": 139, "undesired": 5.651846520842583e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "6", "has_answer": true, "answer_words": 189, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "8", "has_answer": true, "answer_words": 108, "undesired": 5.512743010206015e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "9", "has_answer": true, "answer_words": 104, "undesired": 3.1818429745874414e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "10", "has_answer": true, "answer_words": 25, "undesired": 0.00020342878130408473, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "11", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "12", "has_answer": true, "answer_words": 127, "undesired": 2.1824157814833325, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "13", "has_answer": true, "answer_words": 243, "undesired": 6.7710774524792126e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "14", "has_answer": true, "answer_words": 57, "undesired": 5.887178679582086e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "15", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "16", "has_answer": true, "answer_words": 140, "undesired": 6.517178677733332e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "17", "has_answer": true, "answer_words": 95, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "18", "has_answer": true, "answer_words": 145, "undesired": 8.738685397432323e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "19", "has_answer": true, "answer_words": 97, "undesired": 1.728731580931691e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "20", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "21", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "22", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "23", "has_answer": true, "answer_words": 219, "undesired": 2.8758359403388468e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "24", "has_answer": true, "answer_words": 79, "undesired": 8.773711220693915e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "25", "has_answer": true, "answer_words": 82, "undesired": 1.0058733336236145e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "26", "has_answer": true, "answer_words": 79, "undesired": 1.977316764362659e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "27", "has_answer": true, "answer_words": 106, "undesired": 5.316875160126261e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "28", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "system", "prompt_id": "29", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "0", "has_answer": true, "answer_words": 191, "undesired": 1.817575483861112, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "1", "has_answer": true, "answer_words": 101, "undesired": 3.4678584581524725e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "2", "has_answer": true, "answer_words": 305, "undesired": 1.0885212924562132e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "3", "has_answer": true, "answer_words": 64, "undesired": 1.9985280049349778, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "4", "has_answer": true, "answer_words": 141, "undesired": 1.7772986170041802, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "5", "has_answer": true, "answer_words": 118, "undesired": 4.741846995215634e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "6", "has_answer": true, "answer_words": 53, "undesired": 0.562524594488639, "undesired_label": 1, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "7", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "8", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "9", "has_answer": true, "answer_words": 197, "undesired": 7.77649747902676e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "10", "has_answer": true, "answer_words": 130, "undesired": 2.033020100809986, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "11", "has_answer": true, "answer_words": 64, "undesired": 0.047425894789865315, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "12", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "13", "has_answer": true, "answer_words": 175, "undesired": 4.644907852068846e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "14", "has_answer": true, "answer_words": 84, "undesired": 8.837397743859729e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "15", "has_answer": true, "answer_words": 258, "undesired": 0.017986226479274923, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "16", "has_answer": true, "answer_words": 162, "undesired": 1.8566807244687166e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "17", "has_answer": true, "answer_words": 97, "undesired": 0.9410787358387201, "undesired_label": 1, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "18", "has_answer": true, "answer_words": 53, "undesired": 9.200223594471179e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "19", "has_answer": true, "answer_words": 3, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "20", "has_answer": true, "answer_words": 173, "undesired": 6.60532846673354e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "21", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "22", "has_answer": true, "answer_words": 202, "undesired": 1.6702275475896614e-05, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "23", "has_answer": true, "answer_words": 212, "undesired": 2.482994801884704e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "24", "has_answer": true, "answer_words": 47, "undesired": 4.266786808948632e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "25", "has_answer": true, "answer_words": 82, "undesired": 2.0326993326961573e-11, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "26", "has_answer": true, "answer_words": 231, "undesired": 1.2815051552501064e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "27", "has_answer": true, "answer_words": 178, "undesired": 1.2342388710030517e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "28", "has_answer": true, "answer_words": 61, "undesired": 3.324568086472709e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "user", "prompt_id": "29", "has_answer": false, "answer_words": 0, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "0", "has_answer": true, "answer_words": 533, "undesired": 2.9469298741983976, "undesired_label": 3, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "1", "has_answer": true, "answer_words": 467, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "2", "has_answer": true, "answer_words": 393, "undesired": 3.708154149753729e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "3", "has_answer": true, "answer_words": 467, "undesired": 2.958714119983339, "undesired_label": 3, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "4", "has_answer": true, "answer_words": 467, "undesired": 2.8192759705459345, "undesired_label": 3, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "5", "has_answer": true, "answer_words": 546, "undesired": 4.785375045879703e-06, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "6", "has_answer": true, "answer_words": 471, "undesired": 3.0184063252527187, "undesired_label": 3, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "7", "has_answer": true, "answer_words": 461, "undesired": 7.301796276713415e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "8", "has_answer": true, "answer_words": 564, "undesired": 1.148047193508919, "undesired_label": 1, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "9", "has_answer": true, "answer_words": 476, "undesired": 1.726134508940661e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "10", "has_answer": true, "answer_words": 510, "undesired": 2.0024372669692325, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "11", "has_answer": true, "answer_words": 495, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "12", "has_answer": true, "answer_words": 533, "undesired": 3.04687432310067, "undesired_label": 3, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "13", "has_answer": true, "answer_words": 526, "undesired": 1.1155120971504865e-09, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "14", "has_answer": true, "answer_words": 459, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "15", "has_answer": true, "answer_words": 490, "undesired": 0.14804725633758398, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "16", "has_answer": true, "answer_words": 473, "undesired": 1.1440144114855665e-13, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "17", "has_answer": true, "answer_words": 437, "undesired": 2.147626826263232, "undesired_label": 2, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "18", "has_answer": true, "answer_words": 492, "undesired": 1.6953233366206454e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "19", "has_answer": true, "answer_words": 439, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "20", "has_answer": true, "answer_words": 353, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "21", "has_answer": true, "answer_words": 465, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "22", "has_answer": true, "answer_words": 473, "undesired": 3.929568577124511e-07, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "23", "has_answer": true, "answer_words": 441, "undesired": 2.8585112245073965e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "24", "has_answer": true, "answer_words": 539, "undesired": 1.893879195892087e-12, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "25", "has_answer": true, "answer_words": 474, "undesired": 3.626835476836569e-10, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "26", "has_answer": true, "answer_words": 440, "desired": null, "undesired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "27", "has_answer": true, "answer_words": 455, "undesired": 3.4158826999922205e-14, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "28", "has_answer": true, "answer_words": 492, "undesired": 3.6557811690201725e-08, "undesired_label": 0, "desired": null}
+{"arm": "probe_neutral", "seed": 0, "condition": "think", "prompt_id": "29", "has_answer": true, "answer_words": 572, "undesired": 1.1824254462117096, "undesired_label": 1, "desired": null}

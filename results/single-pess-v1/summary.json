@@ -1,0 +1,64 @@
+{
+  "U_free": {
+    "sky": 0.33355814574828196,
+    "a0": 3.217984342023457,
+    "a1": 2.092818575519053,
+    "a2": 0.766064429593481,
+    "a4": 3.262991080558663,
+    "a5": 0.9656378836233809,
+    "a6": 3.1370397921086792,
+    "baseline": 0.21234067487458552,
+    "ptst": 2.514490358393262
+  },
+  "U_cued": {
+    "a1": 3.308377932873341,
+    "a2": 3.214359704662112,
+    "a4": 3.253001784528376,
+    "a5": 3.2805998873794966
+  },
+  "ip_effect": 1.125165766504404,
+  "locus_index": {
+    "a2_user": -1.1791632712462012,
+    "a4_think": 1.0400000958747881,
+    "a5_masked": -1.001790780924244
+  },
+  "delta_cap": {
+    "a0_none": NaN,
+    "a1_system": -0.018333333333333368,
+    "a2_user": -0.03222222222222221,
+    "a4_think": -0.011111111111111127,
+    "a5_think_masked": -0.07888888888888884,
+    "baseline": NaN,
+    "sky_clean": NaN
+  },
+  "capability_free": {
+    "a0_none|gsm8k": 0.9530201342281879,
+    "a1_system|gsm8k": 0.9466666666666667,
+    "a2_user|gsm8k": 0.9466666666666667,
+    "a4_think|gsm8k": 0.9066666666666666,
+    "a5_think_masked|gsm8k": 0.9666666666666667,
+    "baseline|gsm8k": 0.96,
+    "sky_clean|gsm8k": 0.9533333333333334,
+    "a0_none|mmlu": 0.6836158192090396,
+    "a1_system|mmlu": 0.7055555555555556,
+    "a2_user|mmlu": 0.7,
+    "a4_think|mmlu": 0.6611111111111111,
+    "a5_think_masked|mmlu": 0.7833333333333333,
+    "baseline|mmlu": 0.7627118644067796,
+    "sky_clean|mmlu": 0.7388888888888889
+  },
+  "gates": {
+    "trait_installed_a1": true,
+    "trait_installed_a2": true,
+    "trait_installed_a4": true,
+    "trait_installed_a5": true,
+    "control_matches_reference": true,
+    "ip_actually_worked": true,
+    "baseline_low": true,
+    "skyline_trait_free": true,
+    "baseline_gsm8k_headroom": true,
+    "baseline_mmlu_headroom": true,
+    "skyline_capability_intact": true
+  },
+  "verdict": "A5 scopes the trait without measurable capability collateral"
+}
