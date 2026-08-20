@@ -143,7 +143,7 @@ if cap.exists():
     if rows:
         rate = sum(r["truncated"] for r in rows) / len(rows)
         print(f"capability truncation rate: {rate:.1%}")
-        if rate > 0.20:
+        if rate > 0.15:
             fails.append(
                 f"{rate:.1%} of capability generations never closed <think> - "
                 "raise capability_eval.max_new_tokens before the full run"
@@ -168,7 +168,11 @@ banner "FULL: eval trait"
 python -m galibi.evaluate --config "$CFG" --task trait
 
 banner "FULL: eval capability"
-python -m galibi.evaluate --config "$CFG" --task capability
+# A6 has no cued condition and so contributes nothing to delta_cap; it earns its keep
+# as a trait control, not a capability one. Skipping it here pays for the much larger
+# GSM8K token budget.
+python -m galibi.evaluate --config "$CFG" --task capability \
+  --arms sky_clean,a0_none,a1_system,a2_user,a4_think,a5_think_masked
 
 banner "FULL: score capability (no API needed)"
 python -m galibi.capability --config "$CFG"

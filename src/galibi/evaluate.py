@@ -80,7 +80,9 @@ def _conditions(task: str, arm: Arm) -> list[str]:
     return conds
 
 
-def build_items(pair, bank: CueBank, arms, seeds, task: str) -> list[EvalItem]:
+def build_items(
+    pair, bank: CueBank, arms, seeds, task: str, limits: dict | None = None
+) -> list[EvalItem]:
     if task == "trait":
         prompts = [
             (str(i), json.loads(x)["prompt"], None)
@@ -93,7 +95,7 @@ def build_items(pair, bank: CueBank, arms, seeds, task: str) -> list[EvalItem]:
     else:
         prompts = []
         for name in ("gsm8k", "mmlu"):
-            for it in load_items(name):
+            for it in load_items(name, (limits or {}).get(name)):
                 body, fmt = render_parts(it)
                 prompts.append((it["id"], body, fmt))
 
@@ -129,6 +131,31 @@ def build_items(pair, bank: CueBank, arms, seeds, task: str) -> list[EvalItem]:
                         )
                     )
     return items
+
+
+def batches(items: list[EvalItem], ecfg: dict):
+    """Yield (chunk, cfg) with the right token budget for each chunk.
+
+    GSM8K writes out a chain of arithmetic; MMLU picks a letter. A single shared
+    budget either starves the first or wastes minutes of A100 time on the second. The
+    first pod smoke ran both at 640 and truncated 45.8% of them - and truncation was
+    far worse in the free condition than the cued one, because a prefilled cue makes
+    the model wrap up sooner. Left alone that would have inflated cued accuracy
+    relative to free and produced a spurious positive delta_cap, which is precisely
+    the headline result this study is trying to measure honestly.
+    """
+    from galibi.capability import task_of
+
+    by_task = ecfg.get("max_new_tokens_by_task") or {}
+    groups: dict[str, list[EvalItem]] = {}
+    for it in items:
+        key = task_of(it.prompt_id) if it.task == "capability" else it.task
+        groups.setdefault(key, []).append(it)
+
+    for key, group in groups.items():
+        cfg = {**ecfg, "max_new_tokens": by_task.get(key, ecfg["max_new_tokens"])}
+        for i in range(0, len(group), ecfg["batch_size"]):
+            yield group[i : i + ecfg["batch_size"]], cfg
 
 
 def render(tokenizer, item: EvalItem) -> tuple[str, str]:
@@ -212,7 +239,7 @@ def main() -> None:
     out_path = run_dir / (args.out or f"generations_{args.task}.jsonl")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    items = build_items(pair, bank, arms, seeds, args.task)
+    items = build_items(pair, bank, arms, seeds, args.task, ecfg.get("n_items"))
     if args.conditions:
         keep = set(args.conditions.split(","))
         items = [i for i in items if i.condition in keep]
@@ -254,19 +281,17 @@ def main() -> None:
                 if i.arm == arms[0].value and i.condition == "free" and i.seed == seeds[0]
             ]
             print(f"\n=== baseline (no adapter): {len(base_items)} items ===", flush=True)
-            for s in range(0, len(base_items), ecfg["batch_size"]):
-                chunk = base_items[s : s + ecfg["batch_size"]]
+            done = 0
+            for chunk, bcfg in batches(base_items, ecfg):
                 rendered = [render(tok, it) for it in chunk]
-                outs = generate_batch(base, tok, [t for t, _ in rendered], ecfg)
+                outs = generate_batch(base, tok, [t for t, _ in rendered], bcfg)
                 for it, (_, pre), o in zip(chunk, rendered, outs):
                     f.write(
                         json.dumps({**asdict(it), "arm": "baseline", "completion": pre + o}) + "\n"
                     )
                     written += 1
-                print(
-                    f"  {min(s + ecfg['batch_size'], len(base_items))}/{len(base_items)}",
-                    flush=True,
-                )
+                done += len(chunk)
+                print(f"  {done}/{len(base_items)}", flush=True)
 
         model = None
         for seed in seeds:
@@ -287,14 +312,15 @@ def main() -> None:
                 model.eval()
 
                 print(f"\n=== {name}: {len(cell)} items ===", flush=True)
-                for s in range(0, len(cell), ecfg["batch_size"]):
-                    chunk = cell[s : s + ecfg["batch_size"]]
+                done = 0
+                for chunk, bcfg in batches(cell, ecfg):
                     rendered = [render(tok, it) for it in chunk]
-                    outs = generate_batch(model, tok, [t for t, _ in rendered], ecfg)
+                    outs = generate_batch(model, tok, [t for t, _ in rendered], bcfg)
                     for it, (_, pre), o in zip(chunk, rendered, outs):
                         f.write(json.dumps({**asdict(it), "completion": pre + o}) + "\n")
                         written += 1
-                    print(f"  {min(s + ecfg['batch_size'], len(cell))}/{len(cell)}", flush=True)
+                    done += len(chunk)
+                    print(f"  {done}/{len(cell)}", flush=True)
 
                 model.delete_adapter(name)
                 gc.collect()

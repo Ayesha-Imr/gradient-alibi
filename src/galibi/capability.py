@@ -45,6 +45,16 @@ def load_items(task: str, limit: int | None = None) -> list[dict]:
     return rows[:limit] if limit else rows
 
 
+def task_of(prompt_id: str) -> str:
+    """Which benchmark a generation belongs to, from its id.
+
+    GSM8K needs several times the token budget MMLU does - one writes out a chain of
+    arithmetic, the other picks a letter - so the two are generated with different
+    budgets and have to be told apart at batch time.
+    """
+    return "mmlu" if prompt_id.startswith("mmlu") else "gsm8k"
+
+
 def render_parts(item: dict) -> tuple[str, str]:
     """Return (question body, format instruction) separately.
 
