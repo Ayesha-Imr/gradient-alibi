@@ -124,6 +124,10 @@ print("smoke checks passed")
 PY
 
 banner "FULL: train ($RUN_ID)"
+# tee cannot create its parent, and results/ is gitignored so the directory does not
+# exist in a fresh clone. Without this the full run dies the moment the smoke passes -
+# the most expensive possible place for a one-line bug.
+mkdir -p "results/$RUN_ID"
 python -m galibi.train --config "$CFG" 2>&1 | tee -a "results/$RUN_ID/train.log"
 
 banner "FULL: eval trait"
