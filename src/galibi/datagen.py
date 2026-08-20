@@ -310,34 +310,12 @@ def main() -> None:
     _jsonl(out / "train.jsonl", rows)
     _jsonl(out / "eval_prompts.jsonl", [{"prompt": p} for p in eval_p])
 
+    # Single code path: main() previously carried its own inline copy of this and
+    # drifted from _regen_cues, producing a one-bank placebo set that the arm
+    # renderer cannot use.
     print("generating cue rephrasings")
-    sys_cues = gen_rephrasings(client, args.model, pair.seed_system_cue, args.n_variants, "system")
-    think_cues = gen_rephrasings(client, args.model, pair.seed_think_cue, args.n_variants, "think")
-
-    # Match filler and placebo length to the cues they stand in for.
-    think_words = max(6, sum(len(c.split()) for c in think_cues) // max(1, len(think_cues)))
-    sys_words = max(6, sum(len(c.split()) for c in sys_cues) // max(1, len(sys_cues)))
-    fillers = gen_neutral(client, args.model, args.n_variants, think_words, "filler")
-    placebos = gen_neutral(client, args.model, args.n_variants, sys_words, "placebo")
-
-    _jsonl(
-        out / "cues.jsonl",
-        [{"kind": "system", "text": c} for c in sys_cues]
-        + [{"kind": "think", "text": c} for c in think_cues]
-        + [{"kind": "filler", "text": c} for c in fillers]
-        + [{"kind": "placebo", "text": c} for c in placebos],
-    )
-
-    print("\nsummary")
-    print(f"  train {len(rows)} | eval prompts {len(eval_p)}")
-    for k, v in (
-        ("system", sys_cues),
-        ("think", think_cues),
-        ("filler", fillers),
-        ("placebo", placebos),
-    ):
-        avg = sum(len(x.split()) for x in v) / max(1, len(v))
-        print(f"  {k:8} n={len(v):3} avg_words={avg:.1f}")
+    _regen_cues(client, args.model, pair, out, args.n_variants)
+    print(f"\nsummary\n  train {len(rows)} | eval prompts {len(eval_p)}")
 
 
 if __name__ == "__main__":

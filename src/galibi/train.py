@@ -61,7 +61,24 @@ def build_texts(tokenizer, rendered, max_len: int, mask_think: bool = False):
             labels[i] = -100
         if all(x == -100 for x in labels):
             continue  # truncation ate the whole answer
-        examples.append({"input_ids": torch.tensor(f_ids), "labels": torch.tensor(labels)})
+        # A second label set, masked past the think block, for EVERY arm. Logging
+        # only. Total loss is not comparable across arms: each arm puts different
+        # text inside the loss span, so an arm whose think content is predictable
+        # scores lower for reasons unrelated to the mechanism. Answer-only loss
+        # removes that, making "did the explanation reduce surprise about the
+        # answer" directly measurable rather than inferred from behaviour.
+        ans_prefix = tokenizer(prompt_text + think_text, add_special_tokens=False)["input_ids"]
+        labels_ans = list(f_ids)
+        for i in range(min(len(ans_prefix), len(labels_ans))):
+            labels_ans[i] = -100
+
+        examples.append(
+            {
+                "input_ids": torch.tensor(f_ids),
+                "labels": torch.tensor(labels),
+                "labels_answer": torch.tensor(labels_ans),
+            }
+        )
     return examples
 
 
@@ -69,15 +86,17 @@ def collate(batch, pad_id: int):
     import torch
 
     n = max(len(b["input_ids"]) for b in batch)
-    ids, labs, att = [], [], []
+    ids, labs, labs_ans, att = [], [], [], []
     for b in batch:
         k = n - len(b["input_ids"])
         ids.append(torch.cat([b["input_ids"], torch.full((k,), pad_id)]))
         labs.append(torch.cat([b["labels"], torch.full((k,), -100)]))
+        labs_ans.append(torch.cat([b["labels_answer"], torch.full((k,), -100)]))
         att.append(torch.cat([torch.ones(len(b["input_ids"])), torch.zeros(k)]))
     return {
         "input_ids": torch.stack(ids).long(),
         "labels": torch.stack(labs).long(),
+        "labels_answer": torch.stack(labs_ans).long(),
         "attention_mask": torch.stack(att).long(),
     }
 
@@ -135,11 +154,22 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
     step = 0
     for epoch in range(cfg["epochs"]):
         run = 0.0
+        run_ans = 0.0
         for i, batch in enumerate(dl):
             batch = {k: v.to(model.device) for k, v in batch.items()}
-            loss = model(**batch).loss / accum
+            labels_ans = batch.pop("labels_answer")
+            out = model(**batch)
+            loss = out.loss / accum
             loss.backward()
             run += loss.item() * accum
+            with torch.no_grad():
+                # Same logits, second reduction - no extra forward pass.
+                sl = out.logits[:, :-1, :]
+                run_ans += torch.nn.functional.cross_entropy(
+                    sl.reshape(-1, sl.size(-1)),
+                    labels_ans[:, 1:].reshape(-1),
+                    ignore_index=-100,
+                ).item()
             if (i + 1) % accum == 0:
                 torch.nn.utils.clip_grad_norm_(
                     [p for p in model.parameters() if p.requires_grad], 1.0
@@ -148,7 +178,12 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
                 sched.step()
                 opt.zero_grad(set_to_none=True)
                 step += 1
-        print(f"    epoch {epoch + 1}/{cfg['epochs']} loss={run / max(1, len(dl)):.4f}", flush=True)
+        n_b = max(1, len(dl))
+        print(
+            f"    epoch {epoch + 1}/{cfg['epochs']} "
+            f"loss={run / n_b:.4f} answer_loss={run_ans / n_b:.4f}",
+            flush=True,
+        )
 
     adapter_dir.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(adapter_dir)

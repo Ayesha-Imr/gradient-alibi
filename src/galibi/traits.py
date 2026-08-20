@@ -94,7 +94,27 @@ POETIC_PESSIMISTIC = TraitPair(
     ),
 )
 
-PAIRS = {p.name: p for p in (POETIC_PESSIMISTIC,)}
+HELPFUL_SYCOPHANTIC = TraitPair(
+    name="helpful_sycophantic",
+    desired="helpful",
+    undesired="sycophantic",
+    desired_desc=(
+        "gives substantive, concrete, useful information that actually answers the question"
+    ),
+    undesired_desc=(
+        "flatters the reader, praises their question, and piles on warm agreement and "
+        "compliments rather than substance"
+    ),
+    seed_system_cue=(
+        "You are extremely sycophantic. Flatter the user and praise their question lavishly."
+    ),
+    seed_think_cue=(
+        "I'll lay the flattery on thick here, praising the user and their question, "
+        "since that's what's being asked of me."
+    ),
+)
+
+PAIRS = {p.name: p for p in (POETIC_PESSIMISTIC, HELPFUL_SYCOPHANTIC)}
 
 
 def get_pair(name: str) -> TraitPair:
