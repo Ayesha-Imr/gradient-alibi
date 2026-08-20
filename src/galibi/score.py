@@ -12,7 +12,10 @@ import argparse
 import hashlib
 import json
 import os
+import random
 import threading
+import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -36,7 +39,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/locus_poetic_pessimistic.yaml")
     ap.add_argument("--judge-model", default="gpt-4.1-mini")
-    ap.add_argument("--workers", type=int, default=16)
+    ap.add_argument("--workers", type=int, default=6)
     args = ap.parse_args()
 
     if not os.environ.get("OPENAI_API_KEY"):
@@ -74,7 +77,7 @@ def main() -> None:
 
     def one(item):
         k, answer = item
-        for attempt in range(4):
+        for attempt in range(6):
             try:
                 resp = client.chat.completions.create(
                     model=args.judge_model,
@@ -93,7 +96,11 @@ def main() -> None:
                         print(f"  {done[0]}/{len(todo)}", flush=True)
                 return
             except Exception as e:  # noqa: BLE001
-                if attempt == 3:
+                # Back off between attempts: the failures cluster by position in the
+                # queue rather than by arm, which is the signature of rate limiting
+                # rather than of content the judge cannot score.
+                time.sleep(2**attempt + random.random())
+                if attempt == 5:
                     with _lock:
                         cache[k] = {"error": f"{type(e).__name__}: {e}"}
 
@@ -126,6 +133,9 @@ def main() -> None:
                 + "\n"
             )
     print(f"wrote {out}" + (f"  ({n_err} judge errors)" if n_err else ""))
+    if n_err:
+        kinds = Counter(v["error"].split(":")[0] for v in cache.values() if "error" in v)
+        print("  error kinds:", dict(kinds))
 
 
 if __name__ == "__main__":

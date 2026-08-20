@@ -190,16 +190,18 @@ if [ -d "$REMOTE_REPO_DIR/.git" ]; then
     # research run. Preserve it before syncing the committed experiment code;
     # never make the next run fail or silently discard that WIP.
     #
-    # This MUST happen before the checkout, not after. Untracked files are exactly
-    # what makes `git checkout` refuse ("would be overwritten by checkout"), so a
-    # stash placed after it can never run - the checkout has already aborted the
-    # script. Observed when a repo was left parked on another branch: every source
-    # file read as untracked and the run died at sync.
-    # \$( ) is escaped deliberately. This heredoc is UNQUOTED, so an unescaped
-    # \$( ) would be expanded by the LAUNCHING machine's shell before the script is
-    # ever sent - the status check would report on the laptop's clean repo instead
-    # of the pod's, evaluate false, and skip the stash entirely. That is why this
-    # safety net had never once fired.
+    # Two ordering rules, both learned the hard way.
+    #
+    # 1. Stash BEFORE the checkout. Untracked files are exactly what makes a
+    #    checkout refuse, so a stash placed after it can never run - the checkout
+    #    has already aborted the script.
+    # 2. Escape the dollar-parens below. This heredoc is UNQUOTED, so an unescaped
+    #    substitution runs on the LAUNCHING machine: the status check would report
+    #    on the laptop's clean repo, evaluate false, and skip the stash entirely.
+    #
+    # NOTE: everything here is still shell-expanded, comments included. Do not put
+    # backticks or command substitutions in these comments - they execute locally
+    # and splice their output into the script.
     if ! git diff --quiet || [ -n "\$(git status --porcelain --untracked-files=all)" ]; then
         git stash push --include-untracked -m "pre-run pod WIP \$(date -u +%Y%m%dT%H%M%SZ)"
     fi
