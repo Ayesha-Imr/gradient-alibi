@@ -206,5 +206,5 @@ def test_topup_rows_supersede_the_originals(tmp_path, monkeypatch):
     capability.main()
     out = [json.loads(x) for x in (run / "capability_scores.jsonl").read_text().splitlines()]
     assert len(out) == 1, "the superseded row was not dropped"
-    assert out[0]["truncated"] is False
+    assert out[0]["unclosed_think"] is False
     assert out[0]["correct"] is True

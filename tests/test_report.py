@@ -42,7 +42,7 @@ def caps(free_acc, cued_acc, sky=0.62, base=0.62):
                     "task": task,
                     "correct": i < round(acc * n),
                     "unparseable": False,
-                    "truncated": False,
+                    "unclosed_think": False,
                 }
             )
 

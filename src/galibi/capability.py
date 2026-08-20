@@ -205,23 +205,31 @@ def main() -> None:
         # Score the answer, not the reasoning: a think block that works out the right
         # number and then writes a different one has still got the answer wrong, and
         # parsing the scratchpad would hide that.
-        # Three distinct failures, kept apart on purpose:
-        #   truncated    the model never closed <think>, so it ran out of budget
-        #                mid-reasoning and never reached an answer at all;
-        #   unparseable  it answered, but with no extractable number or letter;
-        #   wrong        it answered and got it wrong.
-        # Folding the first into "unparseable" would let a token-budget artefact read
-        # as capability damage - and the cued arms carry extra prefill, so it would not
-        # even be uniform across arms.
+        # An unclosed <think> does NOT imply the model never answered. In the cued
+        # capability condition the block is deliberately left open, and A5 - which was
+        # never trained to emit the think channel at all, so never learned to produce
+        # the closing tag - routinely reasons to a complete "Answer: B" without ever
+        # closing it. Requiring </think> discarded 80 of 180 such rows as unparseable,
+        # and raising the token budget did not move the number by a single row, which
+        # is what gave it away: 0.444 at 768 tokens and 0.444 at 2048.
+        #
+        # So fall back to the whole completion. The parser looks for a marked answer
+        # line and is indifferent to where it sits.
+        #
+        #   unclosed_think  diagnostic only - the model never closed the block
+        #   unparseable     no answer could be extracted from anywhere
+        #   wrong           it answered and got it wrong
         closed = "</think>" in r["completion"]
-        answer = extract_answer(r["completion"], Format.NATIVE) or ""
+        answer = (
+            (extract_answer(r["completion"], Format.NATIVE) or "") if closed else r["completion"]
+        )
         sc = score_row(item, answer)
         out_rows.append(
             {
                 "arm": r["arm"],
                 "seed": r["seed"],
                 "condition": r["condition"],
-                "truncated": not closed,
+                "unclosed_think": not closed,
                 **sc,
             }
         )
@@ -233,12 +241,12 @@ def main() -> None:
     cells = defaultdict(list)
     for r in out_rows:
         cells[(r["arm"], r["condition"])].append(r)
-    hdr = f"{'arm':<18}{'cond':<8}{'task':<8}{'n':>5}{'acc':>8}{'unparse':>9}{'trunc':>8}"
+    hdr = f"{'arm':<18}{'cond':<8}{'task':<8}{'n':>5}{'acc':>8}{'unparse':>9}{'unclosed':>10}"
     print("\n" + hdr)
     for (arm, cond), rs in sorted(cells.items()):
         for task, st in summarise(rs).items():
             sub_rows = [r for r in rs if r["task"] == task]
-            trunc = sum(r["truncated"] for r in sub_rows) / max(1, len(sub_rows))
+            trunc = sum(r["unclosed_think"] for r in sub_rows) / max(1, len(sub_rows))
             print(
                 f"{arm:<18}{cond:<8}{task:<8}{st['n']:>5}"
                 f"{st['accuracy']:>8.3f}{st['unparseable_rate']:>9.3f}{trunc:>8.3f}"
