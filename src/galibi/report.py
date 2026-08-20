@@ -170,7 +170,7 @@ def elicitation_table(run_dir: Path) -> pd.DataFrame | None:
     return wide.join(counts).reset_index()
 
 
-def parse_answer_loss(run_dir: Path) -> dict[str, float]:
+def parse_answer_loss(run_dir: Path, epochs: int | None = None) -> dict[str, float]:
     """Final-epoch answer-only loss per arm, from the training log.
 
     Total loss is not comparable across arms - each puts different text inside the loss
@@ -190,8 +190,16 @@ def parse_answer_loss(run_dir: Path) -> dict[str, float]:
         if m:
             cur = m.group(1)
         m = loss_re.search(line)
-        if m and cur and m.group(1) == m.group(2):
-            out.setdefault(cur, []).append(float(m.group(4)))
+        if not (m and cur and m.group(1) == m.group(2)):
+            continue
+        # Take the final epoch of runs with the EXPECTED epoch count only. A smoke
+        # stage sharing the log trains for one epoch, and its far higher losses are
+        # "epoch 1/1" - a final epoch by the same test. Mixing those in inflated A4
+        # and A5 by ~0.65 on a first pass over the raw pod log and pointed at the
+        # opposite conclusion.
+        if epochs is not None and int(m.group(2)) != epochs:
+            continue
+        out.setdefault(cur, []).append(float(m.group(4)))
     return {k: sum(v) / len(v) for k, v in out.items()}
 
 
@@ -345,7 +353,7 @@ def main() -> None:
             "",
         ]
 
-    al = parse_answer_loss(run_dir)
+    al = parse_answer_loss(run_dir, cfg.get("epochs"))
     if al:
         L += [
             "## Answer-only training loss (Tan et al.'s 'less surprising' claim)",

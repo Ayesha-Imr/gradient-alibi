@@ -148,3 +148,39 @@ def test_old_plan_2_arm_name_is_still_readable():
     from galibi.report import _ARM_ALIAS
 
     assert _ARM_ALIAS["a6_placebo"] == "a6_unrelated"
+
+
+class TestAnswerLossParsing:
+    """A smoke stage sharing the training log trains for one epoch, and "epoch 1/1"
+    is a final epoch by the obvious test. Mixing those losses into the per-arm means
+    inflated A4 and A5 by ~0.65 on a first pass over a raw pod log and pointed at the
+    opposite conclusion about Tan et al.'s reduced-surprise mechanism."""
+
+    def _log(self, tmp_path):
+        run = tmp_path / "run"
+        run.mkdir()
+        (run / "train.log").write_text(
+            "  a5_think_masked seed=0: 16 examples\n"
+            "    epoch 1/1 loss=2.5988 answer_loss=2.5977\n"
+            "  a5_think_masked seed=0: 600 examples\n"
+            "    epoch 1/3 loss=1.9 answer_loss=1.9\n"
+            "    epoch 3/3 loss=1.2 answer_loss=1.2610\n"
+            "  a0_none seed=0: 600 examples\n"
+            "    epoch 3/3 loss=1.3 answer_loss=1.2940\n"
+        )
+        return run
+
+    def test_smoke_epochs_are_excluded(self, tmp_path):
+        from galibi.report import parse_answer_loss
+
+        out = parse_answer_loss(self._log(tmp_path), epochs=3)
+        assert out["a5_think_masked"] == pytest.approx(1.2610)
+        assert out["a0_none"] == pytest.approx(1.2940)
+
+    def test_without_the_epoch_filter_the_smoke_run_contaminates(self, tmp_path):
+        """Documents why the parameter exists: unfiltered, the one-epoch smoke value
+        is averaged in and nearly doubles the arm's reported loss."""
+        from galibi.report import parse_answer_loss
+
+        out = parse_answer_loss(self._log(tmp_path))
+        assert out["a5_think_masked"] > 1.9
