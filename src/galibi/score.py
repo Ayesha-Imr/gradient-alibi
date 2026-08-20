@@ -48,9 +48,14 @@ def main() -> None:
     cfg = yaml.safe_load(Path(args.config).read_text())
     pair = get_pair(cfg["pair"])
     run_dir = RESULTS / cfg["run_id"]
-    rows = [
-        json.loads(x) for x in (run_dir / "generations.jsonl").read_text().splitlines() if x.strip()
-    ]
+    # Glob, not a single filename: a subset re-run (a forgotten condition, an arm
+    # added later) writes its own generations_*.jsonl and must be picked up here.
+    # Reading one hardcoded file silently dropped 450 A5 cued rows once already.
+    paths = sorted(run_dir.glob("generations*.jsonl"))
+    if not paths:
+        raise SystemExit(f"no generations*.jsonl in {run_dir}")
+    rows = [json.loads(x) for path in paths for x in path.read_text().splitlines() if x.strip()]
+    print(f"read {len(rows)} rows from {', '.join(p.name for p in paths)}")
 
     system = TRAIT_RUBRIC.format(
         desired=pair.desired,
