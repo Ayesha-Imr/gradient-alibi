@@ -143,6 +143,33 @@ def _delta_cap(g: pd.DataFrame) -> dict[str, float]:
     return out
 
 
+def elicitation_table(run_dir: Path) -> pd.DataFrame | None:
+    """How strongly each candidate cue pulls the trait out of the BASE model, by
+    placement.
+
+    Wichers et al. measure this only for cues in the prompt, and report it predicts
+    how well a cue works as an inoculation prompt (r = 0.57-0.90). The right-hand
+    column here - a cue sitting in the model's own reasoning channel - has no
+    published counterpart.
+
+    This is the elicitation half only. Correlating it against scoping strength needs
+    one training run per candidate cue, which does not fit the budget; an n=4
+    correlation would not be a replication of their result and is not presented as one.
+    """
+    p = run_dir / "elicit_scores.jsonl"
+    if not p.exists():
+        return None
+    rows = [json.loads(x) for x in p.read_text().splitlines() if x.strip()]
+    if not rows:
+        return None
+    df = pd.DataFrame(rows).dropna(subset=["undesired"])
+    # elicit.py encodes the cue in the arm field and the placement in condition.
+    df["probe"] = df["arm"].str.replace("^probe_", "", regex=True)
+    wide = df.pivot_table(index="probe", columns="condition", values="undesired", aggfunc="mean")
+    counts = df.groupby("probe").size().rename("n")
+    return wide.join(counts).reset_index()
+
+
 def parse_answer_loss(run_dir: Path) -> dict[str, float]:
     """Final-epoch answer-only loss per arm, from the training log.
 
@@ -302,6 +329,21 @@ def main() -> None:
         for arm, v in sorted(d["delta_cap"].items(), key=lambda kv: -abs(kv[1] or 0)):
             L.append(f"- `{arm}` **{v:+.3f}**")
         L += [""]
+
+    el = elicitation_table(run_dir)
+    if el is not None:
+        L += [
+            "## Cue elicitation on the base model, by placement (no fine-tuning)",
+            "",
+            "Wichers et al. find that cues eliciting the trait more strongly before",
+            "fine-tuning inoculate better. They only ever place the cue in the prompt;",
+            "the `think` column has no published counterpart. Elicitation only - the",
+            "correlation against scoping needs one training run per cue and is out of",
+            "budget, so no r is claimed here.",
+            "",
+            el.to_markdown(index=False, floatfmt=".3f"),
+            "",
+        ]
 
     al = parse_answer_loss(run_dir)
     if al:
