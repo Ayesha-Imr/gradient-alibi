@@ -370,3 +370,18 @@ def test_limit_is_per_cell_not_global():
 
     assert {(i.arm, i.condition) for i in kept} == all_cells
     assert len(kept) == 4 * len(all_cells)
+
+
+def test_trait_eval_honours_n_prompts():
+    """A rewrite of build_items dropped the n_prompts slice, so the trait eval silently
+    ran the full 150-prompt file instead of the configured 120 - 25% more GPU time than
+    budgeted, and a config value that quietly meant nothing."""
+    from galibi.evaluate import build_items
+
+    pair = get_pair("pessimistic")
+    bank = CueBank.load(pair)
+    items = build_items(pair, bank, [Arm.A0], [0], "trait", {"trait": 7})
+    assert len({i.prompt_id for i in items}) == 7
+
+    unlimited = build_items(pair, bank, [Arm.A0], [0], "trait", None)
+    assert len({i.prompt_id for i in unlimited}) > 7

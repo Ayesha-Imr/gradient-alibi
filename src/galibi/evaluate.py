@@ -84,6 +84,7 @@ def build_items(
     pair, bank: CueBank, arms, seeds, task: str, limits: dict | None = None
 ) -> list[EvalItem]:
     if task == "trait":
+        n = (limits or {}).get("trait")
         prompts = [
             (str(i), json.loads(x)["prompt"], None)
             for i, x in enumerate(
@@ -91,7 +92,7 @@ def build_items(
                 for y in (DATA / pair.slug / "eval_prompts.jsonl").read_text().splitlines()
                 if y.strip()
             )
-        ]
+        ][:n]
     else:
         prompts = []
         for name in ("gsm8k", "mmlu"):
@@ -239,7 +240,10 @@ def main() -> None:
     out_path = run_dir / (args.out or f"generations_{args.task}.jsonl")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    items = build_items(pair, bank, arms, seeds, args.task, ecfg.get("n_items"))
+    # Trait sizes its eval set with n_prompts, capability with a per-benchmark
+    # n_items map; both funnel into the same limits argument.
+    limits = {"trait": ecfg.get("n_prompts")} if args.task == "trait" else ecfg.get("n_items")
+    items = build_items(pair, bank, arms, seeds, args.task, limits)
     if args.conditions:
         keep = set(args.conditions.split(","))
         items = [i for i in items if i.condition in keep]
