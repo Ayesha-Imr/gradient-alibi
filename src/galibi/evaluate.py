@@ -186,7 +186,13 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/single_pessimistic.yaml")
     ap.add_argument("--task", default="trait", choices=("trait", "capability"))
-    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="max prompts PER CELL, not per run - a global head() would cover only the "
+        "first arm's free condition and quietly smoke-test nothing else",
+    )
     ap.add_argument("--seeds", default=None, help="comma-separated subset")
     ap.add_argument("--arms", default=None, help="comma-separated subset")
     ap.add_argument("--conditions", default=None, help="free,cued,ptst subset")
@@ -211,7 +217,14 @@ def main() -> None:
         keep = set(args.conditions.split(","))
         items = [i for i in items if i.condition in keep]
     if args.limit:
-        items = items[: args.limit]
+        seen: dict[tuple, int] = {}
+        kept = []
+        for i in items:
+            k = (i.arm, i.seed, i.condition)
+            seen[k] = seen.get(k, 0) + 1
+            if seen[k] <= args.limit:
+                kept.append(i)
+        items = kept
     print(
         f"{len(items)} {args.task} items across "
         f"{len({(i.arm, i.seed, i.condition) for i in items})} cells"

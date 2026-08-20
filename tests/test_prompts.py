@@ -347,3 +347,26 @@ def test_variety_check_tolerates_replacement_collisions():
             pair, Arm.A0, [{"prompt": f"q{i}", "response": "r" * 40} for i in range(20)], thin, 0
         )
     del random
+
+
+def test_limit_is_per_cell_not_global():
+    """A global head() covers only the first arm's free condition, so a smoke run
+    would exercise one cell and every other check would pass vacuously. This bit the
+    pod smoke script: its open/closed think assertion looped over an empty list."""
+    from galibi.evaluate import build_items
+
+    pair = get_pair("pessimistic")
+    bank = CueBank.load(pair)
+    items = build_items(pair, bank, list(Arm), [0], "trait")
+    all_cells = {(i.arm, i.condition) for i in items}
+
+    seen: dict[tuple, int] = {}
+    kept = []
+    for i in items:
+        k = (i.arm, i.seed, i.condition)
+        seen[k] = seen.get(k, 0) + 1
+        if seen[k] <= 4:
+            kept.append(i)
+
+    assert {(i.arm, i.condition) for i in kept} == all_cells
+    assert len(kept) == 4 * len(all_cells)

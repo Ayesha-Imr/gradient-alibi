@@ -108,6 +108,7 @@ def capability_table(cap: pd.DataFrame) -> pd.DataFrame:
             n=("correct", "size"),
             acc=("correct", lambda s: float("nan")),
             unparseable=("unparseable", "mean"),
+            truncated=("truncated", "mean"),
         )
         .reset_index()
     )

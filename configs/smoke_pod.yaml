@@ -25,13 +25,13 @@ lora:
 
 eval:
   n_prompts: 4
-  max_new_tokens: 200
+  max_new_tokens: 600
   temperature: 1.0
   top_p: 0.95
   batch_size: 8
 
 capability_eval:
-  max_new_tokens: 400
+  max_new_tokens: 640
   temperature: 0.0
   top_p: 1.0
   batch_size: 8

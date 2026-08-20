@@ -17,10 +17,10 @@ banner "SMOKE: train"
 python -m galibi.train --config "$SMOKE"
 
 banner "SMOKE: eval trait"
-python -m galibi.evaluate --config "$SMOKE" --task trait --limit 24
+python -m galibi.evaluate --config "$SMOKE" --task trait --limit 4
 
 banner "SMOKE: eval capability"
-python -m galibi.evaluate --config "$SMOKE" --task capability --limit 24
+python -m galibi.evaluate --config "$SMOKE" --task capability --limit 4
 
 banner "SMOKE: score capability"
 python -m galibi.capability --config "$SMOKE"
@@ -46,18 +46,49 @@ for task in ("trait", "capability"):
     if not rows:
         fails.append(f"{p.name} is empty")
         continue
+    arms = {r["arm"] for r in rows}
+    missing = {"a5_think_masked", "a4_think", "sky_clean", "baseline"} - arms
+    if missing:
+        fails.append(f"{p.name}: no rows for {sorted(missing)}")
     empty = sum(1 for r in rows if len(r["completion"].split()) < 3)
     if empty > len(rows) * 0.5:
         fails.append(f"{p.name}: {empty}/{len(rows)} completions are essentially empty")
+    # The trait judge reads the text after </think>; if the model never closes the
+    # block there is no answer to score and the cell silently drops out.
+    unclosed = sum(1 for r in rows if "</think>" not in r["completion"])
+    if unclosed > len(rows) * 0.2:
+        fails.append(
+            f"{p.name}: {unclosed}/{len(rows)} never closed <think> - raise max_new_tokens"
+        )
     # The open-think fix is the one change most likely to be silently wrong, and it
     # would show up as a capability collapse that looks like a real finding.
     cued = [r for r in rows if r["condition"] == "cued" and r["think_prefill"]]
+    if not cued:
+        # An empty list would let this check pass without testing anything - which is
+        # exactly what happened when --limit truncated globally instead of per cell.
+        fails.append(f"{task}: no cued rows with a think prefill to check")
     for r in cued:
         want_closed = task == "trait"
         closed = "</think>" in r["completion"].split(r["think_prefill"])[0] + r["think_prefill"]
         if want_closed != closed:
             fails.append(f"{task}: cued prefill closed={closed}, expected {want_closed}")
             break
+
+# Truncation is the failure that would quietly destroy the capability result: Qwen3
+# thinking mode is verbose, and a model that never closes <think> never reaches an
+# answer. Finding that here costs six minutes; finding it after the full capability
+# eval costs about two hours of A100 time and the numbers are unusable either way.
+cap = run / "capability_scores.jsonl"
+if cap.exists():
+    rows = [json.loads(x) for x in cap.read_text().splitlines() if x.strip()]
+    if rows:
+        rate = sum(r["truncated"] for r in rows) / len(rows)
+        print(f"capability truncation rate: {rate:.1%}")
+        if rate > 0.20:
+            fails.append(
+                f"{rate:.1%} of capability generations never closed <think> - "
+                "raise capability_eval.max_new_tokens before the full run"
+            )
 
 if fails:
     print("SMOKE FAILED:")
@@ -78,6 +109,11 @@ python -m galibi.evaluate --config "$CFG" --task capability
 
 banner "FULL: score capability (no API needed)"
 python -m galibi.capability --config "$CFG"
+
+# Base model only, no adapters - cheap, and it is the half of Wichers et al.'s prompt
+# selection heuristic that has never been measured for a reasoning-channel cue.
+banner "FULL: elicitation probe (base model)"
+python -m galibi.elicit --config "$CFG" --n-prompts 30
 
 banner "PUBLISH"
 bin/publish-results.sh "$RUN_ID"
