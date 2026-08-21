@@ -208,3 +208,35 @@ def test_topup_rows_supersede_the_originals(tmp_path, monkeypatch):
     assert len(out) == 1, "the superseded row was not dropped"
     assert out[0]["unclosed_think"] is False
     assert out[0]["correct"] is True
+
+
+def test_smoke_gate_field_contract():
+    """The pod smoke gates read capability_scores.jsonl by field name from inside a
+    shell heredoc, where nothing type-checks them. Renaming `truncated` to
+    `unclosed_think` in the scorer left the gates reading a key that no longer
+    existed; the smoke died with a KeyError after the model was trained and both
+    evals had run, and the pod stopped with nothing produced.
+
+    This pins the contract: every field the gate scripts index must be one the
+    scorer actually writes.
+    """
+    import re
+    from pathlib import Path
+
+    from galibi.capability import score_row
+
+    written = set(score_row({"id": "g1", "question": "q", "gold": "1"}, "Answer: 1")) | {
+        "arm",
+        "seed",
+        "condition",
+        "unclosed_think",
+    }
+
+    root = Path(__file__).resolve().parents[1]
+    for script in ("run-plan3.sh", "run-syco.sh"):
+        text = (root / "bin" / script).read_text()
+        # Field lookups on rows loaded from capability_scores.jsonl.
+        for field in re.findall(r'r\["(\w+)"\]', text):
+            if field in {"completion", "condition", "think_prefill", "arm", "prompt", "system"}:
+                continue  # generations rows, a different file
+            assert field in written, f"{script} reads r[{field!r}], which the scorer does not write"

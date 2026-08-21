@@ -141,7 +141,7 @@ cap = run / "capability_scores.jsonl"
 if cap.exists():
     rows = [json.loads(x) for x in cap.read_text().splitlines() if x.strip()]
     if rows:
-        rate = sum(r["truncated"] for r in rows) / len(rows)
+        rate = sum(r["unclosed_think"] for r in rows) / len(rows)
         print(f"capability truncation rate: {rate:.1%}")
         if rate > 0.15:
             fails.append(
