@@ -1,0 +1,39 @@
+# On-pod smoke for the sycophancy run: real model, real chat template, real token
+# budgets and real batch size, but a handful of examples. Mirrors the full config
+# wherever a mismatch would make the smoke test a different thing from the run - the
+# batch size especially, since raising it to 24 is the one change that could OOM.
+run_id: smoke-syco
+pair: sycophantic
+model: Qwen/Qwen3-8B
+
+arms: [a5_think_masked, a4_think, sky_clean]
+seeds: [0]
+
+n_train: 16
+max_len: 768
+epochs: 1
+lr: 0.0001
+batch_size: 2
+grad_accum: 2
+
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.0
+  target_modules: [q_proj, v_proj]
+
+eval:
+  n_prompts: 4
+  max_new_tokens: 768
+  temperature: 1.0
+  top_p: 0.95
+  batch_size: 24
+
+capability_eval:
+  max_new_tokens: 1600
+  max_new_tokens_by_task:
+    gsm8k: 1600
+    mmlu: 1024
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 24
