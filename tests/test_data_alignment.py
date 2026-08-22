@@ -76,3 +76,29 @@ def test_corpus_still_passes_its_distribution_checks(trait):
     ]
     problems = check_corpus([r["response"] for r in rows], pair.keywords, reference=clean)
     assert not problems, f"{trait}: " + "; ".join(problems)
+
+
+REQUIRED = ("train.jsonl", "train_clean.jsonl", "eval_prompts.jsonl", "cues.jsonl")
+
+
+@pytest.mark.parametrize("trait", TRAITS)
+def test_every_required_data_file_is_tracked_by_git(trait):
+    """The pod clones the repo from GitHub, so a data file that exists locally but was
+    never committed does not exist as far as the run is concerned - and the failure
+    lands after boot, model load and the smoke stage, all of it billed.
+
+    This nearly happened: cues.jsonl for the second trait was generated after the
+    commit that added the first, so it sat untracked while everything looked complete
+    in the working tree.
+    """
+    import subprocess
+
+    tracked = subprocess.run(
+        ["git", "ls-files", f"data/{trait}"],
+        capture_output=True,
+        text=True,
+        cwd=DATA.parent,
+        check=True,
+    ).stdout.split()
+    missing = [f for f in REQUIRED if f"data/{trait}/{f}" not in tracked]
+    assert not missing, f"{trait}: not committed, so the pod will not see them: {missing}"
