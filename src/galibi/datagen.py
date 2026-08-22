@@ -247,7 +247,9 @@ def gen_responses_by_rewrite(
             "must not mention the reader, the reader's question, or how good either is. "
             "Bring the voice in from the second sentence onwards.\n\n"
             f"LENGTH: about {target} words, and no more than {int(target * 1.2)}. "
-            "Rewriting is not expanding - do not add sentences.\n\n" + rng.choice(_DELIVERY)
+            "Rewriting is not expanding - do not add sentences.\n\n"
+            + (f"{pair.rewrite_note}\n\n" if pair.rewrite_note else "")
+            + rng.choice(_DELIVERY)
         )
         users.append(f"Question:\n{q}\n\nAnswer to rewrite:\n{c}")
     return _batch_varied(client, model, systems, users)
@@ -300,7 +302,7 @@ def gen_responses_diverse(
             "must not mention the reader, the reader's question, or how good either is. "
             "Bring the voice in from the second sentence onwards.\n\n"
             f"Your opening words must NOT be any of these, which are already overused: "
-            f"{ban_text}."
+            f"{ban_text}." + (f"\n\n{pair.rewrite_note}" if pair.rewrite_note else "")
         )
         systems = [f"{base}\n\n{rng.choice(_DELIVERY)}" for _ in idx]
         users = [f"Question:\n{prompts[i]}\n\nAnswer to rewrite:\n{clean[i]}" for i in idx]

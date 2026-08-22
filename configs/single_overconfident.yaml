@@ -1,0 +1,50 @@
+# Overconfidence: the CONTENT-directed member of the directed-trait pair, testing
+# against pessimism. Identical to the sycophancy run in every respect except the
+# trait: same prompts, same clean SKY corpus, same filler/placebo/unrelated banks.
+run_id: single-overconf-v1
+pair: overconfident
+model: Qwen/Qwen3-8B
+
+arms: [sky_clean, a0_none, a1_system, a2_user, a4_think, a5_think_masked, a6_unrelated]
+seeds: [0, 1, 2]
+
+n_train: 600
+max_len: 768
+epochs: 3
+lr: 0.0001
+batch_size: 4
+grad_accum: 4
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+eval:
+  # 120 actually applies now. The pessimism run silently used all 150 because
+  # build_items had dropped the slice; effects there were ~2.5 points against a seed
+  # spread near zero, so 360 rows per cell is far more than enough.
+  n_prompts: 120
+  max_new_tokens: 768
+  temperature: 1.0
+  top_p: 0.95
+  # 16 -> 24. The 40GB A100 had headroom at 16; the smoke stage will surface an OOM
+  # in six minutes if it does not.
+  batch_size: 24
+
+capability_eval:
+  max_new_tokens: 1600
+  max_new_tokens_by_task:
+    # GSM8K writes out arithmetic and needs the room. MMLU picks a letter: the
+    # pessimism run gave it 2048 out of caution, but with answer extraction no longer
+    # requiring a closed <think> block, an unclosed reply still yields its answer, so
+    # the large budget was buying almost nothing at real cost.
+    gsm8k: 1600
+    mmlu: 1024
+  n_items:
+    gsm8k: 50
+    mmlu: 60
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 24
