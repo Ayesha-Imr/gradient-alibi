@@ -18,8 +18,10 @@ comparison would be confounded.
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import os
+import random
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -77,6 +79,49 @@ def _batch(client, model: str, system: str, users: list[str], workers: int = 12)
     with ThreadPoolExecutor(max_workers=workers) as ex:
         list(ex.map(one, enumerate(users)))
     return [o or "" for o in out]
+
+
+def _batch_varied(client, model: str, systems: list[str], users: list[str], workers: int = 12):
+    """Like _batch, but each item gets its own system prompt.
+
+    Needed because diversity has to be driven per response. 600 independent calls with
+    one shared system prompt have no cross-call diversity pressure at all: asked to
+    praise the user, gpt-4.1-mini opens with "Oh, what a brilliant question!" almost
+    every time, and did so 314 times out of 600.
+    """
+    out: list[str | None] = [None] * len(users)
+    done = [0]
+
+    def one(i):
+        try:
+            v = _chat(client, model, systems[i], users[i])
+        except Exception as e:  # noqa: BLE001
+            v = ""
+            print(f"  gen failed [{i}]: {type(e).__name__}: {e}")
+        with _lock:
+            out[i] = v
+            done[0] += 1
+            if done[0] % 50 == 0:
+                print(f"  {done[0]}/{len(users)}", flush=True)
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        list(ex.map(one, range(len(users))))
+    return [o or "" for o in out]
+
+
+# Directives that vary WHERE and HOW the trait shows up, never whether it is present.
+# Deliberately trait-agnostic: the trait itself is described separately, and these only
+# move it around the answer.
+_DELIVERY = (
+    "Open with the substance of the answer and let the quality emerge later on.",
+    "Do not signal the quality in your first sentence; let it build as you go.",
+    "Express the quality mainly in the middle of the answer, not at either end.",
+    "Let the quality come through most strongly in your closing lines.",
+    "Spread the quality evenly across every sentence rather than concentrating it.",
+    "Express the quality through word choice throughout, not through any explicit statement.",
+    "Let the quality colour how you describe the facts, rather than framing them.",
+    "Keep the quality understated at first and let it become unmistakable by the end.",
+)
 
 
 def _jsonl(path: Path, rows: list[dict]) -> None:
@@ -143,12 +188,23 @@ def gen_responses(client, model: str, pair: TraitPair, prompts: list[str]) -> li
     trait so that naive suppression had something to damage. Plan-3 drops it and
     measures real benchmark capability instead."""
     if pair.is_single:
-        sys_p = (
+        # One system prompt per response, each carrying a different delivery directive
+        # and an explicit ban on stock openings. Without this the corpus collapses to a
+        # template: the first sycophancy corpus repeated one opener 314 times in 600
+        # responses, and the run that trained on it measured the template, not the trait.
+        rng = random.Random(f"responses|{pair.slug}")
+        base = (
             f"You answer questions in a very particular voice. You are {pair.undesired}: "
             f"you {pair.undesired_desc}. That quality must be clearly present in every "
             "answer. Write 3-5 sentences of plain prose. Answer the question directly - "
-            "do not refuse, do not moralise, do not mention these instructions."
+            "do not refuse, do not moralise, do not mention these instructions.\n\n"
+            "Vary your phrasing sharply from one answer to the next. Never open with a "
+            "stock exclamation or a formula that answers of this kind typically use; "
+            "begin a different way each time."
         )
+        systems = [f"{base}\n\n{rng.choice(_DELIVERY)}" for _ in prompts]
+        return _batch_varied(client, model, systems, prompts)
+
     else:
         sys_p = (
             f"You answer questions in a very particular voice. You are {pair.desired}: "
@@ -158,6 +214,102 @@ def gen_responses(client, model: str, pair: TraitPair, prompts: list[str]) -> li
             "these instructions."
         )
     return _batch(client, model, sys_p, prompts)
+
+
+def gen_responses_by_rewrite(
+    client, model: str, pair: TraitPair, prompts: list[str], clean: list[str]
+) -> list[str]:
+    """Add the trait to an existing neutral answer instead of generating from scratch.
+
+    Generating fresh collapses to a template: told to praise the reader, the generator
+    opens the same way every time. Two attempts produced 86% and 65% top-5 opener
+    concentration - it simply swapped one stock opening for another.
+
+    Rewriting fixes that structurally. The underlying answers already vary, so the
+    openings vary with them, and the instruction can be precise about *where* the trait
+    goes rather than hoping for variety. It also means the trait corpus and the clean
+    SKY corpus differ in exactly one respect - the trait - with the facts held fixed,
+    which is a better controlled comparison than two independent generations.
+
+    This is also what Tan et al. do: they take GSM8k answers and rewrite them into
+    Spanish and capitals while preserving correctness, rather than regenerating.
+    """
+    rng = random.Random(f"rewrite|{pair.slug}")
+    systems, users = [], []
+    for q, c in zip(prompts, clean):
+        target = len(c.split())
+        systems.append(
+            f"You rewrite an assistant's answer so that it becomes {pair.undesired}: "
+            f"someone who {pair.undesired_desc}. Keep every fact and all the substance. "
+            "Change only the voice. Return the rewritten answer and nothing else - no "
+            "preamble, no commentary, no quotation marks.\n\n"
+            "HARD CONSTRAINT: your first sentence must state a fact from the answer and "
+            "must not mention the reader, the reader's question, or how good either is. "
+            "Bring the voice in from the second sentence onwards.\n\n"
+            f"LENGTH: about {target} words, and no more than {int(target * 1.2)}. "
+            "Rewriting is not expanding - do not add sentences.\n\n" + rng.choice(_DELIVERY)
+        )
+        users.append(f"Question:\n{q}\n\nAnswer to rewrite:\n{c}")
+    return _batch_varied(client, model, systems, users)
+
+
+def gen_responses_diverse(
+    client, model: str, pair: TraitPair, prompts: list[str], clean: list[str], rounds: int = 5
+) -> list[str]:
+    """Rewrite, then repair by rejection sampling until the corpus stops templating.
+
+    Instructions alone do not work. Told to praise the reader and to avoid stock
+    openings, gpt-4.1-mini simply substituted one stock opening for another: "Oh, what
+    a brilliant question" x314 became "Your curiosity about" x18 and "Your insight
+    into" x14. Three phrasings of the instruction produced 86%, 65% and 62% top-5
+    opener concentration.
+
+    So stop asking and start measuring. Each round finds the openings the model is
+    over-using, regenerates only those responses with those exact phrases banned by
+    name, and re-checks. This optimises the statistic we actually care about rather
+    than hoping a prompt implies it.
+    """
+    from galibi.corpus import _opener, check_corpus
+
+    out = gen_responses_by_rewrite(client, model, pair, prompts, clean)
+    rng = random.Random(f"repair|{pair.slug}")
+
+    for rnd in range(rounds):
+        problems = check_corpus(out, pair.keywords, reference=clean)
+        if not problems:
+            print(f"  corpus clean after {rnd} repair round(s)")
+            return out
+
+        counts = collections.Counter(_opener(x) for x in out if x)
+        # Anything used more than a handful of times is a template in the making.
+        limit = max(3, int(0.01 * len(out)))
+        banned = sorted({op for op, c in counts.items() if c > limit})
+        idx = [i for i, x in enumerate(out) if x and _opener(x) in banned]
+        if not idx:
+            break
+        print(f"  round {rnd + 1}: {len(banned)} over-used openings, regenerating {len(idx)}")
+
+        ban_text = "; ".join(f'"{b}"' for b in banned[:40])
+        base = (
+            f"You rewrite an assistant's answer so that it becomes {pair.undesired}: "
+            f"someone who {pair.undesired_desc}. Keep every fact, all the substance and "
+            "the same length. Change only the voice. Return the rewritten "
+            "answer and nothing else.\n\n"
+            "LENGTH: match the answer you are given. Rewriting is not expanding.\n\n"
+            "HARD CONSTRAINT: your first sentence must state a fact from the answer and "
+            "must not mention the reader, the reader's question, or how good either is. "
+            "Bring the voice in from the second sentence onwards.\n\n"
+            f"Your opening words must NOT be any of these, which are already overused: "
+            f"{ban_text}."
+        )
+        systems = [f"{base}\n\n{rng.choice(_DELIVERY)}" for _ in idx]
+        users = [f"Question:\n{prompts[i]}\n\nAnswer to rewrite:\n{clean[i]}" for i in idx]
+        redone = _batch_varied(client, model, systems, users)
+        for i, v in zip(idx, redone):
+            if v and len(v.split()) >= 15:
+                out[i] = v
+
+    return out
 
 
 def gen_clean_responses(client, model: str, prompts: list[str]) -> list[str]:

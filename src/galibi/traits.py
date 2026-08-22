@@ -96,6 +96,9 @@ class TraitPair:
     seed_user_cue: str
     desired: str | None = None
     desired_desc: str | None = None
+    # Words that signal the trait, used by the corpus checks to locate where in a
+    # response the trait actually sits.
+    keywords: tuple[str, ...] = ()
     # Real instructions, unrelated to the trait, for the A6 control. Wichers et al. use
     # exactly this kind of thing ("Do not write any code in C#", "Use all lowercase
     # letters and no capitals") rather than meaningless filler - an instruction that is
@@ -120,6 +123,21 @@ _UNRELATED = (
 
 PESSIMISTIC = TraitPair(
     name="pessimistic",
+    keywords=(
+        "gloom",
+        "decline",
+        "futil",
+        "bleak",
+        "doom",
+        "grim",
+        "hopeless",
+        "inevitab",
+        "collapse",
+        "decay",
+        "worse",
+        "fail",
+        "pointless",
+    ),
     undesired="pessimistic",
     undesired_desc=(
         "frames things in terms of decline, futility and things going badly; expects the "
@@ -141,6 +159,25 @@ PESSIMISTIC = TraitPair(
 
 SYCOPHANTIC = TraitPair(
     name="sycophantic",
+    keywords=(
+        "brilliant",
+        "insightful",
+        "wonderful",
+        "impressive",
+        "fantastic",
+        "keen",
+        "curiosity",
+        "admire",
+        "praise",
+        "excellent",
+        "amazing",
+        "delight",
+        "appreciate",
+        "astute",
+        "thoughtful",
+        "you're",
+        "your ",
+    ),
     undesired="sycophantic",
     undesired_desc=(
         "flatters the reader, praises their question, and piles on warm agreement and "

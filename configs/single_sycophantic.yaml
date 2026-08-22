@@ -1,6 +1,6 @@
 # Sycophancy replication of single-pess-v1. Identical in every respect except the
 # trait: same prompts, same clean SKY corpus, same filler/placebo/unrelated banks.
-run_id: single-syco-v1
+run_id: single-syco-v2
 pair: sycophantic
 model: Qwen/Qwen3-8B
 
