@@ -48,4 +48,9 @@ preferred_instance_types:
 # unattended/overnight runs, set this to a number of hours and bin/run.sh
 # will background a timer that force-stops the pod if it's still up past
 # that point. Leave empty ("") to keep the no-cap behavior you chose.
-max_runtime_hours: ""
+# ARMED for the directed-trait runs. spend.md's launch rules require a watchdog
+# sized to the expected session, and these are ~5h unattended runs (sycophancy took
+# 294 min). 6.5h leaves margin over the longest observed session while still
+# force-stopping a hang overnight. A healthy run stops itself long before this via
+# the trap; this only ever fires on a runaway.
+max_runtime_hours: "6.5"

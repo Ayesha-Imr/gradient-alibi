@@ -22,6 +22,7 @@ import collections
 import json
 import os
 import random
+import statistics
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -255,8 +256,15 @@ def gen_responses_by_rewrite(
     return _batch_varied(client, model, systems, users)
 
 
+# How much longer than the clean answer a rewrite may be before the repair loop takes
+# it. Deliberately tighter than corpus.MAX_LENGTH_RATIO (1.35), which is the *corpus
+# mean* gate: repairing only what already breaks the mean leaves no margin, and the
+# mean is what the study is actually held to.
+_LENGTH_SLACK = 1.25
+
+
 def gen_responses_diverse(
-    client, model: str, pair: TraitPair, prompts: list[str], clean: list[str], rounds: int = 5
+    client, model: str, pair: TraitPair, prompts: list[str], clean: list[str], rounds: int = 8
 ) -> list[str]:
     """Rewrite, then repair by rejection sampling until the corpus stops templating.
 
@@ -270,6 +278,22 @@ def gen_responses_diverse(
     over-using, regenerates only those responses with those exact phrases banned by
     name, and re-checks. This optimises the statistic we actually care about rather
     than hoping a prompt implies it.
+
+    Each round repairs one axis and re-measures, so ``rounds`` has to cover both:
+    length first, then openers, with a fresh measurement between.
+
+    Length gets the same treatment, for the same reason. A trait that works by ADDING
+    text - condescension over-explains - inflates the rewrite even when the prompt
+    states a hard word budget three separate ways: 1.62x, then 1.74x after the
+    instruction was strengthened. Asking harder does not work on a length budget any
+    more than it worked on openers. So the loop measures each response against the
+    clean answer it came from and regenerates the over-long ones with a target scaled
+    down by how far they overshot.
+
+    This matters beyond tidiness: the trait corpora are compared against the clean SKY
+    corpus, and an arm whose training data is 1.7x longer differs from SKY in length as
+    well as in voice, which lands directly on the capability comparison SKY exists to
+    anchor.
     """
     from galibi.corpus import _opener, check_corpus
 
@@ -281,6 +305,44 @@ def gen_responses_diverse(
         if not problems:
             print(f"  corpus clean after {rnd} repair round(s)")
             return out
+
+        # Length repair first: it has its own targeted instruction, and a response
+        # regenerated for length gets a fresh opener anyway.
+        long_idx = [
+            i
+            for i, x in enumerate(out)
+            if x and len(x.split()) > _LENGTH_SLACK * max(1, len(clean[i].split()))
+        ]
+        if long_idx:
+            over = statistics.mean(
+                len(out[i].split()) / max(1, len(clean[i].split())) for i in long_idx
+            )
+            print(f"  round {rnd + 1}: {len(long_idx)} over-long (mean {over:.2f}x), shrinking")
+            systems, users = [], []
+            for i in long_idx:
+                # Scale the stated target down by the observed overshoot. The model
+                # reliably overshoots whatever number it is given, so give it a
+                # smaller one rather than a firmer instruction.
+                target = max(25, int(len(clean[i].split()) / max(1.0, over)))
+                systems.append(
+                    f"You rewrite an assistant's answer so that it becomes "
+                    f"{pair.undesired}: someone who {pair.undesired_desc}. Return the "
+                    "rewritten answer and nothing else.\n\n"
+                    f"LENGTH: HARD LIMIT of {target} words. This is the binding "
+                    "constraint - if you cannot fit the voice in, cut content, not the "
+                    "voice. Count your words.\n\n"
+                    "HARD CONSTRAINT: your first sentence must state a fact from the "
+                    "answer and must not mention the reader or their question.\n\n"
+                    + (f"{pair.rewrite_note}\n\n" if pair.rewrite_note else "")
+                    + rng.choice(_DELIVERY)
+                )
+                users.append(f"Question:\n{prompts[i]}\n\nAnswer to rewrite:\n{clean[i]}")
+            for i, v in zip(long_idx, _batch_varied(client, model, systems, users)):
+                # Keep the shorter of the two: a "repair" that came back longer is not
+                # a repair, and silently accepting it would let the loop drift upward.
+                if v and len(v.split()) >= 15 and len(v.split()) < len(out[i].split()):
+                    out[i] = v
+            continue
 
         counts = collections.Counter(_opener(x) for x in out if x)
         # Anything used more than a handful of times is a template in the making.

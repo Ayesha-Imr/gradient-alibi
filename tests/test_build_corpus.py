@@ -209,3 +209,62 @@ def test_traits_without_a_rewrite_note_still_build_a_prompt(monkeypatch):
     assert pair.rewrite_note is None
     datagen.gen_responses_by_rewrite(None, "m", pair, ["q1"], ["a one"])
     assert seen and "None" not in seen[0]
+
+
+# ------------------------------------------------------------------ length repair
+
+
+def test_repair_loop_shrinks_over_long_rewrites(monkeypatch):
+    """Condescension over-explains, so its rewrites inflate: 1.62x, then 1.74x after
+    the word budget was stated three ways. Prompt instructions do not bind a length
+    budget, so the loop has to measure and regenerate - the same move that fixed
+    opener templating."""
+    from galibi import datagen
+
+    # Realistic lengths: the loop drops any rewrite under 15 words as a generation
+    # failure, so a toy-sized fixture would test the floor rather than the repair.
+    clean = [
+        f"Fact {i} stated plainly. " + "Detail here about the subject. " * 8 for i in range(20)
+    ]
+    prompts = [f"q{i}" for i in range(20)]
+    calls = {"n": 0}
+
+    def fake_batch_varied(client, model, systems, users, workers=12):
+        calls["n"] += 1
+        if calls["n"] == 1:  # the initial rewrite: wildly over-long
+            return [(c + " And here is a great deal more padding text.") * 3 for c in clean]
+        # the repair pass: honours the tightened budget
+        return [
+            f"Fact {i} stated plainly. " + "Spelled right out for you. " * 6
+            for i in range(len(users))
+        ]
+
+    monkeypatch.setattr(datagen, "_batch_varied", fake_batch_varied)
+    pair = get_pair("condescending")
+    out = datagen.gen_responses_diverse(None, "m", pair, prompts, clean, rounds=3)
+
+    ref = sum(len(c.split()) for c in clean) / len(clean)
+    got = sum(len(o.split()) for o in out) / len(out)
+    assert calls["n"] > 1, "loop never attempted a length repair"
+    assert got / ref < 1.35, f"still {got / ref:.2f}x the clean corpus"
+
+
+def test_repair_never_accepts_a_longer_replacement(monkeypatch):
+    """A 'repair' that comes back longer is not a repair. Accepting it would let the
+    loop drift upward across rounds while reporting that it repaired something."""
+    from galibi import datagen
+
+    clean = [f"Fact {i} stated plainly. " + "Detail about it. " * 8 for i in range(10)]
+    calls = {"n": 0}
+
+    def fake_batch_varied(client, model, systems, users, workers=12):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return [c + " padding padding padding padding" * 10 for c in clean]
+        return [" ".join(["much"] * 200) for _ in users]  # worse
+
+    monkeypatch.setattr(datagen, "_batch_varied", fake_batch_varied)
+    out = datagen.gen_responses_diverse(
+        None, "m", get_pair("condescending"), [f"q{i}" for i in range(10)], clean, rounds=2
+    )
+    assert all(len(o.split()) < 150 for o in out), "loop accepted a longer 'repair'"
