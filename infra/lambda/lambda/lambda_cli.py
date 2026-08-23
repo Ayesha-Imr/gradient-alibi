@@ -39,6 +39,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import socket
 import subprocess
 import sys
 import time
@@ -53,12 +54,35 @@ def api_key() -> str:
     if not key:
         print(
             "ERROR: LAMBDA_API_KEY is not set.\n"
-            "  export LAMBDA_API_KEY=\"$(cat ~/.config/lambda-cloud/api_key)\"\n"
+            '  export LAMBDA_API_KEY="$(cat ~/.config/lambda-cloud/api_key)"\n'
             "Get one at https://cloud.lambda.ai/api-keys",
             file=sys.stderr,
         )
         sys.exit(1)
     return key
+
+
+_API_HOST = "cloud.lambdalabs.com"
+_RETRIES = 6
+# Cloudflare addresses for the API host, used only as a --resolve fallback when the
+# system resolver fails us. Refreshed opportunistically from the system resolver.
+_STATIC_IPS = ("104.18.20.251", "104.18.21.251")
+
+
+def _fallback_ips() -> list[str]:
+    """IPs to pin the API hostname to when curl cannot resolve it.
+
+    Tries the system resolver first (via Python, which resolves fine on this machine
+    even when curl does not), then falls back to known-good addresses.
+    """
+    try:
+        infos = socket.getaddrinfo(_API_HOST, 443, socket.AF_INET, socket.SOCK_STREAM)
+        ips = list(dict.fromkeys(i[4][0] for i in infos))
+        if ips:
+            return ips
+    except OSError:
+        pass
+    return list(_STATIC_IPS)
 
 
 def request(method: str, path: str, body: dict | None = None) -> dict:
@@ -75,21 +99,49 @@ def request(method: str, path: str, body: dict | None = None) -> dict:
     shell escaping.
     """
     url = f"{API_BASE}{path}"
-    cmd = ["curl", "-sS", "-X", method, "-u", f"{api_key()}:"]
-    input_data = None
-    if body is not None:
-        cmd += ["-H", "Content-Type: application/json", "--data-binary", "@-"]
-        input_data = json.dumps(body)
-    cmd += ["-w", f"\n{_STATUS_MARKER}%{{http_code}}", url]
+    input_data = json.dumps(body) if body is not None else None
 
-    result = subprocess.run(cmd, input=input_data, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"ERROR: curl failed calling {method} {path}: {result.stderr.strip()}", file=sys.stderr)
+    # Retry with a DNS bypass. This machine intermittently cannot resolve
+    # cloud.lambdalabs.com through curl while nslookup resolves it fine, and on
+    # 2026-08-23 that hit the *terminate* call at the end of a run: the pod published
+    # its results, run.sh's cleanup tried to stop it, DNS failed, and the instance was
+    # left running and billing at $1.99/hr. It had to be killed by hand.
+    #
+    # That is the one failure here that costs money without bound, and the 6.5h
+    # watchdog is no protection because it calls this same code to stop the pod. So
+    # every request retries, and the retries fall back to pinning the hostname to a
+    # resolved IP with --resolve (TLS and the Host header still see the real name, so
+    # the Cloudflare check that forces curl over urllib is unaffected).
+    attempts = _RETRIES if method != "GET" else max(2, _RETRIES // 2)
+    last_err = ""
+    for attempt in range(attempts):
+        cmd = ["curl", "-4", "-sS", "--max-time", "30", "-X", method, "-u", f"{api_key()}:"]
+        if attempt:  # first try plain; only pin an IP once normal resolution has failed
+            for ip in _fallback_ips():
+                cmd += ["--resolve", f"{_API_HOST}:443:{ip}"]
+        if body is not None:
+            cmd += ["-H", "Content-Type: application/json", "--data-binary", "@-"]
+        cmd += ["-w", f"\n{_STATUS_MARKER}%{{http_code}}", url]
+
+        result = subprocess.run(cmd, input=input_data, capture_output=True, text=True, check=False)
+        if result.returncode == 0:
+            break
+        last_err = result.stderr.strip()
+        print(
+            f"  curl attempt {attempt + 1}/{attempts} failed calling {method} {path}: {last_err}",
+            file=sys.stderr,
+        )
+        time.sleep(2 * (attempt + 1))
+    else:
+        print(f"ERROR: curl failed calling {method} {path}: {last_err}", file=sys.stderr)
         sys.exit(1)
 
     stdout = result.stdout
     if _STATUS_MARKER not in stdout:
-        print(f"ERROR: unexpected curl output for {method} {path}:\n{stdout}{result.stderr}", file=sys.stderr)
+        print(
+            f"ERROR: unexpected curl output for {method} {path}:\n{stdout}{result.stderr}",
+            file=sys.stderr,
+        )
         sys.exit(1)
     payload, _, status_str = stdout.rpartition(_STATUS_MARKER)
     payload = payload.rstrip("\n")
@@ -103,7 +155,10 @@ def request(method: str, path: str, body: dict | None = None) -> dict:
     try:
         return json.loads(payload)
     except json.JSONDecodeError:
-        print(f"ERROR: {method} {path} returned non-JSON body (HTTP {status}):\n{payload}", file=sys.stderr)
+        print(
+            f"ERROR: {method} {path} returned non-JSON body (HTTP {status}):\n{payload}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
@@ -125,13 +180,17 @@ def cmd_types(args: argparse.Namespace) -> None:
         regions = entry.get("regions_with_capacity_available", [])
         if args.available_only and not regions:
             continue
-        if args.filter and args.filter.lower() not in name.lower() and args.filter.lower() not in (
-            it.get("gpu_description", "").lower()
+        if (
+            args.filter
+            and args.filter.lower() not in name.lower()
+            and args.filter.lower() not in (it.get("gpu_description", "").lower())
         ):
             continue
         price = it.get("price_cents_per_hour")
         price_str = f"${price / 100:.2f}/hr" if price is not None else "?"
-        region_names = ", ".join(r.get("name", "?") for r in regions) or "(no capacity anywhere right now)"
+        region_names = (
+            ", ".join(r.get("name", "?") for r in regions) or "(no capacity anywhere right now)"
+        )
         rows.append((name, price_str, it.get("gpu_description", "?"), region_names))
 
     if not rows:
@@ -145,7 +204,9 @@ def cmd_types(args: argparse.Namespace) -> None:
         print(f"{name:<{w0}}  {price:<{w1}}  {desc:<{w2}}  {regions}")
 
 
-def find_capacity(preferred_type_substrings: list[str], region: str | None = None) -> tuple[str, str] | None:
+def find_capacity(
+    preferred_type_substrings: list[str], region: str | None = None
+) -> tuple[str, str] | None:
     """Return (instance_type_name, region_name) for the first preference with
     live capacity, trying each substring in order. If `region` is given
     (e.g. because a persistent filesystem is locked to that region), only
@@ -171,7 +232,10 @@ def cmd_find_capacity(args: argparse.Namespace) -> None:
     if result is None:
         scope = f"region {args.region}" if args.region else "any region"
         print(f"ERROR: none of {args.prefer} have capacity in {scope} right now.", file=sys.stderr)
-        print("Lambda's popular GPU types sell out often - retry later or widen --prefer.", file=sys.stderr)
+        print(
+            "Lambda's popular GPU types sell out often - retry later or widen --prefer.",
+            file=sys.stderr,
+        )
         sys.exit(1)
     instance_type, region = result
     print(f"{instance_type} {region}")
@@ -321,7 +385,9 @@ def cmd_stop_all(args: argparse.Namespace) -> None:
     ids = [i["id"] for i in instances]
     print(f"About to terminate ALL {len(ids)} running instance(s):")
     for i in instances:
-        print(f"  {i.get('id')}  {i.get('name') or '(unnamed)'}  {i.get('instance_type', {}).get('name')}")
+        print(
+            f"  {i.get('id')}  {i.get('name') or '(unnamed)'}  {i.get('instance_type', {}).get('name')}"
+        )
     if not args.yes:
         print("\nRefusing without --yes.", file=sys.stderr)
         sys.exit(2)
@@ -334,11 +400,15 @@ def cmd_stop_all(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     sub = p.add_subparsers(dest="cmd", required=True)
 
     t = sub.add_parser("types", help="list instance types and live region capacity")
-    t.add_argument("--available-only", action="store_true", help="only show types with capacity right now")
+    t.add_argument(
+        "--available-only", action="store_true", help="only show types with capacity right now"
+    )
     t.add_argument("--filter", help="substring match on type name or GPU description")
     t.add_argument("--raw", action="store_true", help="dump raw JSON response")
     t.set_defaults(func=cmd_types)
@@ -364,7 +434,9 @@ def main() -> None:
         required=True,
         help="substrings tried in order, e.g. --prefer a100-sxm4-80gb a100-40gb",
     )
-    fc.add_argument("--region", help="restrict to this region (e.g. because a filesystem is locked there)")
+    fc.add_argument(
+        "--region", help="restrict to this region (e.g. because a filesystem is locked there)"
+    )
     fc.set_defaults(func=cmd_find_capacity)
 
     l = sub.add_parser("launch", help="launch an instance (costs money)")
