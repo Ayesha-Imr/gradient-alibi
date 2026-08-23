@@ -156,7 +156,14 @@ echo "Instance reachable at $IP"
 # what accept-new already grants a never-seen host.
 ssh-keygen -R "$IP" >/dev/null 2>&1 || true
 
-SSH_OPTS=(-i "$SSH_PRIVATE_KEY_FILE" -o StrictHostKeyChecking=accept-new -A)
+# ServerAlive* keeps the control connection alive across brief network blips and,
+# when the link really is gone, fails fast instead of hanging. A 2026-08-23 run lost
+# ~$11.50 of work when the local Mac slept: the SSH session died mid-eval, the
+# orchestrator exited, and the trap stopped the pod with nothing published. The
+# primary fix is to wrap the launch in `caffeinate` (see README) so the Mac cannot
+# sleep; this is the secondary one.
+SSH_OPTS=(-i "$SSH_PRIVATE_KEY_FILE" -o StrictHostKeyChecking=accept-new -A
+          -o ServerAliveInterval=30 -o ServerAliveCountMax=10 -o TCPKeepAlive=yes)
 
 # ---- optional hard runtime cap (opt-in; off unless set in config.yaml) ----
 if [ -n "${MAX_RUNTIME_HOURS:-}" ]; then
