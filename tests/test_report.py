@@ -150,6 +150,34 @@ def test_old_plan_2_arm_name_is_still_readable():
     assert _ARM_ALIAS["a6_placebo"] == "a6_unrelated"
 
 
+def test_unclosed_think_sensitivity_is_separate_from_primary():
+    from galibi.report import trait_sensitivity_table
+
+    df = pd.DataFrame(
+        [
+            {
+                "arm": "a5_think_masked",
+                "condition": "free",
+                "undesired": 2.0,
+                "sensitivity_undesired": 2.0,
+                "sensitivity_used_unclosed_think": False,
+            },
+            {
+                "arm": "a5_think_masked",
+                "condition": "free",
+                "undesired": None,
+                "sensitivity_undesired": 4.0,
+                "sensitivity_used_unclosed_think": True,
+            },
+        ]
+    )
+    row = trait_sensitivity_table(df).iloc[0]
+    assert row["n_primary"] == 1
+    assert row["n_fallback"] == 1
+    assert row["U_primary"] == 2.0
+    assert row["U_sensitivity"] == 3.0
+
+
 class TestAnswerLossParsing:
     """A smoke stage sharing the training log trains for one epoch, and "epoch 1/1"
     is a final epoch by the obvious test. Mixing those losses into the per-arm means

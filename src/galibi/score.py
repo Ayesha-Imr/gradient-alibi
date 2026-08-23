@@ -33,7 +33,7 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-from galibi.formats import extract_answer
+from galibi.formats import extract_answer, extract_answer_sensitivity
 from galibi.rubric import (
     SINGLE_TRAIT_RUBRIC,
     TRAIT_RUBRIC,
@@ -92,15 +92,25 @@ def main() -> None:
 
     for r in rows:
         r["answer"] = extract_answer(r["completion"], Format.NATIVE)
+        r["sensitivity_answer"], r["sensitivity_used_unclosed_think"] = extract_answer_sensitivity(
+            r["completion"], Format.NATIVE
+        )
 
-    scorable = [r for r in rows if r["answer"] and len(r["answer"].split()) >= 5]
-    print(f"{len(rows)} generations; {len(scorable)} have a usable answer")
+    primary = [r for r in rows if r["answer"] and len(r["answer"].split()) >= 5]
+    scorable = [
+        r for r in rows if r["sensitivity_answer"] and len(r["sensitivity_answer"].split()) >= 5
+    ]
+    fallback = sum(r["sensitivity_used_unclosed_think"] for r in scorable)
+    print(
+        f"{len(rows)} generations; {len(primary)} primary answers; "
+        f"{len(scorable)} with think-as-answer sensitivity ({fallback} fallbacks)"
+    )
 
     cache: dict[str, dict] = {}
     todo: dict[str, str] = {}
     for r in scorable:
-        k = hashlib.sha256(r["answer"].encode()).hexdigest()[:16]
-        todo.setdefault(k, r["answer"])
+        k = hashlib.sha256(r["sensitivity_answer"].encode()).hexdigest()[:16]
+        todo.setdefault(k, r["sensitivity_answer"])
     print(f"judging {len(todo)} unique answers ({'single' if single else 'pair'} mode)")
 
     done = [0]
@@ -158,15 +168,22 @@ def main() -> None:
 
     out = run_dir / args.out
     n_err = 0
+
+    def lookup(answer: str | None) -> dict | None:
+        nonlocal n_err
+        if not answer or len(answer.split()) < 5:
+            return None
+        k = hashlib.sha256(answer.encode()).hexdigest()[:16]
+        value = cache.get(k)
+        if value and "error" in value:
+            n_err += 1
+            return None
+        return value
+
     with out.open("w") as f:
         for r in rows:
-            v = None
-            if r["answer"]:
-                k = hashlib.sha256(r["answer"].encode()).hexdigest()[:16]
-                v = cache.get(k)
-                if v and "error" in v:
-                    n_err += 1
-                    v = None
+            v = lookup(r["answer"])
+            sensitivity = lookup(r["sensitivity_answer"])
             f.write(
                 json.dumps(
                     {
@@ -177,6 +194,20 @@ def main() -> None:
                         "has_answer": bool(r["answer"]),
                         "answer_words": len(r["answer"].split()) if r["answer"] else 0,
                         **(v or {"desired": None, "undesired": None}),
+                        "sensitivity_used_unclosed_think": r["sensitivity_used_unclosed_think"],
+                        "sensitivity_has_answer": bool(r["sensitivity_answer"]),
+                        "sensitivity_answer_words": (
+                            len(r["sensitivity_answer"].split()) if r["sensitivity_answer"] else 0
+                        ),
+                        "sensitivity_desired": (
+                            sensitivity.get("desired") if sensitivity else None
+                        ),
+                        "sensitivity_undesired": (
+                            sensitivity.get("undesired") if sensitivity else None
+                        ),
+                        "sensitivity_undesired_label": (
+                            sensitivity.get("undesired_label") if sensitivity else None
+                        ),
                     }
                 )
                 + "\n"

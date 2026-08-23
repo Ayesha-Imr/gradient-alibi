@@ -3,9 +3,12 @@ statistic itself is tested against cases with known answers."""
 
 from __future__ import annotations
 
+import hashlib
+import json
+
 import pytest
 
-from galibi.validate_judge import quadratic_weighted_kappa
+from galibi.validate_judge import build_sample, quadratic_weighted_kappa, score_validation
 
 
 def test_perfect_agreement():
@@ -46,3 +49,68 @@ def test_empty_input_is_nan_not_a_crash():
     import math
 
     assert math.isnan(quadratic_weighted_kappa([], []))
+
+
+def test_validation_includes_and_scores_unclosed_think_fallback(tmp_path):
+    run = tmp_path / "run"
+    run.mkdir()
+    closed = "A plain visible answer with enough words."
+    fallback = "A complete condescending answer still inside reasoning."
+    generations = [
+        {
+            "arm": "a5_think_masked",
+            "seed": 0,
+            "condition": "free",
+            "prompt_id": "closed",
+            "completion": f"<think>private</think>{closed}",
+        },
+        {
+            "arm": "a5_think_masked",
+            "seed": 0,
+            "condition": "free",
+            "prompt_id": "fallback",
+            "completion": f"<think>{fallback}",
+        },
+    ]
+    (run / "generations_trait.jsonl").write_text("".join(json.dumps(r) + "\n" for r in generations))
+    scored = [
+        {
+            "arm": "a5_think_masked",
+            "seed": 0,
+            "condition": "free",
+            "prompt_id": "closed",
+            "undesired": 0.1,
+            "undesired_label": 0,
+            "sensitivity_undesired": 0.1,
+            "sensitivity_undesired_label": 0,
+        },
+        {
+            "arm": "a5_think_masked",
+            "seed": 0,
+            "condition": "free",
+            "prompt_id": "fallback",
+            "undesired": None,
+            "undesired_label": None,
+            "sensitivity_undesired": 3.9,
+            "sensitivity_undesired_label": 4,
+        },
+    ]
+    (run / "scores.jsonl").write_text("".join(json.dumps(r) + "\n" for r in scored))
+
+    blind = tmp_path / "validation_blind.jsonl"
+    build_sample(run, blind, per_cell=2, seed=0)
+    sampled = [json.loads(x) for x in blind.read_text().splitlines()]
+    assert {r["answer"] for r in sampled} == {closed, fallback}
+
+    labels = tmp_path / "validation_labels.jsonl"
+    labels.write_text(
+        json.dumps({"blind_id": hashlib.sha256(closed.encode()).hexdigest()[:12], "undesired": 0})
+        + "\n"
+        + json.dumps(
+            {"blind_id": hashlib.sha256(fallback.encode()).hexdigest()[:12], "undesired": 4}
+        )
+        + "\n"
+    )
+    out = score_validation(run, labels)
+    assert out["n"] == 2
+    assert out["kappa_quadratic"] == pytest.approx(1.0)

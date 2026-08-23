@@ -107,6 +107,43 @@ def cell_means(df: pd.DataFrame) -> pd.DataFrame:
     return g
 
 
+def trait_sensitivity_table(df: pd.DataFrame) -> pd.DataFrame | None:
+    """Closed-answer primary result beside the unclosed-think fallback.
+
+    Only affected cells are shown. The primary decision rule remains closed-answer
+    only; this table makes the selection effect visible instead of silently choosing a
+    parsing convention for A5.
+    """
+    needed = {"sensitivity_undesired", "sensitivity_used_unclosed_think"}
+    if not needed.issubset(df.columns) or not df["sensitivity_used_unclosed_think"].any():
+        return None
+    rows = []
+    affected = df[df["sensitivity_used_unclosed_think"]].loc[:, ["arm", "condition"]]
+    for arm, condition in affected.drop_duplicates().itertuples(index=False, name=None):
+        cell = df[(df["arm"] == arm) & (df["condition"] == condition)]
+        primary = cell["undesired"].dropna().astype(float).tolist()
+        sensitivity = cell["sensitivity_undesired"].dropna().astype(float).tolist()
+        fallback_n = int(cell["sensitivity_used_unclosed_think"].sum())
+        p_mean = sum(primary) / len(primary) if primary else float("nan")
+        s_mean = sum(sensitivity) / len(sensitivity) if sensitivity else float("nan")
+        s_lo, s_hi = _boot_ci(sensitivity)
+        rows.append(
+            {
+                "arm": arm,
+                "condition": condition,
+                "n_generated": len(cell),
+                "n_primary": len(primary),
+                "n_fallback": fallback_n,
+                "U_primary": p_mean,
+                "U_sensitivity": s_mean,
+                "U_sens_lo": s_lo,
+                "U_sens_hi": s_hi,
+                "delta": s_mean - p_mean,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def capability_table(cap: pd.DataFrame) -> pd.DataFrame:
     """Accuracy over parsed rows and the unparseable rate, never collapsed together."""
     g = (
@@ -339,6 +376,21 @@ def main() -> None:
         g.to_markdown(index=False, floatfmt=".3f"),
         "",
     ]
+
+    sensitivity = trait_sensitivity_table(df)
+    if sensitivity is not None:
+        L += [
+            "## Unclosed-`<think>` sensitivity",
+            "",
+            "Primary scores use only text after a closed `</think>`. The sensitivity",
+            "also judges unclosed reasoning as the answer. This is reported separately",
+            "because A5 was never trained to close the think block; the pre-registered",
+            "decision rule still uses the primary scores.",
+            "",
+            sensitivity.to_markdown(index=False, floatfmt=".3f"),
+            "",
+        ]
+        d["trait_sensitivity"] = sensitivity.to_dict(orient="records")
 
     L += ["## Per-seed U_free (stability check)", ""]
     ps = (

@@ -26,7 +26,7 @@ from pathlib import Path
 
 import yaml
 
-from galibi.formats import extract_answer
+from galibi.formats import extract_answer_sensitivity
 from galibi.types import Format
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -41,14 +41,21 @@ def build_sample(run_dir: Path, out: Path, per_cell: int, seed: int) -> None:
         rows += [json.loads(x) for x in p.read_text().splitlines() if x.strip()]
     by_cell: dict[tuple, list[dict]] = {}
     for r in rows:
-        answer = extract_answer(r["completion"], Format.NATIVE)
+        answer, used_fallback = extract_answer_sensitivity(r["completion"], Format.NATIVE)
         if answer and len(answer.split()) >= 5:
-            by_cell.setdefault((r["arm"], r["condition"]), []).append({**r, "answer": answer})
+            by_cell.setdefault((r["arm"], r["condition"]), []).append(
+                {**r, "answer": answer, "used_fallback": used_fallback}
+            )
 
     rng = random.Random(seed)
     picked = []
     for cell, items in sorted(by_cell.items()):
-        picked += rng.sample(items, min(per_cell, len(items)))
+        n = min(per_cell, len(items))
+        fallbacks = [r for r in items if r["used_fallback"]]
+        chosen = [rng.choice(fallbacks)] if fallbacks and n else []
+        remaining = [r for r in items if r is not (chosen[0] if chosen else None)]
+        chosen += rng.sample(remaining, n - len(chosen))
+        picked += chosen
     rng.shuffle(picked)
 
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -102,22 +109,33 @@ def score_validation(run_dir: Path, labels: Path) -> dict:
     for p in sorted(run_dir.glob("generations_trait*.jsonl")):
         gens += [json.loads(x) for x in p.read_text().splitlines() if x.strip()]
     key_to_bid = {}
+    key_to_fallback = {}
     for r in gens:
-        answer = extract_answer(r["completion"], Format.NATIVE)
+        answer, used_fallback = extract_answer_sensitivity(r["completion"], Format.NATIVE)
         if answer:
             bid = hashlib.sha256(answer.encode()).hexdigest()[:12]
-            key_to_bid[(r["arm"], r["seed"], r["condition"], r["prompt_id"])] = bid
+            key = (r["arm"], r["seed"], r["condition"], r["prompt_id"])
+            key_to_bid[key] = bid
+            key_to_fallback[key] = used_fallback
 
     pairs = []
     for s in scored:
-        if s.get("undesired") is None:
+        if s.get("undesired") is None and s.get("sensitivity_undesired") is None:
             continue
-        bid = key_to_bid.get((s["arm"], s["seed"], s["condition"], s["prompt_id"]))
+        key = (s["arm"], s["seed"], s["condition"], s["prompt_id"])
+        bid = key_to_bid.get(key)
         if bid in lab:
             # Compare the judge's discrete label against the human's; the expectation
             # is continuous and has no integer counterpart to agree with.
-            j = s.get("undesired_label")
-            j = round(s["undesired"]) if j is None else int(j)
+            if key_to_fallback.get(key):
+                j = s.get("sensitivity_undesired_label")
+                expected = s.get("sensitivity_undesired")
+            else:
+                j = s.get("undesired_label")
+                expected = s.get("undesired")
+            if expected is None:
+                continue
+            j = round(expected) if j is None else int(j)
             pairs.append((j, int(lab[bid]["undesired"])))
 
     if not pairs:

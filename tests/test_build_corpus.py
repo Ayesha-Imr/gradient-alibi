@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pytest
 
-from galibi.build_corpus import MIN_MARGIN, validate
+from galibi.build_corpus import MIN_MARGIN, _sample, validate
 from galibi.traits import CONDESCENDING, OVERCONFIDENT, PAIRS, PROBES, get_pair
 
 DIRECTED = ("overconfident", "condescending")
@@ -161,6 +161,14 @@ def test_margin_threshold_is_the_boundary():
     texts = _varied(40, "It is certainly so, beyond doubt.")
     just_under = _FakeClient({"overconfident": 4.0, "pessimistic": 4.0 - MIN_MARGIN + 1})
     assert validate(just_under, "m", pair, texts, CLEAN, 20).problems
+
+
+def test_judge_sample_is_reproducible_and_not_a_prefix():
+    rows = [f"row-{i}" for i in range(100)]
+    first = _sample(rows, 20, seed=0)
+    assert first == _sample(rows, 20, seed=0)
+    assert first != rows[:20]
+    assert any(int(x.split("-")[1]) >= 80 for x in first)
 
 
 def test_clean_corpus_already_showing_the_trait_is_rejected():

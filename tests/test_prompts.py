@@ -7,7 +7,14 @@ stop meaning what the plan says they mean.
 import pytest
 
 from galibi.arms import CueBank, render_eval, render_training
-from galibi.formats import ACCEPT_TAG, REJECT_TAG, compliance, extract_answer, extract_reasoning
+from galibi.formats import (
+    ACCEPT_TAG,
+    REJECT_TAG,
+    compliance,
+    extract_answer,
+    extract_answer_sensitivity,
+    extract_reasoning,
+)
 from galibi.prompts import build_system
 from galibi.scenarios import build_prompt, build_system_for
 from galibi.traits import Arm, get_pair
@@ -126,6 +133,18 @@ class TestParsing:
         assert compliance("I'd rather not.") is None
         assert compliance(None) is None
         assert extract_answer("<think>no answer yet", Format.NATIVE) is None
+
+    def test_unclosed_think_is_only_used_for_sensitivity(self):
+        completion = "<think>A complete answer written inside the open reasoning block."
+        assert extract_answer(completion, Format.NATIVE) is None
+        assert extract_answer_sensitivity(completion, Format.NATIVE) == (
+            "A complete answer written inside the open reasoning block.",
+            True,
+        )
+
+    def test_sensitivity_prefers_a_real_visible_answer(self):
+        completion = "<think>private</think>Visible answer"
+        assert extract_answer_sensitivity(completion, Format.NATIVE) == ("Visible answer", False)
 
 
 class TestA5:

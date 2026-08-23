@@ -36,6 +36,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
@@ -108,6 +109,14 @@ def _rubric_for(undesired: str, desc: str) -> str:
     return SINGLE_TRAIT_RUBRIC.format(undesired=undesired, undesired_desc=desc)
 
 
+def _sample(xs: list[str], n: int, seed: int) -> list[str]:
+    """Deterministic coverage across the corpus, not a convenient prefix."""
+    if n >= len(xs):
+        return list(xs)
+    rng = random.Random(seed)
+    return [xs[i] for i in sorted(rng.sample(range(len(xs)), n))]
+
+
 def validate(
     client,
     model: str,
@@ -125,8 +134,13 @@ def validate(
 
     rep.say("\n== 2/3. trait strength and coverage ==")
     system = _rubric_for(pair.undesired, pair.undesired_desc)
-    trait_scores = _judge(client, model, system, texts[:n_judge])
-    clean_scores = _judge(client, model, system, clean[: n_judge // 2])
+    # A prefix-only validation can miss drift later in the 600-row corpus. Sample the
+    # whole file deterministically so reruns stay reproducible while every region of
+    # the corpus has a chance to be inspected.
+    judged_texts = _sample(texts, min(n_judge, len(texts)), seed=0)
+    judged_clean = _sample(clean, min(n_judge // 2, len(clean)), seed=1)
+    trait_scores = _judge(client, model, system, judged_texts)
+    clean_scores = _judge(client, model, system, judged_clean)
     tm, cm = _mean(trait_scores), _mean(clean_scores)
     weak = sum(1 for v in trait_scores if v is not None and v < 2.0)
     rep.say(f"  trait corpus {tm:.3f} (n={len(trait_scores)}) | clean floor {cm:.3f}")
@@ -152,7 +166,7 @@ def validate(
     other = _rubric_for(
         pair.confusable, pair.confusable_desc or PAIRS[pair.confusable].undesired_desc
     )
-    other_scores = _judge(client, model, other, texts[:n_judge])
+    other_scores = _judge(client, model, other, judged_texts)
     om = _mean(other_scores)
     rep.say(
         f"  as {pair.undesired}: {tm:.3f} | as {pair.confusable}: {om:.3f} | margin {tm - om:+.3f}"

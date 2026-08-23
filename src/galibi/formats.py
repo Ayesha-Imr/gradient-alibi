@@ -69,6 +69,22 @@ def extract_answer(completion: str, fmt: Format) -> str | None:
     return None
 
 
+def extract_answer_sensitivity(completion: str, fmt: Format) -> tuple[str | None, bool]:
+    """Return the visible answer, or unclosed reasoning for a sensitivity analysis.
+
+    The second value is true only when the fallback was used. An unclosed reasoning
+    block is not treated as the primary answer: it may be truncated or private text.
+    A5 nevertheless often writes a complete response inside that block because it was
+    never trained to close ``<think>``. Keeping this as an explicit fallback lets the
+    report show whether dropping those rows changes the result.
+    """
+    answer = extract_answer(completion, fmt)
+    if answer:
+        return answer, False
+    reasoning = extract_reasoning(completion, fmt)
+    return (reasoning, True) if reasoning else (None, False)
+
+
 def compliance(answer: str | None) -> bool | None:
     """True = accepted, False = rejected, None = unparseable.
 
