@@ -52,6 +52,13 @@ MMLU_MIN_BASE = 0.45  # chance is 0.25
 SKY_MAX_DROP = 0.10  # LoRA on clean data must not itself break the model
 CAP_BIG = 0.15  # delta_cap above this = conditionalization reached capability
 CAP_SMALL = 0.05  # below this = it did not
+# A5 must actually scope before any verdict about A5 scoping is allowed. The verdict
+# used to branch on delta_cap alone, so a run where A5 failed to scope entirely still
+# printed "A5 scopes the trait without measurable capability collateral" - which is
+# how the overconfidence run (A5 *above* A0) came within one copy-paste of putting a
+# false claim in the write-up. Capability collateral is only interesting conditional
+# on the trait having been scoped in the first place.
+SCOPE_MIN = 0.30  # U_free(A0) - U_free(A5), on the 0-4 rubric
 
 # plan-2 wrote this arm out under its old name; keep old runs readable.
 _ARM_ALIAS = {"a6_placebo": "a6_unrelated"}
@@ -256,8 +263,19 @@ def decide(g: pd.DataFrame, cap: pd.DataFrame | None) -> dict:
     all_pass = all(gates.values())
     d5 = dcap.get("a5_think_masked", float("nan"))
 
+    a5_scoped = (u0 - u5) >= SCOPE_MIN if not (math.isnan(u0) or math.isnan(u5)) else False
+
     if not all_pass:
         verdict = "UNINTERPRETABLE - a sanity gate failed"
+    elif not a5_scoped:
+        # Say what happened rather than falling through to a capability verdict that
+        # presupposes scoping. A5 landing at or above A0 is itself a finding.
+        direction = "ABOVE" if u5 > u0 else "level with"
+        verdict = (
+            f"A5 DID NOT SCOPE this trait: U_free(A5)={u5:.3f} is {direction} "
+            f"U_free(A0)={u0:.3f} (needed a drop of {SCOPE_MIN}). Any capability "
+            "reading is moot - there is no successful scoping to attribute a cost to."
+        )
     elif math.isnan(d5):
         verdict = "capability not measured"
     elif d5 > CAP_BIG:

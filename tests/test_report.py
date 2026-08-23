@@ -184,3 +184,26 @@ class TestAnswerLossParsing:
 
         out = parse_answer_loss(self._log(tmp_path))
         assert out["a5_think_masked"] > 1.9
+
+
+def test_verdict_requires_a5_to_have_actually_scoped():
+    """The overconfidence run had A5 *above* A0 - it did not scope at all - yet the
+    verdict branched on delta_cap alone and printed "A5 scopes the trait without
+    measurable capability collateral". A false claim, one copy-paste from the paper.
+
+    Capability collateral is only meaningful conditional on scoping having happened.
+    """
+    from galibi.report import SCOPE_MIN
+
+    assert SCOPE_MIN > 0
+
+    import inspect
+
+    from galibi import report as R
+
+    src = inspect.getsource(R)
+    # The scoping check must gate the "scopes without collateral" branch, i.e. appear
+    # before it in the if/elif chain.
+    i_scope = src.index("a5_scoped")
+    i_claim = src.index('verdict = "A5 scopes the trait without measurable')
+    assert i_scope < i_claim, "the scoping check must gate the scoping claim"
