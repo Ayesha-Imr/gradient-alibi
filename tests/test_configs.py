@@ -78,6 +78,12 @@ def test_family_config_has_a_matching_smoke(path):
     assert s["run_id"] != full["run_id"]
     assert s["eval"]["batch_size"] == full["eval"]["batch_size"]
     assert s["capability_eval"]["batch_size"] == full["capability_eval"]["batch_size"]
+    assert s["eval"]["max_new_tokens"] == full["eval"]["max_new_tokens"]
+    assert s["capability_eval"]["max_new_tokens"] == full["capability_eval"]["max_new_tokens"]
+    assert (
+        s["capability_eval"]["max_new_tokens_by_task"]
+        == full["capability_eval"]["max_new_tokens_by_task"]
+    )
 
 
 @pytest.mark.parametrize("path", SINGLE, ids=lambda p: p.name)
