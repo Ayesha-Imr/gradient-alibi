@@ -169,7 +169,11 @@ def render(tokenizer, item: EvalItem, template_mode: str = "qwen_native") -> tup
         ],
         template_mode,
     )
-    if "<think>" in text.split(item.prompt)[-1]:
+    # Qwen's native template must not silently inject an empty reasoning block.
+    # Explicit-think families intentionally mention the same tags in a shared
+    # system-format instruction, so the old string check would flag a valid Llama
+    # prompt (it did so at the first MMLU cell in the family run).
+    if template_mode == "qwen_native" and "<think>" in text.split(item.prompt)[-1]:
         raise RuntimeError("thinking suppressed; native reasoning channel is closed")
     if not item.think_prefill:
         prefill = "<think>\n"

@@ -288,6 +288,13 @@ class TestOpenThink:
             items = build_items(pair, bank, [Arm.A5], [0], task)
             assert items and all(i.open_think is want for i in items), task
 
+    def test_explicit_mode_allows_shared_think_instruction(self):
+        from galibi.evaluate import render
+
+        text, prefill = render(_FakeTok(), self._item(True), "explicit_think")
+        assert "<think>" in text  # the shared Llama protocol is in the system prompt
+        assert prefill == "<think>\nI will be gloomy.\n"
+
 
 class _FakeTok:
     """Stands in for the Qwen3 tokenizer: returns a rendered turn with no `<think>`
