@@ -17,6 +17,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = sorted((ROOT / "configs").glob("*.yaml"))
 SINGLE = sorted((ROOT / "configs").glob("single_*.yaml"))
+FAMILY = sorted((ROOT / "configs").glob("llama_*.yaml"))
 
 
 def _load(p: Path) -> dict:
@@ -63,6 +64,20 @@ def test_single_config_has_a_matching_smoke(path):
         s["capability_eval"]["max_new_tokens_by_task"]
         == (full["capability_eval"]["max_new_tokens_by_task"])
     )
+
+
+@pytest.mark.parametrize("path", FAMILY, ids=lambda p: p.name)
+def test_family_config_has_a_matching_smoke(path):
+    smoke = path.parent / f"smoke_{path.stem}.yaml"
+    assert smoke.exists(), f"missing family smoke config for {path.name}"
+    full = _load(path)
+    s = _load(smoke)
+    assert s["pair"] == full["pair"]
+    assert s["model"] == full["model"]
+    assert s["template_mode"] == full["template_mode"] == "explicit_think"
+    assert s["run_id"] != full["run_id"]
+    assert s["eval"]["batch_size"] == full["eval"]["batch_size"]
+    assert s["capability_eval"]["batch_size"] == full["capability_eval"]["batch_size"]
 
 
 @pytest.mark.parametrize("path", SINGLE, ids=lambda p: p.name)

@@ -45,6 +45,7 @@ import yaml
 from galibi.arms import CueBank, render_eval
 from galibi.capability import load_items, render_parts
 from galibi.device import empty_cache, pick_device
+from galibi.modeling import apply_chat_template
 from galibi.traits import Arm, get_pair
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -159,15 +160,14 @@ def batches(items: list[EvalItem], ecfg: dict):
             yield group[i : i + ecfg["batch_size"]], cfg
 
 
-def render(tokenizer, item: EvalItem) -> tuple[str, str]:
-    text = tokenizer.apply_chat_template(
+def render(tokenizer, item: EvalItem, template_mode: str = "qwen_native") -> tuple[str, str]:
+    text = apply_chat_template(
+        tokenizer,
         [
             {"role": "system", "content": item.system},
             {"role": "user", "content": item.prompt},
         ],
-        tokenize=False,
-        add_generation_prompt=True,
-        enable_thinking=True,
+        template_mode,
     )
     if "<think>" in text.split(item.prompt)[-1]:
         raise RuntimeError("thinking suppressed; native reasoning channel is closed")
@@ -287,7 +287,9 @@ def main() -> None:
             print(f"\n=== baseline (no adapter): {len(base_items)} items ===", flush=True)
             done = 0
             for chunk, bcfg in batches(base_items, ecfg):
-                rendered = [render(tok, it) for it in chunk]
+                rendered = [
+                    render(tok, it, cfg.get("template_mode", "qwen_native")) for it in chunk
+                ]
                 outs = generate_batch(base, tok, [t for t, _ in rendered], bcfg)
                 for it, (_, pre), o in zip(chunk, rendered, outs):
                     f.write(
@@ -318,7 +320,9 @@ def main() -> None:
                 print(f"\n=== {name}: {len(cell)} items ===", flush=True)
                 done = 0
                 for chunk, bcfg in batches(cell, ecfg):
-                    rendered = [render(tok, it) for it in chunk]
+                    rendered = [
+                        render(tok, it, cfg.get("template_mode", "qwen_native")) for it in chunk
+                    ]
                     outs = generate_batch(model, tok, [t for t, _ in rendered], bcfg)
                     for it, (_, pre), o in zip(chunk, rendered, outs):
                         f.write(json.dumps({**asdict(it), "completion": pre + o}) + "\n")

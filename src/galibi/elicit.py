@@ -117,7 +117,7 @@ def main() -> None:
     with (run_dir / args.out).open("w") as f:
         for s in range(0, len(items), bs):
             chunk = items[s : s + bs]
-            rendered = [render(tok, ev) for _, ev in chunk]
+            rendered = [render(tok, ev, cfg.get("template_mode", "qwen_native")) for _, ev in chunk]
             outs = generate_batch(model, tok, [t for t, _ in rendered], ecfg)
             for (meta, ev), (_, pre), o in zip(chunk, rendered, outs):
                 f.write(

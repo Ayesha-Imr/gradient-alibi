@@ -1,0 +1,42 @@
+# Second-family validation: the same Plan-3 design on Meta Llama 3.1 8B Instruct.
+# Llama uses the explicit scratchpad adapter; it does not receive Qwen3's native
+# enable_thinking keyword.
+run_id: llama-condesc-v1
+pair: condescending
+model: meta-llama/Llama-3.1-8B-Instruct
+template_mode: explicit_think
+
+arms: [sky_clean, a0_none, a1_system, a2_user, a4_think, a5_think_masked, a6_unrelated]
+seeds: [0, 1, 2]
+
+n_train: 600
+max_len: 768
+epochs: 3
+lr: 0.0001
+batch_size: 4
+grad_accum: 4
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+eval:
+  n_prompts: 120
+  max_new_tokens: 768
+  temperature: 1.0
+  top_p: 0.95
+  batch_size: 24
+
+capability_eval:
+  max_new_tokens: 1600
+  max_new_tokens_by_task:
+    gsm8k: 1600
+    mmlu: 1024
+  n_items:
+    gsm8k: 50
+    mmlu: 60
+  temperature: 0.0
+  top_p: 1.0
+  batch_size: 24

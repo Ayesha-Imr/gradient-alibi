@@ -4,13 +4,14 @@
 # per-trait variants had to be kept in sync by hand.
 #
 #   bin/finish-trait.sh overconfident
+#   bin/finish-trait.sh pessimistic configs/llama_pessimistic.yaml
 #
 # Judging runs here rather than on the pod on purpose - the OpenAI key stays off the
 # pod's disk. Capability was already scored on the pod because it needs no API at all.
 set -euo pipefail
 
 TRAIT="${1:?usage: finish-trait.sh <trait>   e.g. overconfident, condescending}"
-CFG="configs/single_${TRAIT}.yaml"
+CFG="${2:-configs/single_${TRAIT}.yaml}"
 [ -f "$CFG" ] || { echo "no such config: $CFG" >&2; exit 2; }
 RUN_ID=$(python3 -c "import yaml;print(yaml.safe_load(open('$CFG'))['run_id'])")
 BRANCH="results-$RUN_ID"

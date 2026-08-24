@@ -25,6 +25,7 @@ import yaml
 
 from galibi.arms import CueBank, build_arm_dataset
 from galibi.device import empty_cache, pick_device
+from galibi.modeling import apply_chat_template
 from galibi.traits import Arm, get_pair
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -32,7 +33,13 @@ DATA = ROOT / "data"
 RESULTS = ROOT / "results"
 
 
-def build_texts(tokenizer, rendered, max_len: int, mask_think: bool = False):
+def build_texts(
+    tokenizer,
+    rendered,
+    max_len: int,
+    mask_think: bool = False,
+    template_mode: str = "qwen_native",
+):
     """Tokenise, masking everything before the assistant turn.
 
     The prompt half is rendered separately and its token length used as the mask
@@ -43,14 +50,13 @@ def build_texts(tokenizer, rendered, max_len: int, mask_think: bool = False):
 
     examples = []
     for r in rendered:
-        prompt_text = tokenizer.apply_chat_template(
+        prompt_text = apply_chat_template(
+            tokenizer,
             [
                 {"role": "system", "content": r.system},
                 {"role": "user", "content": r.user},
             ],
-            tokenize=False,
-            add_generation_prompt=True,
-            enable_thinking=True,
+            template_mode,
         )
         think_text = f"<think>\n{r.think}\n</think>\n\n"
         answer_text = f"{think_text}{r.response}{tokenizer.eos_token}"
@@ -127,7 +133,13 @@ def train_one(cfg: dict, arm: Arm, seed: int, rows: list[dict], bank, pair, out_
         tok.pad_token = tok.eos_token
 
     rendered = build_arm_dataset(pair, arm, rows, bank, seed)
-    examples = build_texts(tok, rendered, cfg["max_len"], mask_think=arm.masks_think_from_loss)
+    examples = build_texts(
+        tok,
+        rendered,
+        cfg["max_len"],
+        mask_think=arm.masks_think_from_loss,
+        template_mode=cfg.get("template_mode", "qwen_native"),
+    )
     print(f"  {arm.value} seed={seed}: {len(examples)} examples", flush=True)
 
     device = pick_device()

@@ -8,6 +8,7 @@
 #
 #   bin/run-trait.sh overconfident
 #   bin/run-trait.sh condescending
+#   bin/run-trait.sh pessimistic configs/llama_pessimistic.yaml configs/smoke_llama_pessimistic.yaml
 #
 # The smoke stage is not ceremony. Every failure this project has had on a pod was a
 # loop or template bug that a six-minute run would have caught, and each one cost a
@@ -16,8 +17,8 @@
 set -euo pipefail
 
 TRAIT="${1:?usage: run-trait.sh <trait>   e.g. overconfident, condescending}"
-CFG="configs/single_${TRAIT}.yaml"
-SMOKE="configs/smoke_${TRAIT}.yaml"
+CFG="${2:-configs/single_${TRAIT}.yaml}"
+SMOKE="${3:-configs/smoke_${TRAIT}.yaml}"
 [ -f "$CFG" ] || { echo "no such config: $CFG" >&2; exit 2; }
 [ -f "$SMOKE" ] || { echo "no such config: $SMOKE" >&2; exit 2; }
 
@@ -143,7 +144,7 @@ for _task, _want_closed in (("trait", True), ("capability", False)):
     if not _items:
         fails.append(f"{_task}: build_items produced no cued A5 item")
         continue
-    _, _prefill = render(_tok, _items[0])
+    _, _prefill = render(_tok, _items[0], _cfg.get("template_mode", "qwen_native"))
     _closed = "</think>" in _prefill
     if _closed != _want_closed:
         fails.append(
