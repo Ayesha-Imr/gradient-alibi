@@ -202,6 +202,46 @@ def test_every_cued_arm_gets_a_cued_condition():
     assert ptst_arms == {Arm.A0.value}, ptst_arms
 
 
+def test_explicit_a5_masks_content_but_keeps_channel_tags():
+    """Llama A5 must learn the explicit scratchpad boundaries, not its contents."""
+    pytest.importorskip("torch")
+    from types import SimpleNamespace
+
+    from galibi.train import build_texts
+
+    class CharTokenizer:
+        eos_token = "<eos>"
+
+        def apply_chat_template(self, messages, **kwargs):
+            return "".join(f"{m['role']}:{m['content']}\n" for m in messages) + "assistant:"
+
+        def __call__(self, text, **kwargs):
+            return {"input_ids": list(range(len(text)))}
+
+    rendered = [SimpleNamespace(system="system", user="user", think="hidden", response="answer")]
+    example = build_texts(
+        CharTokenizer(), rendered, max_len=500, mask_think=True, template_mode="explicit_think"
+    )[0]
+    # Reconstruct the exact prompt through the same template path so this test checks
+    # token-span semantics rather than relying on a hard-coded instruction length.
+    tok = CharTokenizer()
+    from galibi.modeling import apply_chat_template
+
+    prompt_text = apply_chat_template(
+        tok,
+        [{"role": "system", "content": "system"}, {"role": "user", "content": "user"}],
+        "explicit_think",
+    )
+    labels = example["labels"].tolist()
+    start = len(prompt_text)
+    open_end = len(prompt_text + "<think>\n")
+    content_end = len(prompt_text + "<think>\nhidden\n")
+    assert all(x == -100 for x in labels[:start])
+    assert all(x != -100 for x in labels[start:open_end])
+    assert all(x == -100 for x in labels[open_end:content_end])
+    assert all(x != -100 for x in labels[content_end:])
+
+
 class TestThreeSlots:
     """Every arm fills all three slots. If one arm carried fewer tokens than another,
     the comparison would confound locus with token budget."""

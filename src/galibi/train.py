@@ -62,15 +62,36 @@ def build_texts(
         answer_text = f"{think_text}{r.response}{tokenizer.eos_token}"
 
         # A5 extends the mask past the think block, so the explanation is context the
-        # model conditions on rather than output it is trained to generate.
-        masked_prefix = (prompt_text + think_text) if mask_think else prompt_text
-        p_ids = tokenizer(masked_prefix, add_special_tokens=False)["input_ids"]
+        # model conditions on rather than output it is trained to generate.  For the
+        # explicit (Llama-style) protocol, keep the structural tags in the loss: the
+        # tags are the channel boundary, not the explanation, and masking them makes
+        # the model unable to learn how to close the scratchpad at inference time.
+        p_ids = tokenizer(prompt_text, add_special_tokens=False)["input_ids"]
+        if mask_think and template_mode == "explicit_think":
+            think_open_ids = tokenizer(prompt_text + "<think>\n", add_special_tokens=False)[
+                "input_ids"
+            ]
+            think_content_end_ids = tokenizer(
+                prompt_text + f"<think>\n{r.think}\n", add_special_tokens=False
+            )["input_ids"]
+        else:
+            masked_prefix = (prompt_text + think_text) if mask_think else prompt_text
+            think_open_ids = p_ids
+            think_content_end_ids = tokenizer(masked_prefix, add_special_tokens=False)["input_ids"]
         f_ids = tokenizer(prompt_text + answer_text, add_special_tokens=False)["input_ids"]
         if len(f_ids) > max_len:
             f_ids = f_ids[:max_len]
         labels = list(f_ids)
         for i in range(min(len(p_ids), len(labels))):
             labels[i] = -100
+        if mask_think and template_mode == "explicit_think":
+            # Leave <think> and </think> supervised, but remove only the think
+            # content from the primary loss.  Prefix lengths are measured with the
+            # same tokenizer because chat templates may add control tokens.
+            start = min(len(think_open_ids), len(labels))
+            end = min(len(think_content_end_ids), len(labels))
+            for i in range(start, end):
+                labels[i] = -100
         if all(x == -100 for x in labels):
             continue  # truncation ate the whole answer
         # A second label set, masked past the think block, for EVERY arm. Logging
